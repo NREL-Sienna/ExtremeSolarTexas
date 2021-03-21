@@ -15,31 +15,8 @@ solar = CSV.read(solar_metadata, DataFrames.DataFrame)
 hydro = CSV.read(hydro_mapping, DataFrames.DataFrame)
 
 get_ext(sys)["added_power"] = 0.0
-################ Substitute Existing PV with new PV ###################
-add_pv_plant!(sys, ("Piano Solar", "BRACKETTVILLE 1 1")) # gen-110
-add_pv_plant!(sys, ("Error Solar", "BIG SPRING 6 1")) # gen -22
-add_pv_plant!(sys, ("Bonus Solar", "BIG SPRING 6 2")) # gen - 23
-add_pv_plant!(sys, ("Photo Solar", "ROUND ROCK 1 1",)) # gen - 287
-add_pv_plant!(sys, ("Scene Solar", "ROUND ROCK 1 2",)) # gen - 288
-add_pv_plant!(sys, ("Drama Solar", "ROUND ROCK 1 3",)) # gen - 289
-add_pv_plant!(sys, ("Tooth Solar", "ROUND ROCK 1 4",)) # gen - 290
-add_pv_plant!(sys, ("Hover Solar", "ROUND ROCK 1 5",)) # gen - 291
-add_pv_plant!(sys, ("Straw Solar", "ROUND ROCK 1 6",)) # gen - 292
-add_pv_plant!(sys, ("Troop Solar", "BAYTOWN 3 2"))
-add_pv_plant!(sys, ("Mercy Solar", "BAYTOWN 3 3"))
-add_pv_plant!(sys, ("Storm Solar", "BAYTOWN 3 4"))
-add_pv_plant!(sys, ("Arena Solar", "BAYTOWN 3 5"))
-add_pv_plant!(sys, ("Feign Solar", "BAYTOWN 3 6"))
-add_pv_plant!(sys, ("Glass Solar", "BAYTOWN 3 7"))
-add_pv_plant!(sys, ("Spray 2 Solar", "PORT LAVACA 2"))
-add_pv_plant!(sys, ("Smoke Solar", "PORT LAVACA 3"))
-add_pv_plant!(sys, ("Rebel Solar", "PORT LAVACA 4"))
-add_pv_plant!(sys, ("Toast Solar", "PORT LAVACA 5"))
-add_pv_plant!(sys, ("Blast Solar", "LUFKIN 1 1"))
-add_pv_plant!(sys, ("Giant Solar", "CUSHING 1 2"))
-add_pv_plant!(sys, ("River Solar", "PRESIDIO 1 1"))
-res = solve_powerflow(sys)
-check_pf_results(res) && solve_powerflow!(sys)
+# current_solar = get_components(RenewableGen, sys, x -> get_prime_mover(x) == PrimeMovers.PVe)
+# [remove_component!(sys, g) for g in current_solar]
 ####### Add new PV ####
 add_line!(sys, (500, "PANHANDLE 2 0", "FRYE_SOLAR 0", 112))
 add_line!(sys, (500, "FRYE_SOLAR 0", "LAMESA 1", 161))
@@ -383,7 +360,6 @@ add_line!(sys, (500, "ODESSA 1 8", "MCCAMEY 1 2", 80))
 add_pv_plant!(sys, ("Ponwar Solar Farm", "MCCAMEY 1 1"))
 res = solve_powerflow(sys)
 check_pf_results(res) ? solve_powerflow!(sys) : error()
-to_json(sys, "intermediate_sys.json", force = true)
 # Ramsey Solar is really large, needs a power reduction
 for g in get_components(ThermalStandard, sys)
    if g.active_power > 0.0
@@ -468,6 +444,7 @@ add_transformer!(sys, (230, 115, "UVALDE 1", "UVALDE 0"))
 add_line!(sys, (230, "HONDO 0", "SABINAL 1", 50))
 add_line!(sys, (230, "SABINAL 1", "GLOVE_SOLAR", 13))
 add_pv_plant!(sys, ("Glove Solar", "GLOVE_SOLAR"))
+set_available!(get_component(RenewableGen, sys, "Glove Solar"), false)
 add_line!(sys, (230, "GLOVE_SOLAR", "UVALDE 1", 31))
 add_pv_plant!(sys, ("Kochab Solar", "SABINAL 1"))
 add_line!(sys, (115, "FLUORITE_SOLAR", "SABINAL 0", 9))
@@ -503,11 +480,15 @@ add_pv_plant!(sys, ("Elrond", "ELROND"))
 add_transformer!(sys, (230, 161, "ROCHESTER 1", "ROCHESTER 0"))
 add_line!(sys, (230, "ELROND", "ROCHESTER 1", 26))
 add_pv_plant!(sys, ("Quantum", "ROCHESTER 1"))
+add_pv_plant!(sys, ("Quantum Increase", "ROCHESTER 1"))
 add_transformer!(sys, (230, 161, "OLNEY 1 3", "OLNEY 1 1"))
 add_line!(sys, (230, "ROCHESTER 1", "OLNEY 1 3", 86))
 res = solve_powerflow(sys)
 check_pf_results(res) ? solve_powerflow!(sys) : error()
 to_json(sys, "intermediate_sys.json", force = true)
+add_line!(sys, (161, "FRENCH_G_SOLAR 1", "GRAHAM 1", 6))
+add_pv_plant!(sys, ("French Goldston Solar", "FRENCH_G_SOLAR 1"))
+add_pv_plant!(sys, ("Prospero Solar", "ANDREWS 1"))
 add_line!(sys, (115, "POINT COMFORT 2 2", "MUSTANG_CREEK", 20))
 add_pv_plant!(sys, ("Mustang Creek Solar", "MUSTANG_CREEK"))
 add_line!(sys, (115, "MUSTANG_CREEK", "BLESSING 0", 9))
@@ -546,6 +527,32 @@ add_transformer!(sys, (162, 18, "CLIFTON 1 0", "WHITNEY DAM 2"))
 add_hydro_plant!(sys, ("Whitney Dam 2", "WHITNEY DAM 2"))
 res = solve_powerflow(sys)
 check_pf_results(res) ? solve_powerflow!(sys) : error()
+
+################ Substitute Existing PV with new PV ###################
+add_pv_plant!(sys, ("Piano Solar", "BRACKETTVILLE 1 1")) # gen-110
+add_pv_plant!(sys, ("Error Solar", "BIG SPRING 6 1")) # gen -22
+add_pv_plant!(sys, ("Bonus Solar", "BIG SPRING 6 2")) # gen - 23
+add_pv_plant!(sys, ("Photo Solar", "ROUND ROCK 1 1",)) # gen - 287
+add_pv_plant!(sys, ("Scene Solar", "ROUND ROCK 1 2",)) # gen - 288
+add_pv_plant!(sys, ("Drama Solar", "ROUND ROCK 1 3",)) # gen - 289
+add_pv_plant!(sys, ("Tooth Solar", "ROUND ROCK 1 4",)) # gen - 290
+add_pv_plant!(sys, ("Hover Solar", "ROUND ROCK 1 5",)) # gen - 291
+add_pv_plant!(sys, ("Straw Solar", "ROUND ROCK 1 6",)) # gen - 292
+add_pv_plant!(sys, ("Troop Solar", "BAYTOWN 3 2"))
+add_pv_plant!(sys, ("Mercy Solar", "BAYTOWN 3 3"))
+add_pv_plant!(sys, ("Storm Solar", "BAYTOWN 3 4"))
+add_pv_plant!(sys, ("Arena Solar", "BAYTOWN 3 5"))
+add_pv_plant!(sys, ("Feign Solar", "BAYTOWN 3 6"))
+add_pv_plant!(sys, ("Glass Solar", "BAYTOWN 3 7"))
+add_pv_plant!(sys, ("Spray 2 Solar", "PORT LAVACA 2"))
+add_pv_plant!(sys, ("Smoke Solar", "PORT LAVACA 3"))
+add_pv_plant!(sys, ("Rebel Solar", "PORT LAVACA 4"))
+add_pv_plant!(sys, ("Toast Solar", "PORT LAVACA 5"))
+add_pv_plant!(sys, ("Blast Solar", "LUFKIN 1 1"))
+add_pv_plant!(sys, ("Giant Solar", "CUSHING 1 2"))
+add_pv_plant!(sys, ("River Solar", "PRESIDIO 1 1"))
+res = solve_powerflow(sys)
+check_pf_results(res) && solve_powerflow!(sys)
 
 for r in eachrow(solar)
     plant = get_component(RenewableDispatch, sys, r.site_ids)
@@ -631,6 +638,7 @@ for (ix, row) in enumerate(eachrow(hydro))
    hydro_bus_data_day_ahead[bus_name] = upsample_data(hydro_bus_data_real_time[bus_name])
 end
 for gen in get_components(HydroGen, sys)
+   set_available!(gen, true)
    day_ahead_forecast = Dict{Dates.DateTime, Vector{Float64}}()
    @show get_name(gen)
    bus_name = get_name(get_bus(gen))
