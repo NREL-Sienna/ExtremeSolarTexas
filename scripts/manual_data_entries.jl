@@ -249,7 +249,7 @@ ramp_limits_map = Dict(
     "ST" => PrimeMovers.ST,
     "GT" => PrimeMovers.GT,
     "CC" => PrimeMovers.CC,
-    "CC_CT" => PrimeMovers.CC,
+    "CC_CT" => PrimeMovers.CT,
     "CC_CA" => PrimeMovers.CC,
 )
 
@@ -304,11 +304,11 @@ SCED_keys = [
 ]
 
 duration_lims = Dict(
-    ("ST", "LIG") => (up = 24.0, down = 12.0),
-    ("ST", "SUB") => (up = 24.0, down = 12.0),
-    ("CC_CA", "NG") => (up = 14.0, down = 6.0),
-    ("CC_CT", "NG") => (up = 1.0, down = 1.0),
-    ("GT", "NG") => (up = 1.0, down = 1.0),
+    ("ST", "LIG") => (up = 12.0, down = 6.0),
+    ("ST", "SUB") => (up = 12.0, down = 6.0),
+    ("CC_CA", "NG") => (up = 4.0, down = 2.0),
+    ("CC_CT", "NG") => (up = 0.25, down = 0.25),
+    ("GT", "NG") => (up = 0.25, down = 0.25),
     ("ST", "NG") => (up = 2.0, down = 2.0)
 )
 
