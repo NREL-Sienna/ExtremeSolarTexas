@@ -249,8 +249,11 @@ function add_pv_plant!(sys, plant::Tuple)
 
     if !isempty(gens)
         for g in gens
-            remove_component!(sys, g)
-            @info "removed generator $(get_name(g)) in bus $(get_name(gen_bus))"
+            set_active_power!(g, 0.0)
+            if occursin(r"gen", get_name(g)) || get_prime_mover(g) != PrimeMovers.PVe
+                remove_component!(sys, g)
+                @info "removed generator $(get_name(g)) in bus $(get_name(gen_bus))"
+            end
         end
     end
 
@@ -316,7 +319,7 @@ function check_pf_vm_results(res)
 end
 
 function check_pf_va_results(res)
-    return isempty(res["bus_results"][.!(-1.5 .< res["bus_results"].θ .< 1.5), :])
+    return isempty(res["bus_results"][.!(-1.6 .< res["bus_results"].θ .< 1.6), :])
 end
 
 function check_pf_results(res)
@@ -538,6 +541,7 @@ end
 
 function get_cost_data_from_sced_linear(sced_data, name, LSL, HSL)
     _, linear_terms, intercepts, points_cache = get_quadratic_terms(sced_data, LSL, HSL, false)
+
     quad_f_median = x-> median(intercepts) + median(linear_terms)*x
     quad_f_mean = x-> mean(intercepts) + mean(linear_terms)*x
     start_up = make_start_up_costs(sced_data)
@@ -746,7 +750,6 @@ function make_storage(original_gen::ThermalStandard;
 end
 
 ######################## Code to process SCED Cost function data ###########################
-
 function get_gen_price_pairs(row, tranche_count)
     gen = fill(NaN, tranche_count)
     price = fill(NaN, tranche_count)
