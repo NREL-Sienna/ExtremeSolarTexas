@@ -241,7 +241,7 @@ prime_mover_map = Dict(
     "ST" => PrimeMovers.ST,
     "GT" => PrimeMovers.GT,
     "CC" => PrimeMovers.CC,
-    "CC_CT" => PrimeMovers.CC,
+    "CC_CT" => PrimeMovers.CT,
     "CC_CA" => PrimeMovers.CC,
 )
 
@@ -257,7 +257,7 @@ power_trajectory_map = Dict(
     "ST" => PrimeMovers.ST,
     "GT" => PrimeMovers.GT,
     "CC" => PrimeMovers.CC,
-    "CC_CT" => PrimeMovers.CC,
+    "CC_CT" => PrimeMovers.CT,
     "CC_CA" => PrimeMovers.CC,
 )
 
@@ -265,7 +265,7 @@ time_limits_map = Dict(
     "ST" => PrimeMovers.ST,
     "GT" => PrimeMovers.GT,
     "CC" => PrimeMovers.CC,
-    "CC_CT" => PrimeMovers.CC,
+    "CC_CT" => PrimeMovers.CT,
     "CC_CA" => PrimeMovers.CC,
 )
 
@@ -273,7 +273,7 @@ start_time_limits_map = Dict(
     "ST" => PrimeMovers.ST,
     "GT" => PrimeMovers.GT,
     "CC" => PrimeMovers.CC,
-    "CC_CT" => PrimeMovers.CC,
+    "CC_CT" => PrimeMovers.CT,
     "CC_CA" => PrimeMovers.CC,
     )
 
@@ -281,7 +281,7 @@ start_types_map = Dict(
     "ST" => PrimeMovers.ST,
     "GT" => PrimeMovers.GT,
     "CC" => PrimeMovers.CC,
-    "CC_CT" => PrimeMovers.CC,
+    "CC_CT" => PrimeMovers.CT,
     "CC_CA" => PrimeMovers.CC,
 )
 
@@ -307,8 +307,8 @@ duration_lims = Dict(
     ("ST", "LIG") => (up = 12.0, down = 6.0),
     ("ST", "SUB") => (up = 12.0, down = 6.0),
     ("CC_CA", "NG") => (up = 4.0, down = 2.0),
-    ("CC_CT", "NG") => (up = 0.25, down = 0.25),
-    ("GT", "NG") => (up = 0.25, down = 0.25),
+    ("CC_CT", "NG") => (up = 0, down = 0),
+    ("GT", "NG") => (up = 0, down = 0),
     ("ST", "NG") => (up = 2.0, down = 2.0)
 )
 

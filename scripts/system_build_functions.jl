@@ -455,16 +455,6 @@ function convert_to_pwl(device::PSY.ThermalStandard)
     return
 end
 
-function finalize_system(sys)
-    to_json(sys, "DA_sys.json"; force = true)
-    sys = System("DA_sys.json")
-    if isa(sys, System)
-        rm("intermediate_sys.json")
-        rm("intermediate_sys_time_series_storage.h5")
-        rm("intermediate_sys_validation_descriptors.json")
-    end
-end
-
 function get_tranche_count(df)
     col_names = names(df)
     tranche_count = 0
@@ -732,10 +722,10 @@ function make_storage(original_gen::ThermalStandard;
     set_name!(temp, replace(name, " " => "_"))
     set_available!(temp, true)
     set_bus!(temp, get_bus(original_gen))
-    set_prime_mover!(temp, PrimeMovers.BT)
+    set_prime_mover!(temp, PrimeMovers.BA)
     gen_max_active_power = get_max_active_power(original_gen)
     c_rating = randperm!([2, 3, 4])[1]
-    set_initial_energy!(temp, gen_max_active_power*c_rating*0.5)
+    set_initial_energy!(temp, 0.0)
     set_state_of_charge_limits!(temp, (min = 0.0, max = gen_max_active_power*c_rating))
     set_active_power!(temp, get_active_power(original_gen))
     set_reactive_power!(temp, get_reactive_power(original_gen))
@@ -826,4 +816,14 @@ function get_quadratic_terms(df::DataFrames.DataFrame, LSL, HSL, quad_t = true)
         push!(points_cache.price, price...)
     end
     return quad_terms, linear_terms, intercepts, points_cache
+end
+
+function finalize_system(sys)
+    to_json(sys, "base_sys.json"; force = true)
+    sys = System("base_sys.json")
+    if isa(sys, System)
+        rm("intermediate_sys.json")
+        rm("intermediate_sys_time_series_storage.h5")
+        rm("intermediate_sys_validation_descriptors.json")
+    end
 end
