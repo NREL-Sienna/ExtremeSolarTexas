@@ -48,7 +48,7 @@ SCED_keys_types = [
     Float64
 ]
 
-for i = 1:10
+for i in 1:10
     push!(SCED_keys, "Submitted_TPO_MW$i")
     push!(SCED_keys_types, Float64)
     push!(SCED_keys, "Submitted_TPO_Price$i")
@@ -57,7 +57,8 @@ end
 
 const type_map = Dict(SCED_keys .=> SCED_keys_types)
 
-const fuels = ["CLLIG", "GSSUP", "GSREH", "GSNONR", "NUC", "SCLE90", "SCGT90", "CCGT90", "CCLE90"]
+const fuels =
+    ["CLLIG", "GSSUP", "GSREH", "GSNONR", "NUC", "SCLE90", "SCGT90", "CCGT90", "CCLE90"]
 const exclusions = ["OUT"]
 
 function get_csv_file_names(dir::String)
@@ -67,38 +68,34 @@ function get_csv_file_names(dir::String)
 end
 
 function get_empty_df()
-    return DataFrame(SCED_keys[2:end] .=> fill(Any[], length(SCED_keys)-1))
+    return DataFrame(SCED_keys[2:end] .=> fill(Any[], length(SCED_keys) - 1))
 end
 
 function parse_sced_disclosures(zip_file::String)
-    data = Dict{String,DataFrame}()
+    data = Dict{String, DataFrame}()
     open(zip_file, "r") do file_
-    files_in_zip = ZipFile.Reader(file_)
-    p = Progress(length(files_in_zip.files))
-    for (ix, file) in enumerate(files_in_zip.files)
-        if !occursin("csv", file.name)
-           continue
-        end
-        res = CSV.File(file,
-            types = type_map,
-            select = SCED_keys,
-            normalizenames = true,
-        )
-        for row in res
-            if row.Resource_Type ∉ fuels || row.Telemetered_Resource_Status ∈ exclusions
+        files_in_zip = ZipFile.Reader(file_)
+        p = Progress(length(files_in_zip.files))
+        for (ix, file) in enumerate(files_in_zip.files)
+            if !occursin("csv", file.name)
                 continue
             end
-            data[row.Resource_Name] = get(
-                data,
-                row.Resource_Name,
-                get_empty_df(),
-            )
-            keys = SCED_keys[2:end]
-            push!(data[row.Resource_Name], Dict(keys .=> (getproperty(row, v) for v in Symbol.(keys))))
+            res =
+                CSV.File(file, types = type_map, select = SCED_keys, normalizenames = true)
+            for row in res
+                if row.Resource_Type ∉ fuels || row.Telemetered_Resource_Status ∈ exclusions
+                    continue
+                end
+                data[row.Resource_Name] = get(data, row.Resource_Name, get_empty_df())
+                keys = SCED_keys[2:end]
+                push!(
+                    data[row.Resource_Name],
+                    Dict(keys .=> (getproperty(row, v) for v in Symbol.(keys))),
+                )
+            end
+            next!(p; showvalues = [(:file_count, ix)])
         end
-        next!(p; showvalues = [(:file_count, ix)])
     end
-end
     return data
 end
 
@@ -116,7 +113,7 @@ function write_sced_to_hdf(input, file_name)
                 types_in_vector = typeof.((v[!, col]))
                 if Float64 in types_in_vector
                     vals = Vector{Float64}(replace(x -> ismissing(x) ? NaN : x, v[!, col]))
-                    g[col, shuffle=(), deflate=3] = vals
+                    g[col, shuffle = (), deflate = 3] = vals
                 elseif String in types_in_vector
                     vals = Vector{String}(replace(x -> ismissing(x) ? "NaN" : x, v[!, col]))
                     g[col] = vals
@@ -126,7 +123,7 @@ function write_sced_to_hdf(input, file_name)
                     @error "no match, $file, $col"
                 end
             end
-           next!(p)
+            next!(p)
         end
     end
 end

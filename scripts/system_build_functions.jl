@@ -18,12 +18,7 @@ using Plots
 
 function complete_lines_characteristic_impedance!(line_params, sys)
     z_c_data =
-        Dict(
-            115.0 => Float64[],
-            161.0 => Float64[],
-            230.0 => Float64[],
-            500.0 => Float64[]
-        )
+        Dict(115.0 => Float64[], 161.0 => Float64[], 230.0 => Float64[], 500.0 => Float64[])
     for br in get_components(Line, sys)
         base_voltage = get_arc(br) |> get_from |> get_base_voltage
         z_base = base_voltage^2 / 100
@@ -64,43 +59,73 @@ function write_lines_geo_data(sys, file_name)
 end
 
 function write_gen_buses_geo_data(sys, file_name)
-    df_gens = DataFrame(bus_name = String[], gen_name = String[], point = String[], fuel = String[], capacity = Float64[])
+    df_gens = DataFrame(
+        bus_name = String[],
+        gen_name = String[],
+        point = String[],
+        fuel = String[],
+        capacity = Float64[],
+    )
     for g in get_components(Generator, sys)
         bus = get_bus(g)
-        push!(df_gens, [get_name(bus),
-                        get_name(g),
-                        "POINT ($(get_ext(bus)["x"]) $(get_ext(bus)["y"]))",
-                        string(get_prime_mover(g)),
-                        get_base_power(g)
-                        ])
+        push!(
+            df_gens,
+            [
+                get_name(bus),
+                get_name(g),
+                "POINT ($(get_ext(bus)["x"]) $(get_ext(bus)["y"]))",
+                string(get_prime_mover(g)),
+                get_base_power(g),
+            ],
+        )
     end
     CSV.write("$file_name.csv", df_gens)
 end
 
 function get_line(sys, bus_name::String)
     bus_ = get_component(Bus, sys, bus_name)
-    branch = get_components(Line, sys, x -> (get_from(get_arc(x)) == bus_) || (get_to(get_arc(x)) == bus_))
+    branch = get_components(
+        Line,
+        sys,
+        x -> (get_from(get_arc(x)) == bus_) || (get_to(get_arc(x)) == bus_),
+    )
     return collect(branch)
 end
 
 function get_transformer(sys, bus_name::String)
     bus_ = get_component(Bus, sys, bus_name)
-    branch = get_components(ACBranch, sys, x -> (get_from(get_arc(x)) == bus_) || (get_to(get_arc(x)) == bus_))
+    branch = get_components(
+        ACBranch,
+        sys,
+        x -> (get_from(get_arc(x)) == bus_) || (get_to(get_arc(x)) == bus_),
+    )
     return collect(branch)
 end
 
 function get_line(sys, bus_number::Int)
     bus_ = first(get_components(Bus, sys, x -> get_number(x) == bus_number))
-    branch = get_components(Line, sys, x -> (get_from(get_arc(x)) == bus_) || (get_to(get_arc(x)) == bus_))
+    branch = get_components(
+        Line,
+        sys,
+        x -> (get_from(get_arc(x)) == bus_) || (get_to(get_arc(x)) == bus_),
+    )
     return collect(branch)
 end
 
 function get_line(sys, bus_numbers::Tuple)
     bus_1 = first(get_components(Bus, sys, x -> get_number(x) == bus_numbers[1]))
     bus_2 = first(get_components(Bus, sys, x -> get_number(x) == bus_numbers[2]))
-    branch_1 = get_components(Line, sys, x -> (get_from(get_arc(x)) == bus_1) && (get_to(get_arc(x)) == bus_2))
+    branch_1 = get_components(
+        Line,
+        sys,
+        x -> (get_from(get_arc(x)) == bus_1) && (get_to(get_arc(x)) == bus_2),
+    )
     if isempty(branch_1)
-        branch_1 = get_components(Line, sys, x -> (get_from(get_arc(x)) == bus_2) && (get_to(get_arc(x)) == bus_1))
+        branch_1 = get_components(
+            Line,
+            sys,
+            x -> (get_from(get_arc(x)) == bus_2) && (get_to(get_arc(x)) == bus_1),
+        )
     end
     @assert !isempty(branch_1) bus_numbers
     @assert length(branch_1) < 2 bus_numbers
@@ -124,24 +149,24 @@ end
 
 function make_new_bus(bus_numer, bus_data, voltage_set_point)
     return Bus(
-            number = bus_numer,
-            name = bus_data[2],
-            bustype = bus_data[4],
-            angle = 0.01,
-            magnitude = voltage_set_point,
-            voltage_limits = (min = 0.9, max = 1.1),
-            base_voltage = bus_data[1],
-            area = get_component(Area, sys, "$(Int(bus_data[3]/1000))"),
-            load_zone = nothing,
+        number = bus_numer,
+        name = bus_data[2],
+        bustype = bus_data[4],
+        angle = 0.01,
+        magnitude = voltage_set_point,
+        voltage_limits = (min = 0.9, max = 1.1),
+        base_voltage = bus_data[1],
+        area = get_component(Area, sys, "$(Int(bus_data[3]/1000))"),
+        load_zone = nothing,
     )
 end
 
 function get_bc(x, base_voltage, data)
-    z_base = base_voltage^2/100
-    X = x*z_base
-    Bc = X/data.z_c[2]^2
-    b = Bc*z_base
-    return (from = b/2, to = b/2)
+    z_base = base_voltage^2 / 100
+    X = x * z_base
+    Bc = X / data.z_c[2]^2
+    b = Bc * z_base
+    return (from = b / 2, to = b / 2)
 end
 
 function add_line!(sys, new_arc::Tuple)
@@ -153,7 +178,11 @@ function add_line!(sys, new_arc::Tuple)
             voltage_set_point = isnothing(to_bus) ? 1.0 : get_magnitude(to_bus)
             from_bus_data = [b for b in new_buses if b[2] == new_arc[2]][1]
             end_bus_nums[from_bus_data[3]] = end_bus_nums[from_bus_data[3]] + 1 #add 1 to the last number
-            from_bus = make_new_bus(end_bus_nums[from_bus_data[3]], from_bus_data, voltage_set_point)
+            from_bus = make_new_bus(
+                end_bus_nums[from_bus_data[3]],
+                from_bus_data,
+                voltage_set_point,
+            )
             @info "adding a new bus $(get_name(from_bus)), $(get_number(from_bus))"
             add_component!(sys, from_bus)
         end
@@ -161,7 +190,8 @@ function add_line!(sys, new_arc::Tuple)
             voltage_set_point = isnothing(from_bus) ? 1.0 : get_magnitude(from_bus)
             to_bus_data = [b for b in new_buses if b[2] == new_arc[3]][1]
             end_bus_nums[to_bus_data[3]] = end_bus_nums[to_bus_data[3]] + 1 #add 1 to the last number
-            to_bus = make_new_bus(end_bus_nums[to_bus_data[3]], to_bus_data, voltage_set_point)
+            to_bus =
+                make_new_bus(end_bus_nums[to_bus_data[3]], to_bus_data, voltage_set_point)
             @info "adding a new bus $(get_name(to_bus)), $(get_number(to_bus))"
             add_component!(sys, to_bus)
         end
@@ -176,11 +206,11 @@ function add_line!(sys, new_arc::Tuple)
             active_power_flow = 0.0,
             reactive_power_flow = 0.0,
             arc = Arc(from_bus, to_bus),
-            r = data.impedance[2]*new_arc[4]/data.xr_ratio[2],
-            x = data.impedance[2]*new_arc[4],
-            b = get_bc(data.impedance[2]*new_arc[4], base_voltage, data),
-            rate = 42.40*(new_arc[4]/1.6)^(-0.6595),
-            angle_limits = (-π/4, π/4),
+            r = data.impedance[2] * new_arc[4] / data.xr_ratio[2],
+            x = data.impedance[2] * new_arc[4],
+            b = get_bc(data.impedance[2] * new_arc[4], base_voltage, data),
+            rate = 42.40 * (new_arc[4] / 1.6)^(-0.6595),
+            angle_limits = (-π / 4, π / 4),
         )
         add_component!(sys, new_line)
     catch e
@@ -196,7 +226,11 @@ function add_transformer!(sys, new_arc)
             voltage_set_point = isnothing(to_bus) ? 1.0 : get_magnitude(to_bus)
             from_bus_data = [b for b in new_buses if b[2] == new_arc[3]][1]
             end_bus_nums[from_bus_data[3]] = end_bus_nums[from_bus_data[3]] + 1 #add 1 to the last number
-            from_bus = make_new_bus(end_bus_nums[from_bus_data[3]], from_bus_data, voltage_set_point)
+            from_bus = make_new_bus(
+                end_bus_nums[from_bus_data[3]],
+                from_bus_data,
+                voltage_set_point,
+            )
             @info "adding a new bus $(get_name(from_bus)), $(get_number(from_bus))"
             add_component!(sys, from_bus)
         end
@@ -204,7 +238,8 @@ function add_transformer!(sys, new_arc)
             voltage_set_point = isnothing(from_bus) ? 1.0 : get_magnitude(from_bus)
             to_bus_data = [b for b in new_buses if b[2] == new_arc[4]][1]
             end_bus_nums[to_bus_data[3]] = end_bus_nums[to_bus_data[3]] + 1 #add 1 to the last number
-            to_bus = make_new_bus(end_bus_nums[to_bus_data[3]], to_bus_data, voltage_set_point)
+            to_bus =
+                make_new_bus(end_bus_nums[to_bus_data[3]], to_bus_data, voltage_set_point)
             @info "adding a new bus $(get_name(to_bus)), $(get_number(to_bus))"
             add_component!(sys, to_bus)
         end
@@ -219,7 +254,7 @@ function add_transformer!(sys, new_arc)
             active_power_flow = 0.0,
             reactive_power_flow = 0.0,
             arc = Arc(from_bus, to_bus),
-            r = data.impedance[2]/data.xr_ratio[2],
+            r = data.impedance[2] / data.xr_ratio[2],
             x = data.impedance[2],
             primary_shunt = 0.0,
             tap = 1.0,
@@ -269,10 +304,10 @@ function add_pv_plant!(sys, plant::Tuple)
         reactive_power_limits = (min = -99.0, max = 99.0),
         power_factor = 1.0,
         base_power = data.AC_capacity_MW[1],
-        operation_cost = TwoPartCost(nothing)
-        )
+        operation_cost = TwoPartCost(nothing),
+    )
     add_component!(sys, pv_gen)
-    get_ext(sys)["added_power"] += data.AC_capacity_MW[1]*0.2/100
+    get_ext(sys)["added_power"] += data.AC_capacity_MW[1] * 0.2 / 100
 end
 
 function add_hydro_plant!(sys, plant::Tuple)
@@ -304,10 +339,10 @@ function add_hydro_plant!(sys, plant::Tuple)
         operation_cost = TwoPartCost(VariableCost(0), 0),
         base_power = data.AC_capacity[1],
         ramp_limits = nothing,
-        time_limits = nothing
-        )
+        time_limits = nothing,
+    )
     add_component!(sys, hydro_gen)
-    get_ext(sys)["added_power"] += data.AC_capacity[1]*0.2/100
+    get_ext(sys)["added_power"] += data.AC_capacity[1] * 0.2 / 100
 end
 
 function get_bus_result(res, bus_no)
@@ -333,8 +368,7 @@ function hydro_files(hydro_path)
     for file in hydro_files
         name, ext = splitext(file)
         if ext == ".csv"
-            hydro_data_dict["$name"] =
-                CSV.read(joinpath(hydro_path, file), DataFrame)
+            hydro_data_dict["$name"] = CSV.read(joinpath(hydro_path, file), DataFrame)
             hydro_list = push!(hydro_list, name)
         end
     end
@@ -369,64 +403,66 @@ end
 
 function clean_up_nan!(data::Vector{Float64})
     for (ix, val) in enumerate(data)
-            ix == 1 && continue
-            if isnan(val)
-                if all(isnan.(data[ix:end]))
-                    data[ix:end] .= 0.0
+        ix == 1 && continue
+        if isnan(val)
+            if all(isnan.(data[ix:end]))
+                data[ix:end] .= 0.0
+                break
+            end
+            previous_val = data[ix - 1]
+            if isnan(previous_val)
+                error("$(ix)")
+            end
+            nan_counter = 1
+            for jx in (ix + 1):length(data)
+                if isnan(data[jx])
+                    nan_counter += 1
+                elseif isa(data[jx], Number)
+                    next_val = data[jx]
+                    data[ix:(ix + nan_counter - 1)]
+                    @assert all(isnan.(data[ix:(ix + nan_counter - 1)]))
+                    data[ix:(ix + nan_counter - 1)] .= (previous_val + next_val) / 2
                     break
-                end
-                previous_val = data[ix - 1]
-                if isnan(previous_val)
-                    error("$(ix)")
-                end
-                nan_counter = 1
-                for jx in ix+1:length(data)
-                    if isnan(data[jx])
-                        nan_counter += 1
-                    elseif isa(data[jx], Number)
-                        next_val = data[jx]
-                        data[ix:ix + nan_counter - 1]
-                        @assert all(isnan.(data[ix:ix + nan_counter - 1]))
-                        data[ix:ix + nan_counter - 1] .= (previous_val + next_val)/2
-                        break
-                    else
-                        error()
-                    end
+                else
+                    error()
                 end
             end
         end
+    end
     return nothing
 end
 
 function interpolate_data(time_::Vector{DateTime}, data::Vector{Float64}, year_num::Int64)
-    df = DataFrames.DataFrame(:Date => time_, :Data =>  data)
-    _year_data = df[year.(df.Date).== year_num, :]
+    df = DataFrames.DataFrame(:Date => time_, :Data => data)
+    _year_data = df[year.(df.Date) .== year_num, :]
     unique!(_year_data) # remove repetitive entries
     length(_year_data.Data)
-    full_year = range(DateTime("$(year_num)-01-01"), length = 8772*4, step = Minute(15))
-    data = Vector{Float64}(undef, 8772*4)
+    full_year = range(DateTime("$(year_num)-01-01"), length = 8772 * 4, step = Minute(15))
+    data = Vector{Float64}(undef, 8772 * 4)
     jx = 1
     for (ix, date) in enumerate(full_year)
         if date ∈ _year_data.Date
             data[ix] = _year_data.Data[jx]
             jx += 1
         else
-           data[ix] = NaN
+            data[ix] = NaN
         end
     end
     clean_up_nan!(data)
     @assert all(.!isnan.(data))
-    t_stamps = full_year = range(DateTime("$(year_num)-01-01"), length = 8772*12, step = Minute(5))
+    t_stamps =
+        full_year =
+            range(DateTime("$(year_num)-01-01"), length = 8772 * 12, step = Minute(5))
     _vals = range(1, length(data); length = length(t_stamps))
     interp_vals = LinearInterpolation(1:length(data), data)(_vals)
     return interp_vals
 end
 
 function upsample_data(data::Vector{Float64}, ratio = 12)
-    data_size = Int(length(data)/ratio)
+    data_size = Int(length(data) / ratio)
     upsampled_data = Vector{Float64}(undef, data_size)
     for ix in eachindex(upsampled_data)
-        current_ix = ix + (ratio - 1)*(ix - 1)
+        current_ix = ix + (ratio - 1) * (ix - 1)
         data_ = data[current_ix:(current_ix + ratio - 1)]
         upsampled_data[ix] = mean(data_)
     end
@@ -445,7 +481,8 @@ function convert_to_pwl(device::PSY.ThermalStandard)
         pwl_points = [(p^2 * a + p * b, p) for p in break_points]
     elseif a > 0.0
         @info get_name(device) "has quadratic cost function"
-        break_points = [pmin, pmin + 1 / 3 * (pmax - pmin), pmin + 2 / 3 * (pmax - pmin), pmax]
+        break_points =
+            [pmin, pmin + 1 / 3 * (pmax - pmin), pmin + 2 / 3 * (pmax - pmin), pmax]
         pwl_points = [(p^2 * a + p * b, p) for p in break_points]
     else
         error()
@@ -470,9 +507,9 @@ function get_tranche_count(df)
 end
 
 function make_variable_cost(f::Function, pmin, pmax, tranches::Int = 4)
-    break_points = [pmin + i/tranches * (pmax-pmin) for i in 0:tranches]
+    break_points = [pmin + i / tranches * (pmax - pmin) for i in 0:tranches]
     pwl_points = [(f(p), p) for p in break_points]
-    new_var_cost = PSY.VariableCost([(c- f(pmin), p - pmin) for  (c, p) in pwl_points])
+    new_var_cost = PSY.VariableCost([(c - f(pmin), p - pmin) for (c, p) in pwl_points])
     slopes = get_slopes(new_var_cost)
     for ix in 1:(length(slopes) - 1)
         if slopes[ix] > slopes[ix + 1]
@@ -496,7 +533,7 @@ function make_start_up_costs(sced_data)
     end
     if hasproperty(sced_data, :Start_Up_Hot_Offer)
         hot_ = sced_data.Start_Up_Hot_Offer[.!isnan.(sced_data.Start_Up_Hot_Offer)]
-        hot_  = isempty(hot_[hot_  .> 0.0]) ? [0.0] : hot_[hot_  .> 0.0]
+        hot_ = isempty(hot_[hot_ .> 0.0]) ? [0.0] : hot_[hot_ .> 0.0]
     end
 
     cold = median(cold_)
@@ -507,13 +544,15 @@ function make_start_up_costs(sced_data)
 end
 
 function get_cost_data_from_sced(sced_data, name, LSL, HSL)
-    quad_terms, linear_terms, intercepts, points_cache = get_quadratic_terms(sced_data, LSL, HSL)
+    quad_terms, linear_terms, intercepts, points_cache =
+        get_quadratic_terms(sced_data, LSL, HSL)
     start_up = make_start_up_costs(sced_data)
     if isempty(quad_terms)
-        return start_up, -99.0,  VariableCost(nothing)
+        return start_up, -99.0, VariableCost(nothing)
     end
-    quad_f_median = x-> median(intercepts) + median(linear_terms)*x + median(quad_terms)*x^2
-    quad_f_mean = x-> mean(intercepts) + mean(linear_terms)*x + mean(quad_terms)*x^2
+    quad_f_median =
+        x -> median(intercepts) + median(linear_terms) * x + median(quad_terms) * x^2
+    quad_f_mean = x -> mean(intercepts) + mean(linear_terms) * x + mean(quad_terms) * x^2
 
     variable_cost = make_variable_cost(quad_f_mean, LSL, HSL)
     no_load = quad_f_mean(LSL)
@@ -530,10 +569,11 @@ function get_cost_data_from_sced(sced_data, name, LSL, HSL)
 end
 
 function get_cost_data_from_sced_linear(sced_data, name, LSL, HSL)
-    _, linear_terms, intercepts, points_cache = get_quadratic_terms(sced_data, LSL, HSL, false)
+    _, linear_terms, intercepts, points_cache =
+        get_quadratic_terms(sced_data, LSL, HSL, false)
 
-    quad_f_median = x-> median(intercepts) + median(linear_terms)*x
-    quad_f_mean = x-> mean(intercepts) + mean(linear_terms)*x
+    quad_f_median = x -> median(intercepts) + median(linear_terms) * x
+    quad_f_mean = x -> mean(intercepts) + mean(linear_terms) * x
     start_up = make_start_up_costs(sced_data)
     variable_cost = make_variable_cost(quad_f_mean, LSL, HSL, 1)
     no_load = quad_f_mean(LSL)
@@ -553,7 +593,11 @@ end
 function get_cost_data_from_gen(gen, name, LSL, HSL)
     gen_cost = get_operation_cost(gen)
     polynomial_points = get_variable(gen_cost) |> get_cost
-    quad_f = x-> (polynomial_points[1]/100^2)*x^2 + (polynomial_points[2]/100)*x + get_fixed(gen_cost)
+    quad_f =
+        x ->
+            (polynomial_points[1] / 100^2) * x^2 +
+            (polynomial_points[2] / 100) * x +
+            get_fixed(gen_cost)
     new_var_cost = make_variable_cost(quad_f, LSL, HSL)
     p = plot(legend = :outertopright)
     plot!(p, quad_f, xlim = [LSL, HSL], label = "quadratic_model")
@@ -561,17 +605,19 @@ function get_cost_data_from_gen(gen, name, LSL, HSL)
     plot!(p, [(HSL, 0), (HSL, quad_f(HSL))], label = "HSL")
     plot!(p, xlabel = "Power [MW]", ylabel = "Price [\$]")
     savefig(p, joinpath(COST_FUNCTION_PATHS, "$name.pdf"))
-    start_up = (hot = 0.0, warm = 0.0, cold = 0.0,)
+    start_up = (hot = 0.0, warm = 0.0, cold = 0.0)
     return start_up, quad_f(LSL), new_var_cost
 end
 
-function make_thermal_gen(original_gen::ThermalStandard;
-        name,
-        prime_mover,
-        fuel,
-        LSL,
-        HSL,
-        sced_data = nothing)
+function make_thermal_gen(
+    original_gen::ThermalStandard;
+    name,
+    prime_mover,
+    fuel,
+    LSL,
+    HSL,
+    sced_data = nothing,
+)
     if LSL > HSL
         error("LSL > HSL")
     end
@@ -581,8 +627,8 @@ function make_thermal_gen(original_gen::ThermalStandard;
     set_available!(temp_gen, true)
     set_status!(temp_gen, true)
     set_bus!(temp_gen, get_bus(original_gen))
-    set_active_power!(temp_gen, get_active_power(original_gen)/base_power)
-    set_reactive_power!(temp_gen, get_reactive_power(original_gen)/base_power)
+    set_active_power!(temp_gen, get_active_power(original_gen) / base_power)
+    set_reactive_power!(temp_gen, get_reactive_power(original_gen) / base_power)
     set_rating!(temp_gen, rating)
     set_prime_mover!(temp_gen, prime_mover_map[prime_mover])
     set_fuel!(temp_gen, fuel_map[fuel])
@@ -598,15 +644,16 @@ function make_thermal_gen(original_gen::ThermalStandard;
     op_cost = MultiStartCost(nothing)
 
     if sced_data !== nothing
-        start_up, no_load, variable_cost = get_cost_data_from_sced(sced_data, name, LSL, HSL)
+        start_up, no_load, variable_cost =
+            get_cost_data_from_sced(sced_data, name, LSL, HSL)
         if no_load == -99
-           _, no_load, variable_cost = get_cost_data_from_gen(gen, name, LSL, HSL)
+            _, no_load, variable_cost = get_cost_data_from_gen(gen, name, LSL, HSL)
         end
     else
-       start_up, no_load, variable_cost = get_cost_data_from_gen(gen, name, LSL, HSL)
+        start_up, no_load, variable_cost = get_cost_data_from_gen(gen, name, LSL, HSL)
     end
     set_start_up!(op_cost, start_up)
-    set_shut_down!(op_cost, 0.2*start_up.hot)
+    set_shut_down!(op_cost, 0.2 * start_up.hot)
     set_variable!(op_cost, variable_cost)
     set_no_load!(op_cost, no_load)
     set_operation_cost!(temp_gen, op_cost)
@@ -614,15 +661,17 @@ function make_thermal_gen(original_gen::ThermalStandard;
     return temp_gen
 end
 
-function make_thermal_gen_nuc(original_gen::ThermalStandard;
-        name,
-        prime_mover,
-        fuel,
-        LSL,
-        HSL,)
+function make_thermal_gen_nuc(
+    original_gen::ThermalStandard;
+    name,
+    prime_mover,
+    fuel,
+    LSL,
+    HSL,
+)
     temp_gen = ThermalMultiStart(nothing)
     p_limits_, q_limits, rating, base_power = _rescale_power(original_gen, LSL, HSL)
-    p_limits = (min = p_limits_.max*0.95, max = p_limits_.max)
+    p_limits = (min = p_limits_.max * 0.95, max = p_limits_.max)
     set_name!(temp_gen, replace(name, " " => "_"))
     set_available!(temp_gen, true)
     set_status!(temp_gen, true)
@@ -643,7 +692,7 @@ function make_thermal_gen_nuc(original_gen::ThermalStandard;
     op_cost = MultiStartCost(nothing)
     set_start_up!(op_cost, (hot = 1e6, warm = 1e6, cold = 1e6))
     set_shut_down!(op_cost, 1e6)
-    new_var_cost = make_variable_cost(x -> 0.01*x + 0.01*LSL, LSL, HSL, 1)
+    new_var_cost = make_variable_cost(x -> 0.01 * x + 0.01 * LSL, LSL, HSL, 1)
     set_variable!(op_cost, new_var_cost)
     set_no_load!(op_cost, 0.0)
     set_operation_cost!(temp_gen, op_cost)
@@ -652,14 +701,15 @@ function make_thermal_gen_nuc(original_gen::ThermalStandard;
     return temp_gen
 end
 
-
-function make_thermal_gen_st(original_gen::ThermalStandard;
-        name,
-        prime_mover,
-        fuel,
-        LSL,
-        HSL,
-        sced_data = nothing)
+function make_thermal_gen_st(
+    original_gen::ThermalStandard;
+    name,
+    prime_mover,
+    fuel,
+    LSL,
+    HSL,
+    sced_data = nothing,
+)
     if LSL > HSL
         error("LSL > HSL")
     end
@@ -686,12 +736,13 @@ function make_thermal_gen_st(original_gen::ThermalStandard;
     op_cost = MultiStartCost(nothing)
 
     if sced_data !== nothing
-        start_up, no_load, variable_cost = get_cost_data_from_sced_linear(sced_data, name, LSL, HSL)
+        start_up, no_load, variable_cost =
+            get_cost_data_from_sced_linear(sced_data, name, LSL, HSL)
     else
-       start_up, no_load, variable_cost = get_cost_data_from_gen(gen, name, LSL, HSL)
+        start_up, no_load, variable_cost = get_cost_data_from_gen(gen, name, LSL, HSL)
     end
     set_start_up!(op_cost, start_up)
-    set_shut_down!(op_cost, 0.2*start_up.hot)
+    set_shut_down!(op_cost, 0.2 * start_up.hot)
     set_variable!(op_cost, variable_cost)
     set_no_load!(op_cost, no_load)
     set_operation_cost!(temp_gen, op_cost)
@@ -703,19 +754,25 @@ function _rescale_power(original_gen::ThermalStandard, LSL, HSL)
     gen_base_power = get_base_power(original_gen)
     gen_max_active_power = get_max_active_power(original_gen)
     q_lims = get_reactive_power_limits(original_gen)
-    ratio_base_to_max = gen_base_power/gen_max_active_power
-    new_base_power = HSL*ratio_base_to_max
-    active_power_limits = (min = LSL/new_base_power, max = HSL/new_base_power)
-    reactive_power_ratio = q_lims.min/gen_max_active_power, q_lims.max/gen_max_active_power
-    reactive_power_limits = (min = active_power_limits.min*reactive_power_ratio[1], max = active_power_limits.max*reactive_power_ratio[2])
-    rating = sqrt(active_power_limits.max^2 + max(abs(reactive_power_limits.min), abs(reactive_power_limits.max))^2)
+    ratio_base_to_max = gen_base_power / gen_max_active_power
+    new_base_power = HSL * ratio_base_to_max
+    active_power_limits = (min = LSL / new_base_power, max = HSL / new_base_power)
+    reactive_power_ratio =
+        q_lims.min / gen_max_active_power, q_lims.max / gen_max_active_power
+    reactive_power_limits = (
+        min = active_power_limits.min * reactive_power_ratio[1],
+        max = active_power_limits.max * reactive_power_ratio[2],
+    )
+    rating = sqrt(
+        active_power_limits.max^2 +
+        max(abs(reactive_power_limits.min), abs(reactive_power_limits.max))^2,
+    )
     @assert rating >= active_power_limits.max
     @assert new_base_power > rating
     return active_power_limits, reactive_power_limits, rating, new_base_power
 end
 
-function make_storage(original_gen::ThermalStandard;
-        name)
+function make_storage(original_gen::ThermalStandard; name)
     temp = GenericBattery(nothing)
     base_power = get_base_power(original_gen)
     set_base_power!(temp, base_power)
@@ -726,16 +783,16 @@ function make_storage(original_gen::ThermalStandard;
     gen_max_active_power = get_max_active_power(original_gen)
     c_rating = randperm!([2, 3, 4])[1]
     set_initial_energy!(temp, 0.0)
-    set_state_of_charge_limits!(temp, (min = 0.0, max = gen_max_active_power*c_rating))
+    set_state_of_charge_limits!(temp, (min = 0.0, max = gen_max_active_power * c_rating))
     set_active_power!(temp, get_active_power(original_gen))
     set_reactive_power!(temp, get_reactive_power(original_gen))
     set_input_active_power_limits!(temp, (min = 0.0, max = gen_max_active_power))
     set_output_active_power_limits!(temp, (min = 0.0, max = gen_max_active_power))
-    eff_data = (in = 0.83 + 0.05*rand(), out = 0.91 - 0.05*rand())
+    eff_data = (in = 0.83 + 0.05 * rand(), out = 0.91 - 0.05 * rand())
     set_efficiency!(temp, eff_data)
     qlims = get_reactive_power_limits(original_gen)
     set_reactive_power_limits!(temp, (min = -qlims.max, max = qlims.max))
-    set_rating!(temp, sqrt((gen_max_active_power/base_power)^2 + qlims.max^2))
+    set_rating!(temp, sqrt((gen_max_active_power / base_power)^2 + qlims.max^2))
     return temp
 end
 
@@ -745,7 +802,7 @@ function get_gen_price_pairs(row, tranche_count)
     price = fill(NaN, tranche_count)
     for i in 1:tranche_count
         row["Submitted_TPO_MW$i"] > row["HSL"] && continue
-        row["Submitted_TPO_Price$i"] < 0  && continue
+        row["Submitted_TPO_Price$i"] < 0 && continue
         min_gen_cost = 0
         if hasproperty(row, "Min_Gen_Cost") && !isnan(row["Min_Gen_Cost"])
             min_gen_cost = row["Min_Gen_Cost"]
@@ -776,10 +833,14 @@ function get_quadratic_model(gen, price, quad_term::Bool = true)
     n_bp = length(price)
     @variable(m, var_price[1:n_bp] >= 0)
     @variable(m, quad_mult >= 0)
-   !quad_term && fix(quad_mult, 0.0; force = true)
+    !quad_term && fix(quad_mult, 0.0; force = true)
     @variable(m, linear_mult >= 0)
     @variable(m, intercept >= 0)
-    @constraint(m, [i in 1:n_bp], var_price[i] == intercept + linear_mult*gen[i] + quad_mult*gen[i]^2)
+    @constraint(
+        m,
+        [i in 1:n_bp],
+        var_price[i] == intercept + linear_mult * gen[i] + quad_mult * gen[i]^2
+    )
     @objective(m, Min, sum((price[i] - var_price[i])^2 for i in 1:n_bp))
     optimize!(m)
     return value(quad_mult), value(linear_mult), value(intercept)

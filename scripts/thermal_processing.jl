@@ -18,7 +18,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -34,7 +34,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -50,7 +50,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -66,7 +66,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -82,7 +82,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -98,7 +98,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -115,7 +115,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -131,7 +131,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -148,7 +148,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -165,7 +165,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -181,7 +181,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -197,7 +197,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -214,7 +214,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -231,7 +231,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -240,7 +240,10 @@ gen = get_component(ThermalStandard, sys, "gen-34")
 sced_data = get_sced_data(thermal_sced_h5_file, "QALSW_CC2_4")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW7"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
-LSL_ = sced_data[.&(sced_data.LSL .> 1, sced_data.Submitted_TPO_MW1 .> 1), :][!, "Submitted_TPO_MW1"]
+LSL_ = sced_data[.&(sced_data.LSL .> 1, sced_data.Submitted_TPO_MW1 .> 1), :][
+    !,
+    "Submitted_TPO_MW1",
+]
 LSL = median(LSL_[.!isnan.(LSL_)])
 new_thermal = make_thermal_gen(
     gen;
@@ -249,7 +252,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -265,7 +268,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -324,7 +327,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -340,7 +343,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -370,7 +373,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -386,7 +389,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -402,7 +405,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -420,7 +423,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -438,7 +441,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -454,7 +457,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -470,7 +473,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -486,7 +489,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -502,7 +505,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -518,7 +521,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -534,7 +537,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -550,7 +553,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -566,7 +569,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -582,7 +585,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -614,7 +617,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -631,7 +634,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -647,7 +650,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -663,7 +666,7 @@ new_thermal = make_thermal_gen(
     fuel = "LIG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -679,7 +682,7 @@ new_thermal = make_thermal_gen(
     fuel = "SUB",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -710,7 +713,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -726,7 +729,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -742,7 +745,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -758,7 +761,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -774,7 +777,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -790,7 +793,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -806,7 +809,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -822,7 +825,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -838,7 +841,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -854,7 +857,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -872,7 +875,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -890,7 +893,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -906,7 +909,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -923,7 +926,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -939,7 +942,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -955,7 +958,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -971,7 +974,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -987,7 +990,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1090,7 +1093,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1106,7 +1109,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1123,7 +1126,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1140,7 +1143,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1156,7 +1159,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1186,7 +1189,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1202,7 +1205,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1218,7 +1221,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1276,7 +1279,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1292,7 +1295,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1308,7 +1311,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1324,7 +1327,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1340,7 +1343,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1356,7 +1359,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1372,7 +1375,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1388,7 +1391,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1404,7 +1407,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1420,7 +1423,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1436,7 +1439,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1452,7 +1455,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1472,7 +1475,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1489,7 +1492,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1505,7 +1508,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1522,7 +1525,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1539,7 +1542,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1555,7 +1558,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1571,7 +1574,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1587,7 +1590,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1603,7 +1606,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1619,7 +1622,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1637,7 +1640,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1653,7 +1656,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1670,7 +1673,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1686,7 +1689,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1702,11 +1705,10 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
-
 
 gen = get_component(ThermalStandard, sys, "gen-227")
 sced_data = get_sced_data(thermal_sced_h5_file, "MCSES_UNIT7")
@@ -1719,7 +1721,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1735,7 +1737,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1751,7 +1753,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1768,7 +1770,7 @@ new_thermal = make_thermal_gen(
     fuel = "LIG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 add_component!(sys, new_thermal)
 HSL = maximum(sced_data[!, "HSL"])
@@ -1785,7 +1787,7 @@ new_thermal = make_thermal_gen(
     fuel = "LIG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 add_component!(sys, new_thermal)
 HSL = maximum(sced_data[!, "HSL"])
@@ -1802,7 +1804,7 @@ new_thermal = make_thermal_gen(
     fuel = "LIG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 add_component!(sys, new_thermal)
 HSL = maximum(sced_data[!, "HSL"])
@@ -1819,7 +1821,7 @@ new_thermal = make_thermal_gen(
     fuel = "LIG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 add_component!(sys, new_thermal)
 
@@ -1838,7 +1840,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1855,7 +1857,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1871,7 +1873,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1888,7 +1890,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1905,7 +1907,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1921,7 +1923,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1937,7 +1939,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1954,7 +1956,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1970,11 +1972,10 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
-
 
 gen = get_component(ThermalStandard, sys, "gen-244")
 sced_data = get_sced_data(thermal_sced_h5_file, "DCSES_CT20")
@@ -1987,7 +1988,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2003,7 +2004,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2022,7 +2023,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2038,7 +2039,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2054,7 +2055,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2070,7 +2071,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2086,7 +2087,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2102,7 +2103,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2118,7 +2119,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2134,7 +2135,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2150,7 +2151,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2166,7 +2167,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2182,7 +2183,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2198,7 +2199,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2214,7 +2215,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2230,7 +2231,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2247,7 +2248,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2263,7 +2264,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2279,7 +2280,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2295,7 +2296,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2311,7 +2312,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2327,7 +2328,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2343,7 +2344,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2359,7 +2360,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2375,7 +2376,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2391,7 +2392,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2407,7 +2408,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2423,7 +2424,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2439,7 +2440,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2455,7 +2456,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2471,7 +2472,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2488,7 +2489,7 @@ new_thermal = make_thermal_gen(
     fuel = "SUB",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 add_component!(sys, new_thermal)
 
@@ -2503,7 +2504,7 @@ new_thermal = make_thermal_gen(
     fuel = "SUB",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 add_component!(sys, new_thermal)
 remove_component!(sys, gen)
@@ -2519,7 +2520,7 @@ new_thermal = make_thermal_gen(
     fuel = "SUB",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 add_component!(sys, new_thermal)
 
@@ -2534,7 +2535,7 @@ new_thermal = make_thermal_gen(
     fuel = "SUB",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 add_component!(sys, new_thermal)
 remove_component!(sys, gen)
@@ -2551,7 +2552,7 @@ new_thermal = make_thermal_gen(
     fuel = "SUB",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2567,7 +2568,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2583,7 +2584,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2599,7 +2600,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2615,7 +2616,7 @@ new_thermal = make_thermal_gen(
     fuel = "LIG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2631,7 +2632,7 @@ new_thermal = make_thermal_gen(
     fuel = "LIG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2647,7 +2648,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2663,7 +2664,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2679,7 +2680,7 @@ new_thermal = make_thermal_gen(
     fuel = "SUB",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2695,7 +2696,7 @@ new_thermal = make_thermal_gen(
     fuel = "SUB",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2711,7 +2712,7 @@ new_thermal = make_thermal_gen(
     fuel = "SUB",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2728,7 +2729,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2745,7 +2746,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2762,7 +2763,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2779,7 +2780,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2795,7 +2796,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2811,7 +2812,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2827,7 +2828,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2843,7 +2844,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2859,7 +2860,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2875,7 +2876,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2891,7 +2892,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2907,7 +2908,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2924,7 +2925,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2941,7 +2942,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2957,7 +2958,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2973,7 +2974,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2989,7 +2990,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3005,7 +3006,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3024,7 +3025,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3040,7 +3041,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3056,7 +3057,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3072,7 +3073,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3088,7 +3089,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3104,7 +3105,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3120,7 +3121,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3136,7 +3137,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3152,7 +3153,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3168,7 +3169,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3184,7 +3185,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3200,7 +3201,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3216,7 +3217,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3232,7 +3233,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3248,7 +3249,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3264,7 +3265,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3280,7 +3281,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3297,7 +3298,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3313,7 +3314,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3322,7 +3323,10 @@ gen = get_component(ThermalStandard, sys, "gen-361")
 sced_data = get_sced_data(thermal_sced_h5_file, "RAYBURN_CC1_3")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW4"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
-LSL_ = sced_data[.&(sced_data.LSL .> 1, sced_data.Submitted_TPO_MW1 .> 1), :][!, "Submitted_TPO_MW1"]
+LSL_ = sced_data[.&(sced_data.LSL .> 1, sced_data.Submitted_TPO_MW1 .> 1), :][
+    !,
+    "Submitted_TPO_MW1",
+]
 LSL = median(LSL_[.!isnan.(LSL_)])
 new_thermal = make_thermal_gen(
     gen;
@@ -3331,7 +3335,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3347,7 +3351,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3363,7 +3367,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3463,7 +3467,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3479,7 +3483,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3495,7 +3499,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3511,7 +3515,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3569,7 +3573,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3585,7 +3589,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3601,7 +3605,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3617,7 +3621,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3633,7 +3637,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 new_thermal.internal = PSY.IS.InfrastructureSystemsInternal()
 remove_component!(sys, gen)
@@ -3650,7 +3654,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3736,7 +3740,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3752,7 +3756,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3768,7 +3772,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3784,7 +3788,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3800,7 +3804,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3816,7 +3820,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3832,7 +3836,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3848,7 +3852,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3864,7 +3868,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3881,7 +3885,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3897,7 +3901,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3913,7 +3917,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3929,7 +3933,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3945,7 +3949,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3961,7 +3965,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3977,7 +3981,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3993,7 +3997,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4012,7 +4016,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4028,7 +4032,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4046,7 +4050,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4064,7 +4068,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4082,7 +4086,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4098,7 +4102,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4114,7 +4118,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4130,7 +4134,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4146,7 +4150,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4162,7 +4166,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4179,7 +4183,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4196,7 +4200,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4212,7 +4216,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4228,7 +4232,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4244,7 +4248,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4316,7 +4320,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4332,7 +4336,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4348,7 +4352,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4364,7 +4368,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4380,7 +4384,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4396,7 +4400,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4412,7 +4416,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4428,7 +4432,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4444,7 +4448,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4460,7 +4464,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4476,7 +4480,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4492,7 +4496,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4508,7 +4512,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4525,7 +4529,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4541,7 +4545,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4557,7 +4561,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4573,7 +4577,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4589,7 +4593,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4605,7 +4609,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4621,7 +4625,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4637,7 +4641,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4653,7 +4657,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4669,7 +4673,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4685,7 +4689,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4701,7 +4705,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4717,7 +4721,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4733,7 +4737,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4749,7 +4753,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4765,7 +4769,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4781,7 +4785,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4797,7 +4801,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4813,7 +4817,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4829,7 +4833,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4845,7 +4849,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4861,7 +4865,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4891,7 +4895,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4907,7 +4911,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5243,7 +5247,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5260,7 +5264,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5276,7 +5280,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5292,7 +5296,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5308,7 +5312,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5325,7 +5329,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5341,11 +5345,10 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
-
 
 gen = get_component(ThermalStandard, sys, "gen-518")
 sced_data = get_sced_data(thermal_sced_h5_file, "FREC_CC2_1")
@@ -5358,7 +5361,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5375,7 +5378,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5391,7 +5394,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5407,7 +5410,7 @@ new_thermal = make_thermal_gen(
     fuel = "LIG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5423,7 +5426,7 @@ new_thermal = make_thermal_gen(
     fuel = "LIG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5439,7 +5442,7 @@ new_thermal = make_thermal_gen(
     fuel = "LIG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5455,7 +5458,7 @@ new_thermal = make_thermal_gen(
     fuel = "LIG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5473,7 +5476,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5490,7 +5493,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5506,7 +5509,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5522,7 +5525,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5538,7 +5541,7 @@ new_thermal = make_thermal_gen(
     fuel = "LIG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5554,7 +5557,7 @@ new_thermal = make_thermal_gen(
     fuel = "LIG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5570,7 +5573,7 @@ new_thermal = make_thermal_gen(
     fuel = "SUB",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5586,7 +5589,7 @@ new_thermal = make_thermal_gen(
     fuel = "SUB",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5602,7 +5605,7 @@ new_thermal = make_thermal_gen(
     fuel = "SUB",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5618,7 +5621,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5634,7 +5637,7 @@ new_thermal = make_thermal_gen(
     fuel = "LIG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5650,7 +5653,7 @@ new_thermal = make_thermal_gen(
     fuel = "LIG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5666,7 +5669,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5682,7 +5685,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5757,7 +5760,7 @@ new_thermal = make_thermal_gen_st(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5773,7 +5776,7 @@ new_thermal = make_thermal_gen_st(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5789,7 +5792,7 @@ new_thermal = make_thermal_gen_st(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5805,7 +5808,7 @@ new_thermal = make_thermal_gen_st(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5821,7 +5824,7 @@ new_thermal = make_thermal_gen_st(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5837,7 +5840,7 @@ new_thermal = make_thermal_gen_st(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
-    sced_data = sced_data
+    sced_data = sced_data,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5846,12 +5849,14 @@ add_component!(sys, new_thermal)
 for (gen_name, storage_name) in gen_storage_mapping
     @info gen_name
     gen = get_component(ThermalStandard, sys, gen_name)
-    storage = make_storage(gen; name =  storage_name)
+    storage = make_storage(gen; name = storage_name)
     remove_component!(sys, gen)
     add_component!(sys, storage)
 end
 
-@assert isempty([(get_name(x), get_max_active_power(x)) for x in get_components(ThermalStandard, sys)])
+@assert isempty([
+    (get_name(x), get_max_active_power(x)) for x in get_components(ThermalStandard, sys)
+])
 
 for th in get_components(ThermalGen, sys)
     ap = get_active_power(th)
@@ -5868,6 +5873,6 @@ set_units_base_system!(sys, "SYSTEM_BASE")
 @assert isempty(get_components(ThermalStandard, sys))
 
 # Writes a JSON with the CC constraints
-open("cc_restrictions.json","w") do f
+open("cc_restrictions.json", "w") do f
     JSON.print(f, cc_train_restrictions)
 end
