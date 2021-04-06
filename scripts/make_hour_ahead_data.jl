@@ -48,7 +48,7 @@ h5open(hydro_time_series_ha, "r") do file
         gen_peak = maximum(full_table)
         @assert gen_peak > 0
         for ix in 1:size(full_table)[2]
-            day_ahead_forecast[initial_time + (ix - 1) * da_interval] =
+            day_ahead_forecast[initial_time + (ix - 1) * hour_ahead_interval] =
                 full_table[:, ix] ./ gen_peak
         end
         forecast_data = Deterministic(
@@ -75,7 +75,7 @@ h5open(wind_time_series_ha, "r") do file
         area_peak_wind = maximum(full_table)
         set_peak_active_power!(area, area_peak_wind)
         for ix in 1:size(full_table)[2]
-            day_ahead_wind_forecast[initial_time + (ix - 1) * da_interval] =
+            day_ahead_wind_forecast[initial_time + (ix - 1) * hour_ahead_interval] =
                 full_table[:, ix] ./ area_peak_wind
         end
         forecast_data = Deterministic(
