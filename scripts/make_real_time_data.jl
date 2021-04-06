@@ -5,9 +5,10 @@ include("file_pointers.jl")
 include("system_build_functions.jl")
 include("manual_data_entries.jl")
 
-sys = System("DA_sys.json")
+sys = System("base_sys.json")
 clear_time_series!(sys)
 PSY.IS.assign_new_uuid!(sys)
+set_units_base_system!(sys, "SYSTEM_BASE")
 
 ####################################### Load Time Series ###################################
 h5open(load_time_series_realtime, "r") do file
@@ -35,100 +36,50 @@ h5open(load_time_series_realtime, "r") do file
    end
 end
 
-to_json(sys, "intermediate_sys.json", force = true)
-sys = System("intermediate_sys.json")
 ####################################### Hydro Time Series ##################################
-hydro_data, hydro_file_names = hydro_files(hydro_time_series)
-hydro = CSV.read(hydro_mapping, DataFrames.DataFrame)
-hydro_bus_data_real_time = Dict()
-# 2018 SCED data seems incomplete. Use 2017 instead
-year_num = 2017
-
-for (ix, row) in enumerate(eachrow(hydro))
-   bus_name = row.bus_name
-   if row.file_name == "ROR"
-      hydro_bus_data_real_time[bus_name] = 0.5*ones(8772*12)
-      continue
+h5open(hydro_time_series_rt, "r") do file
+   for gen in get_components(HydroGen, sys)
+      set_available!(gen, true)
+      day_ahead_forecast = Dict{Dates.DateTime, Vector{Float64}}()
+      bus_name = get_name(get_bus(gen))
+      full_table = read(file, bus_name)
+      gen_peak = maximum(full_table)
+      @assert gen_peak > 0
+      for ix in 1:size(full_table)[2]
+         day_ahead_forecast[initial_time + (ix - 1)*da_interval] = full_table[:, ix]./gen_peak
+      end
+      forecast_data = Deterministic(
+                     name = "max_active_power",
+                     resolution = Minute(5),
+                     data = day_ahead_forecast)
+      add_time_series!(sys,
+                  gen,
+                  forecast_data
+                  )
+      ap = get_active_power(gen)
+      p_lims_min = get_active_power_limits(gen).min
+      if ap <= p_lims_min
+         set_active_power!(gen, ap)
+      end
+      set_reactive_power!(gen, 0.0)
    end
-   raw_hydro_data = hydro_data[row.file_name].Telemetered_Net_Output
-   time_hydro = process_time(hydro_data[row.file_name].SCED_Time_Stamp)
-   @assert length(raw_hydro_data) == length(time_hydro)
-   hydro_bus_data_real_time[bus_name] = interpolate_data(time_hydro, raw_hydro_data, year_num)
 end
 
-for gen in get_components(HydroGen, sys)
-   real_time_forecast = Dict{Dates.DateTime, Vector{Float64}}()
-   @show get_name(gen)
-   bus_name = get_name(get_bus(gen))
-   data = hydro_bus_data_real_time[bus_name]
-   gen_peak = maximum(data)
-   @assert gen_peak > 0
-   for current_ix in 1:day_count*24*12
-     forecast = data[current_ix:(current_ix + real_time_horizon - 1)]
-     @assert !all(isnan.(forecast))
-     @assert length(forecast) == real_time_horizon
-     real_time_forecast[initial_time + (current_ix - 1)*real_time_interval] = forecast./gen_peak
-   end
-   forecast_data = Deterministic(
-                    name = "max_active_power",
-                    resolution = real_time_resolution,
-                    data = real_time_forecast)
-   add_time_series!(sys,
-               gen,
-               forecast_data
-               )
-end
-
-for hy in get_components(HydroGen, sys)
-   set_active_power_limits!(hy, (min = 0.0, max = hy.active_power_limits.max))
-end
-
-for hy in get_components(HydroGen, sys)
-    ap = get_active_power(hy)
-    p_lims_min = get_active_power_limits(hy).min
-    if ap <= p_lims_min
-        set_active_power!(hy, ap)
-    end
-    set_reactive_power!(hy, 0.0)
-end
-
-to_json(sys, "intermediate_sys.json", force = true)
-sys = System("intermediate_sys.json")
 ####################################### Wind Time Series ##################################
-wind = CSV.read(wind_time_series, DataFrames.DataFrame)
-load_zones = names(wind)[2:end]
-year_data = wind[year.(wind.Time).== 2018, :]
-unique!(year_data)
-wind_data_real_time = Dict()
-for lz in load_zones
-   wind_data_real_time[lz] = year_data[!, lz]
-   clean_up_nan!(wind_data_real_time[lz])
-   @assert all(.!isnan.(wind_data_real_time[lz]))
-   temp_data = upsample_data(year_data[!, lz])
-   @assert all(.!isnan.(wind_data_real_time[lz]))
-end
-
-for (k, v) in wind_data_real_time
-   wind_data_real_time[k] = vcat(v, v[105120 - 24:end])
-end
-
-for (k, v) in area_number_wind_map
-   area = get_component(Area, sys, k)
-   real_time_forecast = Dict{Dates.DateTime, Vector{Float64}}()
-   data = wind_data_real_time[v]
-   area_peak = maximum(data)
-   @assert area_peak > 0
-   for current_ix in 1:day_count*24*12
-     #current_ix = ix + (real_time_interval.value - 1)*(ix - 1)
-     forecast = data[current_ix:(current_ix + real_time_horizon -1)]
-     @assert !all(isnan.(forecast))
-     @assert length(forecast) == real_time_horizon
-     real_time_forecast[initial_time + (current_ix - 1)*real_time_interval] = forecast./area_peak
-   end
-   forecast_data = Deterministic(
+h5open(wind_time_series_rt, "r") do file
+   for (k, v) in area_number_wind_map
+      area = get_component(Area, sys, k)
+      day_ahead_wind_forecast = Dict{Dates.DateTime, Vector{Float64}}()
+      full_table = read(file, v)
+      area_peak_wind = maximum(full_table)
+      set_peak_active_power!(area, area_peak_wind)
+      for ix in 1:size(full_table)[2]
+         day_ahead_wind_forecast[initial_time + (ix - 1)*da_interval] = full_table[:, ix]./area_peak_wind
+      end
+      forecast_data = Deterministic(
                     name = "max_active_power",
-                    resolution = real_time_resolution,
-                    data = real_time_forecast)
+                    resolution = Minute(5),
+                    data = day_ahead_wind_forecast)
    wind_gens = get_components(RenewableGen,
                sys,
                x -> (get_area(get_bus(x)) == area && get_prime_mover(x) == PrimeMovers.WT))
@@ -136,10 +87,9 @@ for (k, v) in area_number_wind_map
                wind_gens,
                forecast_data
                )
+   end
 end
 
-to_json(sys, "intermediate_sys.json", force = true)
-sys = System("intermediate_sys.json")
 ####################################### Solar Time Series ##################################
 file_names = readdir("/Volumes/VM_WIN/Quantile data")
 for gen in get_components(RenewableGen, sys, x -> get_prime_mover(x) == PrimeMovers.PVe)
@@ -182,8 +132,6 @@ end
 for g in get_components(RenewableGen, sys)
    @assert has_time_series(g)
 end
-
-to_json(sys, "intermediate_sys.json", force = true)
 
 regup_reserve = CSV.read(reg_up_reserve, DataFrame)
 regdn_reserve = CSV.read(reg_dn_reserve, DataFrame)

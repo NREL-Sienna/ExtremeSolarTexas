@@ -11,12 +11,24 @@ hydro_mapping = joinpath(SOURCE_DATA_DIR, "Hydropower", "hydro_mapping.csv")
 thermal_metada = joinpath(SOURCE_DATA_DIR, "Thermal", "thermal_metadata.csv")
 
 # Time Series Files
-wind_time_series = joinpath(SOURCE_DATA_DIR, "Wind", "20172018_winddata_data.csv")
-load_time_series = joinpath(SOURCE_DATA_DIR, "Load", "day_ahead_load_forecast.h5")
+wind_time_series_da = joinpath(SOURCE_DATA_DIR, "Wind", "wind_power_da.h5")
+wind_time_series_ha = joinpath(SOURCE_DATA_DIR, "Wind", "wind_power_ha.h5")
+wind_time_series_rt = joinpath(SOURCE_DATA_DIR, "Wind", "wind_power_rt.h5")
+
+load_time_series_da = joinpath(SOURCE_DATA_DIR, "Load", "day_ahead_load_forecast.h5")
 load_time_series_realtime = joinpath(SOURCE_DATA_DIR, "Load", "intra-hourly_load_forecast.h5")
 load_time_series_realization = joinpath(SOURCE_DATA_DIR, "Load", "5-minute_load_actuals.h5")
+
+perfect_load_time_series_da = joinpath(SOURCE_DATA_DIR, "Load", "day_ahead_perfect_load_forecast.h5")
+perfect_load_time_series_realtime = joinpath(SOURCE_DATA_DIR, "Load", "intra-hourly_perfect_load_forecast.h5")
+
+
 solar_time_series = joinpath(SOURCE_DATA_DIR, "Solar", "DA_time_series_files")
-hydro_time_series = joinpath(SOURCE_DATA_DIR, "Hydropower", "HYDRO")
+
+hydro_time_series_da = joinpath(SOURCE_DATA_DIR, "Hydropower", "hydro_power_da.h5")
+hydro_time_series_ha = joinpath(SOURCE_DATA_DIR, "Hydropower", "hydro_power_ha.h5")
+hydro_time_series_rt = joinpath(SOURCE_DATA_DIR, "Hydropower", "hydro_power_rt.h5")
+
 solar_time_series_realization = joinpath(SOURCE_DATA_DIR, "Solar", )
 
 # Thermal SCED files

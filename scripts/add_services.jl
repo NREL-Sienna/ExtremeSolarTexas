@@ -5,30 +5,11 @@ using Dates
 using DataFrames
 using CSV
 
-system = System("DA_sys.json")
-
 include("file_pointers.jl")
 include("system_build_functions.jl")
 include("manual_data_entries.jl")
 
-regup_reserve = CSV.read(reg_up_reserve, DataFrame)
-regdn_reserve = CSV.read(reg_dn_reserve, DataFrame)
-spin = CSV.read(spin_reserve, DataFrame)
-nonspin = CSV.read(nonspin_reserve, DataFrame)
-
-date_range = range(DateTime("2018-01-01T00:00:00"), step = Hour(1), length = 8796)
-
-regup_reserve_ts = Vector{Float64}(undef, 8796)
-regdn_reserve_ts = Vector{Float64}(undef, 8796)
-spin_ts = Vector{Float64}(undef, 8796)
-nonspin_ts = Vector{Float64}(undef, 8796)
-
-for (ix, datetime) in enumerate(date_range)
-    regup_reserve_ts[ix] = regup_reserve[hour(datetime) + 1, month(datetime) + 1]
-    regdn_reserve_ts[ix] = regdn_reserve[hour(datetime) + 1, month(datetime) + 1]
-    spin_ts[ix] = spin[hour(datetime) + 1, month(datetime) + 1]
-    nonspin_ts[ix] = nonspin[hour(datetime) + 1, month(datetime) + 1]
-end
+system = System("intermediate_sys.json")
 
 plant_metadata = CSV.read(thermal_mapping, DataFrame)
 sced_names = unique(plant_metadata.GeneratorID)
@@ -91,26 +72,14 @@ reg_up_names = [k for (k, v) in reg_dict if v.up > 0.2]
 spin_names = [k for (k, v) in spin_dict if v[3] > 0 && k ∉ reg_up_names]
 
 reserve_map = Dict(
-    ("REG_UP", VariableReserve{ReserveUp}, reg_up_names) =>  regup_reserve_ts,
-    ("SPIN", VariableReserve{ReserveUp}, spin_names) => spin_ts,
-    ("REG_DN", VariableReserve{ReserveDown}, reg_down_names) => regdn_reserve_ts,
-    ("NONSPIN", VariableReserveNonSpinning, non_spin_names) => nonspin_ts
+    ("REG_UP", VariableReserve{ReserveUp}, reg_up_names) => 0.0,
+    ("SPIN", VariableReserve{ReserveUp}, spin_names) => 0.0,
+    ("REG_DN", VariableReserve{ReserveDown}, reg_down_names) => 0.0,
+    ("NONSPIN", VariableReserveNonSpinning, non_spin_names) => 0.0
 )
 
 for ((name, T, gens), ts) in reserve_map
     peak = maximum(ts)
-    day_ahead_forecast = Dict{Dates.DateTime, Vector{Float64}}()
-    for ix in 1:day_count
-        current_ix = ix + (da_interval.value - 1)*(ix - 1)
-        forecast = regup_reserve_ts[current_ix:(current_ix + da_horizon -1)]
-        @assert !all(isnan.(forecast))
-        @assert length(forecast) == da_horizon
-        day_ahead_forecast[initial_time + (ix - 1)*da_interval] = forecast./peak
-    end
-    forecast_data = Deterministic(
-                    name = "requirement",
-                    resolution = Hour(1),
-                    data = day_ahead_forecast)
     res = T(nothing)
     set_name!(res, name)
     set_requirement!(res, peak/100.0)
@@ -118,10 +87,6 @@ for ((name, T, gens), ts) in reserve_map
     gen_names = [v for (k, v) in names_map if k ∈ gens]
     components = get_components(ThermalMultiStart, system, x -> get_name(x) ∈ gen_names)
     add_service!(system, res, components)
-    add_time_series!(system,
-                res,
-                forecast_data
-                )
     @assert length(get_contributing_devices(system, res)) == length(gens)
 end
 
