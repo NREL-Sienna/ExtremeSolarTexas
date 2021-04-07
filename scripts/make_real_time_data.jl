@@ -5,16 +5,16 @@ include("file_pointers.jl")
 include("system_build_functions.jl")
 include("manual_data_entries.jl")
 
-sys = System("base_sys.json")
+sys = System("RT_sys.json")
 clear_time_series!(sys)
 PSY.IS.assign_new_uuid!(sys)
 set_units_base_system!(sys, "SYSTEM_BASE")
 
 ####################################### Load Time Series ###################################
-h5open(load_time_series_realtime, "r") do file
+h5open(perfect_load_time_series_realtime, "r") do file
     for area in get_components(Area, sys)
         real_time_load_forecast = Dict{Dates.DateTime, Vector{Float64}}()
-        area_name = get_name(area)
+        @show area_name = get_name(area)
         group_name = area_name_number_map[area_name]
         full_table = read(file, group_name)
         area_peak_load = maximum(full_table[:, 1])
