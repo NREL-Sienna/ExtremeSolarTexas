@@ -165,6 +165,7 @@ for ((name, T), ts) in reserve_map
     forecast_data =
         Deterministic(name = "requirement", resolution = Hour(1), data = day_ahead_forecast)
     res = get_component(T, sys, name)
+    set_requirement!(res, peak)
     add_time_series!(sys, res, forecast_data)
 end
 
