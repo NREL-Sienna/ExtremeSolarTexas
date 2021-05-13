@@ -5,7 +5,7 @@ include("file_pointers.jl")
 include("system_build_functions.jl")
 include("manual_data_entries.jl")
 
-sys = System("HA_sys.json")
+sys = System("/Users/jdlara/Dropbox/Code/MultiStageCVAR/data/HA_sys.json")
 clear_time_series!(sys)
 PSY.IS.assign_new_uuid!(sys)
 set_units_base_system!(sys, "SYSTEM_BASE")
@@ -71,7 +71,7 @@ h5open(wind_time_series_ha, "r") do file
     for (k, v) in area_number_wind_map
         area = get_component(Area, sys, k)
         day_ahead_wind_forecast = Dict{Dates.DateTime, Vector{Float64}}()
-        full_table = read(file, v)
+        full_table = max.(0.0, read(file, v))
         area_peak_wind = maximum(full_table)
         set_peak_active_power!(area, area_peak_wind)
         for ix in 1:size(full_table)[2]
@@ -181,7 +181,7 @@ for ((name, T), ts) in reserve_map
         data = hour_ahead_forecast,
     )
     res = get_component(T, sys, name)
-    set_requirement!(res, peak)
+    set_requirement!(res, peak/100)
     add_time_series!(sys, res, forecast_data)
 end
 
@@ -205,4 +205,4 @@ forecast_data = Probabilistic(
 )
 add_time_series!(sys, get_component(Area, sys, "1"), forecast_data)
 
-to_json(sys, "HA_sys.json", force = true)
+to_json(sys, "/Users/jdlara/Dropbox/Code/MultiStageCVAR/data/HA_sys.json", force = true)

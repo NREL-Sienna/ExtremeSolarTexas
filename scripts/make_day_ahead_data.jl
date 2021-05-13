@@ -66,7 +66,7 @@ h5open(wind_time_series_da, "r") do file
     for (k, v) in area_number_wind_map
         area = get_component(Area, sys, k)
         day_ahead_wind_forecast = Dict{Dates.DateTime, Vector{Float64}}()
-        full_table = read(file, v)
+        full_table = max.(0.0, read(file, v))
         area_peak_wind = maximum(full_table)
         set_peak_active_power!(area, area_peak_wind)
         for ix in 1:size(full_table)[2]
@@ -165,7 +165,7 @@ for ((name, T), ts) in reserve_map
     forecast_data =
         Deterministic(name = "requirement", resolution = Hour(1), data = day_ahead_forecast)
     res = get_component(T, sys, name)
-    set_requirement!(res, peak)
+    set_requirement!(res, peak/100)
     add_time_series!(sys, res, forecast_data)
 end
 
