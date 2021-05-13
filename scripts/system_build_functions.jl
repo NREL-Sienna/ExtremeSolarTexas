@@ -780,19 +780,19 @@ function make_storage(original_gen::ThermalStandard; name)
     set_available!(temp, true)
     set_bus!(temp, get_bus(original_gen))
     set_prime_mover!(temp, PrimeMovers.BA)
-    gen_max_active_power = get_max_active_power(original_gen)
+    gen_max_active_power = get_max_active_power(original_gen)/base_power
     c_rating = randperm!([2, 3, 4])[1]
     set_initial_energy!(temp, 0.0)
     set_state_of_charge_limits!(temp, (min = 0.0, max = gen_max_active_power * c_rating))
-    set_active_power!(temp, get_active_power(original_gen))
-    set_reactive_power!(temp, get_reactive_power(original_gen))
+    set_active_power!(temp, get_active_power(original_gen)/base_power)
+    set_reactive_power!(temp, get_reactive_power(original_gen)/base_power)
     set_input_active_power_limits!(temp, (min = 0.0, max = gen_max_active_power))
     set_output_active_power_limits!(temp, (min = 0.0, max = gen_max_active_power))
     eff_data = (in = 0.83 + 0.05 * rand(), out = 0.91 - 0.05 * rand())
     set_efficiency!(temp, eff_data)
     qlims = get_reactive_power_limits(original_gen)
-    set_reactive_power_limits!(temp, (min = -qlims.max, max = qlims.max))
-    set_rating!(temp, sqrt((gen_max_active_power / base_power)^2 + qlims.max^2))
+    set_reactive_power_limits!(temp, (min = -qlims.max/base_power, max = qlims.max/base_power))
+    set_rating!(temp, sqrt((gen_max_active_power)^2 + (qlims.max/base_power)^2))
     return temp
 end
 
