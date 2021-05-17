@@ -12,7 +12,7 @@ using Shapefile
 using ProgressMeter
 const PSY = PowerSystems
 using JuMP
-using OSQP
+using CPLEX
 using HDF5
 using Plots
 
@@ -828,7 +828,7 @@ function get_sced_data(file_name, name)
 end
 
 function get_quadratic_model(gen, price, quad_term::Bool = true)
-    m = Model(OSQP.Optimizer)
+    m = Model(CPLEX.Optimizer)
     JuMP.set_silent(m)
     n_bp = length(price)
     @variable(m, var_price[1:n_bp] >= 0)
