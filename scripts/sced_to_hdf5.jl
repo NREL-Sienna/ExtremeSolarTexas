@@ -123,9 +123,10 @@ function write_sced_to_hdf(input, file_name)
                     @error "no match, $file, $col"
                 end
             end
+            attributes(g)["ERCOT_FUEL"] = v[1, "Resource_Type"]
             next!(p)
         end
     end
 end
 
-write_sced_to_hdf(sced_data, joinpath(dirname(thermal_sced_data), "sced_data.h5"))
+write_sced_to_hdf(sced_data, joinpath(dirname(thermal_sced_data), "sced_data2.h5"))
