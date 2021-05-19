@@ -1,5 +1,6 @@
 SOURCE_DATA_DIR = "./input_data"
 COST_FUNCTION_PATHS = joinpath(SOURCE_DATA_DIR, "Thermal", "cost_function_plots")
+cost_function_file = joinpath(SOURCE_DATA_DIR, "Thermal", "cost_function_params.json")
 
 # Original Data Files
 TAMU_matpower_file = joinpath(SOURCE_DATA_DIR, "ACTIVSg2000", "ACTIVSg2000.m")

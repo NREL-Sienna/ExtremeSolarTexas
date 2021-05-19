@@ -15,6 +15,7 @@ using JuMP
 using CPLEX
 using HDF5
 using Plots
+using JSON
 
 function complete_lines_characteristic_impedance!(line_params, sys)
     z_c_data =
@@ -553,16 +554,19 @@ function get_cost_data_from_sced(sced_data, name, LSL, HSL)
     quad_f_median =
         x -> median(intercepts) + median(linear_terms) * x + median(quad_terms) * x^2
     quad_f_mean = x -> mean(intercepts) + mean(linear_terms) * x + mean(quad_terms) * x^2
-
-    variable_cost = make_variable_cost(quad_f_mean, LSL, HSL)
-    no_load = quad_f_mean(LSL)
+    _write_cost_function_data(name, [median(quad_terms), median(linear_terms)], median(intercepts))
+    variable_cost = make_variable_cost(quad_f_median, LSL, HSL)
+    var_points = variable_cost.cost
+    no_load = quad_f_median(LSL)
     xlim = [minimum(vcat(points_cache.gen, LSL - 1)), maximum(vcat(points_cache.gen, HSL))]
     p = plot(legend = :outertopright, xlim = xlim)
     scatter!(p, points_cache.gen, points_cache.price, label = false)
     plot!(p, quad_f_median, xlim = xlim, label = "median cost")
     plot!(p, quad_f_mean, xlim = xlim, label = "mean cost")
-    plot!(p, [(LSL, 0), (LSL, quad_f_mean(HSL))], label = "LSL")
-    plot!(p, [(HSL, 0), (HSL, quad_f_mean(HSL))], label = "HSL")
+    pwl = [(power + LSL, price + no_load) for (price, power) in var_points]
+    plot!(p, pwl, label = "PWL")
+    plot!(p, [(LSL, 0), (LSL, quad_f_median(HSL))], label = "LSL")
+    plot!(p, [(HSL, 0), (HSL, quad_f_median(HSL))], label = "HSL")
     plot!(p, xlabel = "Power [MW]", ylabel = "Price [\$]")
     savefig(p, joinpath(COST_FUNCTION_PATHS, "$(name).pdf"))
     return start_up, no_load, variable_cost
@@ -574,20 +578,30 @@ function get_cost_data_from_sced_linear(sced_data, name, LSL, HSL)
 
     quad_f_median = x -> median(intercepts) + median(linear_terms) * x
     quad_f_mean = x -> mean(intercepts) + mean(linear_terms) * x
+    _write_cost_function_data(name, [0.0, median(linear_terms)], median(intercepts))
     start_up = make_start_up_costs(sced_data)
     variable_cost = make_variable_cost(quad_f_mean, LSL, HSL, 1)
-    no_load = quad_f_mean(LSL)
+    no_load = quad_f_median(LSL)
     xlim = [minimum(vcat(points_cache.gen, LSL - 1)), maximum(vcat(points_cache.gen, HSL))]
     p = plot(legend = :outertopright, xlim = xlim)
     scatter!(p, points_cache.gen, points_cache.price, label = false)
     plot!(p, quad_f_median, xlim = xlim, label = "median cost")
     plot!(p, quad_f_mean, xlim = xlim, label = "mean cost")
-    plot!(p, [(LSL, 0), (LSL, quad_f_mean(HSL))], label = "LSL")
-    plot!(p, [(HSL, 0), (HSL, quad_f_mean(HSL))], label = "HSL")
+    plot!(p, [(LSL, 0), (LSL, quad_f_median(HSL))], label = "LSL")
+    plot!(p, [(HSL, 0), (HSL, quad_f_median(HSL))], label = "HSL")
     plot!(p, xlabel = "Power [MW]", ylabel = "Price [\$]")
     plot!(p, title = "Linear Model for GSREH plants that are non-convex")
     savefig(p, joinpath(COST_FUNCTION_PATHS, "$(name).pdf"))
     return start_up, no_load, variable_cost
+end
+
+function _write_cost_function_data(name, polynomial_points, fixed_cost)
+    vals = Dict("a" => polynomial_points[1], "b" => polynomial_points[2], "c" => fixed_cost)
+    open(cost_function_file, "a") do file
+        results = Dict(name => vals)
+        write(file, JSON.json(results))
+        write(file, "\n")
+    end
 end
 
 function get_cost_data_from_gen(gen, name, LSL, HSL)
@@ -598,6 +612,7 @@ function get_cost_data_from_gen(gen, name, LSL, HSL)
             (polynomial_points[1] / 100^2) * x^2 +
             (polynomial_points[2] / 100) * x +
             get_fixed(gen_cost)
+    _write_cost_function_data(name, polynomial_points, get_fixed(gen_cost))
     new_var_cost = make_variable_cost(quad_f, LSL, HSL)
     p = plot(legend = :outertopright)
     plot!(p, quad_f, xlim = [LSL, HSL], label = "quadratic_model")
@@ -609,6 +624,52 @@ function get_cost_data_from_gen(gen, name, LSL, HSL)
     return start_up, quad_f(LSL), new_var_cost
 end
 
+function _get_coal_key(size)
+    size <= coal_size_lims["SMALL"] && return ("CCLIG", "SMALL")
+    coal_size_lims["SMALL"] < size < coal_size_lims["LARGE"] && return ("CCLIG", "LARGE")
+    size > coal_size_lims["LARGE"] && return ("CCLIG", "SUPER")
+end
+
+function _get_duration_limits(prime_mover, fuel, ercot_fuel, size)
+    if ercot_fuel == "CCLIG"
+        key = _get_coal_key(size)
+    else
+        key = ercot_fuel
+    end
+    return duration_lims[key]
+end
+
+function _get_ramp_limits(prime_mover, fuel, ercot_fuel, size)
+    key = (prime_mover, fuel)
+    return ramp_limits[key]
+end
+
+function _get_start_time_limits(prime_mover, fuel, ercot_fuel, size)
+    if ercot_fuel == "CCLIG"
+        key = _get_coal_key(size)
+    else
+        key = ercot_fuel
+    end
+    return start_time_limits[key]
+end
+
+function _get_start_types(prime_mover, fuel, ercot_fuel, size, start_up)
+    key = (prime_mover, fuel)
+    if key == ("ST", "NG")
+        return sum([v > 0.0 for v in start_up])
+    else
+        return start_types[key]
+    end
+end
+
+function _get_power_trajectory(prime_mover, fuel, ercot_fuel, p_limits, size)
+    base_values = power_trajectory[(prime_mover, fuel)]
+    return (
+        startup = base_values.startup * p_limits.max,
+        shutdown = base_values.shutdown * p_limits.max,
+    )
+end
+
 function make_thermal_gen(
     original_gen::ThermalStandard;
     name,
@@ -617,6 +678,7 @@ function make_thermal_gen(
     LSL,
     HSL,
     sced_data = nothing,
+    ercot_fuel = nothing,
 )
     if LSL > HSL
         error("LSL > HSL")
@@ -625,21 +687,20 @@ function make_thermal_gen(
     p_limits, q_limits, rating, base_power = _rescale_power(original_gen, LSL, HSL)
     set_name!(temp_gen, uppercase(replace(name, " " => "_")))
     set_available!(temp_gen, true)
-    set_status!(temp_gen, true)
     set_bus!(temp_gen, get_bus(original_gen))
-    set_active_power!(temp_gen, get_active_power(original_gen) / base_power)
-    set_reactive_power!(temp_gen, get_reactive_power(original_gen) / base_power)
+    original_set_point = get_active_power(original_gen) / base_power
+    set_point = original_set_point > p_limits.max ? p_limits.max : original_set_point
+    set_active_power!(temp_gen, set_point)
+    set_status!(temp_gen, get_active_power(original_gen) > 0.0)
+    original_set_point = get_reactive_power(original_gen) / base_power
+    set_point = original_set_point > q_limits.max ? q_limits.max : original_set_point
+    set_reactive_power!(temp_gen, set_point)
     set_rating!(temp_gen, rating)
     set_prime_mover!(temp_gen, prime_mover_map[prime_mover])
     set_fuel!(temp_gen, fuel_map[fuel])
     set_active_power_limits!(temp_gen, p_limits)
     set_reactive_power_limits!(temp_gen, q_limits)
-    set_time_limits!(temp_gen, duration_lims[(prime_mover, fuel)])
-    set_ramp_limits!(temp_gen, ramp_limits[(prime_mover, fuel)])
-    set_start_time_limits!(temp_gen, start_time_limits[(prime_mover, fuel)])
-    set_start_types!(temp_gen, start_types[(prime_mover, fuel)])
-    set_power_trajectory!(temp_gen, power_trajectory[(prime_mover, fuel)])
-    set_ramp_limits!(temp_gen, ramp_limits[(prime_mover, fuel)])
+
     set_base_power!(temp_gen, base_power)
     op_cost = MultiStartCost(nothing)
 
@@ -657,7 +718,25 @@ function make_thermal_gen(
     set_variable!(op_cost, variable_cost)
     set_no_load!(op_cost, no_load)
     set_operation_cost!(temp_gen, op_cost)
+
+    duration_limits = _get_duration_limits(prime_mover, fuel, ercot_fuel, base_power)
+    set_time_limits!(temp_gen, duration_limits)
+
+    ramp_limits = _get_ramp_limits(prime_mover, fuel, ercot_fuel, base_power)
+    set_ramp_limits!(temp_gen, ramp_limits)
+
+    start_time_limits = _get_start_time_limits(prime_mover, fuel, ercot_fuel, base_power)
+    set_start_time_limits!(temp_gen, start_time_limits)
+
+    start_types = _get_start_types(prime_mover, fuel, ercot_fuel, base_power, start_up)
+    set_start_types!(temp_gen, start_types)
+
+    power_trajectory =
+        _get_power_trajectory(prime_mover, fuel, ercot_fuel, p_limits, base_power)
+    set_power_trajectory!(temp_gen, power_trajectory)
+
     @info "$(name)"
+    temp_gen.ext["ERCOT_FUEL"] = ercot_fuel !== nothing ? ercot_fuel : "Missing"
     return temp_gen
 end
 
@@ -676,7 +755,8 @@ function make_thermal_gen_nuc(
     set_available!(temp_gen, true)
     set_status!(temp_gen, true)
     set_bus!(temp_gen, get_bus(original_gen))
-    set_active_power!(temp_gen, max(get_active_power(original_gen), p_limits.min))
+    set_point = original_set_point > p_limits.max ? p_limits.max : original_set_point
+    set_active_power!(temp_gen, set_point)
     set_reactive_power!(temp_gen, 0.0)
     set_rating!(temp_gen, rating)
     set_prime_mover!(temp_gen, prime_mover_map[prime_mover])
@@ -697,6 +777,7 @@ function make_thermal_gen_nuc(
     set_no_load!(op_cost, 0.0)
     set_operation_cost!(temp_gen, op_cost)
     set_must_run!(temp_gen, true)
+    temp_gen.ext["ERCOT_FUEL"] = "NUC"
     @info "$(name)"
     return temp_gen
 end
@@ -709,6 +790,7 @@ function make_thermal_gen_st(
     LSL,
     HSL,
     sced_data = nothing,
+    ercot_fuel = nothing,
 )
     if LSL > HSL
         error("LSL > HSL")
@@ -726,12 +808,7 @@ function make_thermal_gen_st(
     set_fuel!(temp_gen, fuel_map[fuel])
     set_active_power_limits!(temp_gen, p_limits)
     set_reactive_power_limits!(temp_gen, q_limits)
-    set_time_limits!(temp_gen, duration_lims[(prime_mover, fuel)])
-    set_ramp_limits!(temp_gen, ramp_limits[(prime_mover, fuel)])
-    set_start_time_limits!(temp_gen, start_time_limits[(prime_mover, fuel)])
-    set_start_types!(temp_gen, start_types[(prime_mover, fuel)])
-    set_power_trajectory!(temp_gen, power_trajectory[(prime_mover, fuel)])
-    set_ramp_limits!(temp_gen, ramp_limits[(prime_mover, fuel)])
+
     set_base_power!(temp_gen, base_power)
     op_cost = MultiStartCost(nothing)
 
@@ -741,11 +818,29 @@ function make_thermal_gen_st(
     else
         start_up, no_load, variable_cost = get_cost_data_from_gen(gen, name, LSL, HSL)
     end
+
+    duration_limits = _get_duration_limits(prime_mover, fuel, ercot_fuel, base_power)
+    set_time_limits!(temp_gen, duration_limits)
+
+    ramp_limits = _get_duration_limits(prime_mover, fuel, ercot_fuel, base_power)
+    set_ramp_limits!(temp_gen, ramp_limits)
+
+    start_time_limits = _get_start_time_limits(prime_mover, fuel, ercot_fuel, base_power)
+    set_start_time_limits!(temp_gen, start_time_limits)
+
+    start_types = _get_start_types(prime_mover, fuel, ercot_fuel, base_power, start_up)
+    set_start_types!(temp_gen, start_types)
+
+    power_trajectory =
+        _get_power_trajectory(prime_mover, fuel, ercot_fuel, p_limits, base_power)
+    set_power_trajectory!(temp_gen, power_trajectory)
+
     set_start_up!(op_cost, start_up)
     set_shut_down!(op_cost, 0.2 * start_up.hot)
     set_variable!(op_cost, variable_cost)
     set_no_load!(op_cost, no_load)
     set_operation_cost!(temp_gen, op_cost)
+    temp_gen.ext["ERCOT_FUEL"] = ercot_fuel !== nothing ? ercot_fuel : "Missing"
     @info "$(name)"
     return temp_gen
 end
@@ -755,7 +850,7 @@ function _rescale_power(original_gen::ThermalStandard, LSL, HSL)
     gen_max_active_power = get_max_active_power(original_gen)
     q_lims = get_reactive_power_limits(original_gen)
     ratio_base_to_max = gen_base_power / gen_max_active_power
-    new_base_power = HSL * ratio_base_to_max
+    new_base_power = round(HSL * ratio_base_to_max)
     active_power_limits = (min = LSL / new_base_power, max = HSL / new_base_power)
     reactive_power_ratio =
         q_lims.min / gen_max_active_power, q_lims.max / gen_max_active_power
@@ -780,19 +875,22 @@ function make_storage(original_gen::ThermalStandard; name)
     set_available!(temp, true)
     set_bus!(temp, get_bus(original_gen))
     set_prime_mover!(temp, PrimeMovers.BA)
-    gen_max_active_power = get_max_active_power(original_gen)/base_power
+    gen_max_active_power = get_max_active_power(original_gen) / base_power
     c_rating = randperm!([2, 3, 4])[1]
     set_initial_energy!(temp, 0.0)
     set_state_of_charge_limits!(temp, (min = 0.0, max = gen_max_active_power * c_rating))
-    set_active_power!(temp, get_active_power(original_gen)/base_power)
-    set_reactive_power!(temp, get_reactive_power(original_gen)/base_power)
+    set_active_power!(temp, get_active_power(original_gen) / base_power)
+    set_reactive_power!(temp, get_reactive_power(original_gen) / base_power)
     set_input_active_power_limits!(temp, (min = 0.0, max = gen_max_active_power))
     set_output_active_power_limits!(temp, (min = 0.0, max = gen_max_active_power))
     eff_data = (in = 0.83 + 0.05 * rand(), out = 0.91 - 0.05 * rand())
     set_efficiency!(temp, eff_data)
     qlims = get_reactive_power_limits(original_gen)
-    set_reactive_power_limits!(temp, (min = -qlims.max/base_power, max = qlims.max/base_power))
-    set_rating!(temp, sqrt((gen_max_active_power)^2 + (qlims.max/base_power)^2))
+    set_reactive_power_limits!(
+        temp,
+        (min = -qlims.max / base_power, max = qlims.max / base_power),
+    )
+    set_rating!(temp, sqrt((gen_max_active_power)^2 + (qlims.max / base_power)^2))
     return temp
 end
 
@@ -820,9 +918,10 @@ end
 function get_sced_data(file_name, name)
     h5open(file_name, "r") do file
         if haskey(file, name)
-            return DataFrame(read(file, name))
+            fuel = read(attributes(file[name])["ERCOT_FUEL"])
+            return fuel, DataFrame(read(file, name))
         else
-            return DataFrame()
+            return "NA", DataFrame()
         end
     end
 end

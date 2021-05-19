@@ -8,7 +8,7 @@ sys = System("intermediate_sys.json")
 set_units_base_system!(sys, "NATURAL_UNITS")
 
 gen = get_component(ThermalStandard, sys, "gen-13")
-sced_data = get_sced_data(thermal_sced_h5_file, "PB2SES_CT1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PB2SES_CT1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -19,12 +19,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-14")
-sced_data = get_sced_data(thermal_sced_h5_file, "PB2SES_CT2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PB2SES_CT2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -35,12 +36,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-15")
-sced_data = get_sced_data(thermal_sced_h5_file, "PB2SES_CT3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PB2SES_CT3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -51,12 +53,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-16")
-sced_data = get_sced_data(thermal_sced_h5_file, "PB2SES_CT4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PB2SES_CT4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -67,12 +70,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-17")
-sced_data = get_sced_data(thermal_sced_h5_file, "PB2SES_CT5")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PB2SES_CT5")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -83,12 +87,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-18")
-sced_data = get_sced_data(thermal_sced_h5_file, "PB2SES_CT5")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PB2SES_CT5")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -99,12 +104,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-26")
-sced_data = get_sced_data(thermal_sced_h5_file, "OECCS_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "OECCS_CC1_2")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW10"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -116,12 +122,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-27")
-sced_data = get_sced_data(thermal_sced_h5_file, "OECCS_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "OECCS_CC1_4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -132,12 +139,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-28")
-sced_data = get_sced_data(thermal_sced_h5_file, "OECCS_CC2_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "OECCS_CC2_2")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW10"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -149,12 +157,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-29")
-sced_data = get_sced_data(thermal_sced_h5_file, "QALSW_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "QALSW_CC1_1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW8"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -166,12 +175,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-30")
-sced_data = get_sced_data(thermal_sced_h5_file, "QALSW_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "QALSW_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -182,12 +192,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-31")
-sced_data = get_sced_data(thermal_sced_h5_file, "QALSW_CC2_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "QALSW_CC2_1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -198,12 +209,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-32")
-sced_data = get_sced_data(thermal_sced_h5_file, "QALSW_CC2_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "QALSW_CC2_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL_ = sced_data[sced_data.LSL .> 1, :][!, "Submitted_TPO_MW1"]
 LSL = median(LSL_[.!isnan.(LSL_)])
@@ -215,12 +227,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-33")
-sced_data = get_sced_data(thermal_sced_h5_file, "QALSW_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "QALSW_CC1_4")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW6"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -232,12 +245,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-34")
-sced_data = get_sced_data(thermal_sced_h5_file, "QALSW_CC2_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "QALSW_CC2_4")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW7"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL_ = sced_data[.&(sced_data.LSL .> 1, sced_data.Submitted_TPO_MW1 .> 1), :][
@@ -253,12 +267,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-35")
-sced_data = get_sced_data(thermal_sced_h5_file, "OECCS_CC2_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "OECCS_CC2_4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -269,6 +284,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -316,7 +332,7 @@ remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-46")
-sced_data = get_sced_data(thermal_sced_h5_file, "TNSKA_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "TNSKA_CC1_1")
 HSL = median(sced_data[sced_data.HSL .> 1, :][!, "LSL"])
 LSL_ = sced_data[sced_data.LSL .> 1, :][!, "Submitted_TPO_MW1"]
 LSL = median(LSL_[.!isnan.(LSL_)])
@@ -328,12 +344,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-47")
-sced_data = get_sced_data(thermal_sced_h5_file, "TNSKA_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "TNSKA_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -344,6 +361,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -363,7 +381,7 @@ remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-56")
-sced_data = get_sced_data(thermal_sced_h5_file, "WFCOGEN_CC1_6")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "WFCOGEN_CC1_6")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = 20.0
 new_thermal = make_thermal_gen(
@@ -374,12 +392,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-57")
-sced_data = get_sced_data(thermal_sced_h5_file, "WFCOGEN_CC1_8")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "WFCOGEN_CC1_8")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = 20.0
 new_thermal = make_thermal_gen(
@@ -390,12 +409,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-58")
-sced_data = get_sced_data(thermal_sced_h5_file, "WFCOGEN_CC1_9")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "WFCOGEN_CC1_9")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -406,12 +426,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-64")
-sced_data = get_sced_data(thermal_sced_h5_file, "PANDA_S_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PANDA_S_CC1_1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW8"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL_ = sced_data[sced_data.LSL .> 1, :][!, "Submitted_TPO_MW1"]
@@ -424,12 +445,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-65")
-sced_data = get_sced_data(thermal_sced_h5_file, "PANDA_S_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PANDA_S_CC1_1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW8"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL_ = sced_data[sced_data.LSL .> 1, :][!, "Submitted_TPO_MW1"]
@@ -442,12 +464,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-66")
-sced_data = get_sced_data(thermal_sced_h5_file, "PANDA_S_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PANDA_S_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -458,12 +481,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-67")
-sced_data = get_sced_data(thermal_sced_h5_file, "LPCCS_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "LPCCS_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -474,12 +498,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-68")
-sced_data = get_sced_data(thermal_sced_h5_file, "LPCCS_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "LPCCS_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -490,12 +515,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-69")
-sced_data = get_sced_data(thermal_sced_h5_file, "LPCCS_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "LPCCS_CC1_4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -506,12 +532,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-70")
-sced_data = get_sced_data(thermal_sced_h5_file, "LPCCS_CC2_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "LPCCS_CC2_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -522,12 +549,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-71")
-sced_data = get_sced_data(thermal_sced_h5_file, "LPCCS_CC2_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "LPCCS_CC2_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -538,12 +566,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-72")
-sced_data = get_sced_data(thermal_sced_h5_file, "LPCCS_CC2_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "LPCCS_CC2_4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -554,12 +583,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-81")
-sced_data = get_sced_data(thermal_sced_h5_file, "MGSES_CT4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MGSES_CT4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -570,12 +600,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-82")
-sced_data = get_sced_data(thermal_sced_h5_file, "MGSES_CT5")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MGSES_CT5")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -586,6 +617,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -606,7 +638,7 @@ remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-115")
-sced_data = get_sced_data(thermal_sced_h5_file, "MGSES_CT1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MGSES_CT1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW6"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -618,12 +650,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-116")
-sced_data = get_sced_data(thermal_sced_h5_file, "MGSES_CT1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MGSES_CT1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW6"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -635,12 +668,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-117")
-sced_data = get_sced_data(thermal_sced_h5_file, "MGSES_CT3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MGSES_CT3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -651,12 +685,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-121")
-sced_data = get_sced_data(thermal_sced_h5_file, "SANMIGL_G1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "SANMIGL_G1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -667,12 +702,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-122")
-sced_data = get_sced_data(thermal_sced_h5_file, "COLETO_COLETOG1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "COLETO_COLETOG1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -683,6 +719,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -703,7 +740,7 @@ add_component!(sys, new_thermal)
 
 # TODO: Check the distribution of the power
 gen = get_component(ThermalStandard, sys, "gen-128")
-sced_data = get_sced_data(thermal_sced_h5_file, "INGLCOSW_CC1_2");
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "INGLCOSW_CC1_2");
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -714,12 +751,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-129")
-sced_data = get_sced_data(thermal_sced_h5_file, "INGLCOSW_CC1_2");
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "INGLCOSW_CC1_2");
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -730,12 +768,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-130")
-sced_data = get_sced_data(thermal_sced_h5_file, "INGLCOSW_CC1_2");
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "INGLCOSW_CC1_2");
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -746,12 +785,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-131")
-sced_data = get_sced_data(thermal_sced_h5_file, "INGLCOSW_CC1_4");
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "INGLCOSW_CC1_4");
 HSL = maximum(sced_data[!, "HSL"])
 LSL = 200
 new_thermal = make_thermal_gen(
@@ -762,12 +802,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-132")
-sced_data = get_sced_data(thermal_sced_h5_file, "INGLCOSW_CC1_4");
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "INGLCOSW_CC1_4");
 HSL = maximum(sced_data[!, "HSL"])
 LSL = 200
 new_thermal = make_thermal_gen(
@@ -778,12 +819,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-133")
-sced_data = get_sced_data(thermal_sced_h5_file, "INGLCOSW_CC1_4");
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "INGLCOSW_CC1_4");
 HSL = maximum(sced_data[!, "HSL"])
 LSL = 200
 new_thermal = make_thermal_gen(
@@ -794,12 +836,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-135")
-sced_data = get_sced_data(thermal_sced_h5_file, "DUKE_CC1_1");
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "DUKE_CC1_1");
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -810,12 +853,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-136")
-sced_data = get_sced_data(thermal_sced_h5_file, "DUKE_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "DUKE_CC1_1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -826,12 +870,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-137")
-sced_data = get_sced_data(thermal_sced_h5_file, "DUKE_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "DUKE_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -842,12 +887,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-138")
-sced_data = get_sced_data(thermal_sced_h5_file, "B_DAVIS_B_DAVIG1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "B_DAVIS_B_DAVIG1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -858,12 +904,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-139")
-sced_data = get_sced_data(thermal_sced_h5_file, "B_DAVIS_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "B_DAVIS_CC1_1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW8"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL_ = sced_data[sced_data.LSL .> 1, :][!, "Submitted_TPO_MW1"]
@@ -876,12 +923,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-140")
-sced_data = get_sced_data(thermal_sced_h5_file, "B_DAVIS_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "B_DAVIS_CC1_1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW8"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL_ = sced_data[sced_data.LSL .> 1, :][!, "Submitted_TPO_MW1"]
@@ -894,12 +942,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-141")
-sced_data = get_sced_data(thermal_sced_h5_file, "B_DAVIS_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "B_DAVIS_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -910,12 +959,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-148")
-sced_data = get_sced_data(thermal_sced_h5_file, "CTL_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CTL_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL_ = sced_data[sced_data.LSL .> 1, :][!, "Submitted_TPO_MW1"]
 LSL = median(LSL_[.!isnan.(LSL_)])
@@ -927,12 +977,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-149")
-sced_data = get_sced_data(thermal_sced_h5_file, "CTL_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CTL_CC1_4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -943,12 +994,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-150")
-sced_data = get_sced_data(thermal_sced_h5_file, "CTL_CC1_8")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CTL_CC1_8")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -959,12 +1011,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-152")
-sced_data = get_sced_data(thermal_sced_h5_file, "LARDVFTN_G4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "LARDVFTN_G4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -975,12 +1028,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-153")
-sced_data = get_sced_data(thermal_sced_h5_file, "LARDVFTN_G5")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "LARDVFTN_G5")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -991,6 +1045,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1083,7 +1138,7 @@ remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-162")
-sced_data = get_sced_data(thermal_sced_h5_file, "CCEC_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CCEC_CC1_2")
 HSL = 200.0
 LSL = 50.0
 new_thermal = make_thermal_gen(
@@ -1094,12 +1149,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-163")
-sced_data = get_sced_data(thermal_sced_h5_file, "CCEC_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CCEC_CC1_4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1110,12 +1166,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-164")
-sced_data = get_sced_data(thermal_sced_h5_file, "NUECES_B_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "NUECES_B_CC1_1")
 HSL = 350
 LSL_ = sced_data[sced_data.LSL .> 1, :][!, "Submitted_TPO_MW1"]
 LSL = median(LSL_[.!isnan.(LSL_)])
@@ -1127,12 +1184,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-165")
-sced_data = get_sced_data(thermal_sced_h5_file, "NUECES_B_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "NUECES_B_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL_ = sced_data[sced_data.LSL .> 1, :][!, "Submitted_TPO_MW1"]
 LSL = median(LSL_[.!isnan.(LSL_)])
@@ -1144,12 +1202,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-170")
-sced_data = get_sced_data(thermal_sced_h5_file, "SILASRAY_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "SILASRAY_CC1_1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1160,6 +1219,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1179,7 +1239,7 @@ remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-173")
-sced_data = get_sced_data(thermal_sced_h5_file, "SILASRAY_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "SILASRAY_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1190,12 +1250,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-175")
-sced_data = get_sced_data(thermal_sced_h5_file, "NEDIN_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "NEDIN_CC1_1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1206,12 +1267,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-176")
-sced_data = get_sced_data(thermal_sced_h5_file, "NEDIN_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "NEDIN_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1222,6 +1284,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1269,7 +1332,7 @@ remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-186")
-sced_data = get_sced_data(thermal_sced_h5_file, "FRNYPP_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FRNYPP_CC1_4")
 HSL = 650
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1280,12 +1343,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-187")
-sced_data = get_sced_data(thermal_sced_h5_file, "FRNYPP_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FRNYPP_CC1_4")
 HSL = 650
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1296,12 +1360,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-188")
-sced_data = get_sced_data(thermal_sced_h5_file, "FRNYPP_CC1_6")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FRNYPP_CC1_6")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1312,12 +1377,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-189")
-sced_data = get_sced_data(thermal_sced_h5_file, "FRNYPP_CC2_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FRNYPP_CC2_4")
 HSL = 650
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1328,12 +1394,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-190")
-sced_data = get_sced_data(thermal_sced_h5_file, "FRNYPP_CC2_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FRNYPP_CC2_4")
 HSL = 650
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1344,12 +1411,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-191")
-sced_data = get_sced_data(thermal_sced_h5_file, "FRNYPP_CC2_6")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FRNYPP_CC2_6")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1360,12 +1428,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-192")
-sced_data = get_sced_data(thermal_sced_h5_file, "STEAM_STEAM_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "STEAM_STEAM_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1376,12 +1445,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-197")
-sced_data = get_sced_data(thermal_sced_h5_file, "HLSES_UNIT3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "HLSES_UNIT3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1392,12 +1462,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-198")
-sced_data = get_sced_data(thermal_sced_h5_file, "HLSES_UNIT4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "HLSES_UNIT4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1408,12 +1479,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-199")
-sced_data = get_sced_data(thermal_sced_h5_file, "HLSES_UNIT5")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "HLSES_UNIT5")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1424,12 +1496,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-203")
-sced_data = get_sced_data(thermal_sced_h5_file, "SPNCER_SPNCE_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "SPNCER_SPNCE_4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1440,12 +1513,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-204")
-sced_data = get_sced_data(thermal_sced_h5_file, "SPNCER_SPNCE_5")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "SPNCER_SPNCE_5")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1456,6 +1530,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1464,7 +1539,7 @@ to_json(sys, "intermediate_sys.json", force = true)
 sys = System("intermediate_sys.json")
 
 gen = get_component(ThermalStandard, sys, "gen-207")
-sced_data = get_sced_data(thermal_sced_h5_file, "WCPP_CC1_3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "WCPP_CC1_3")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW10"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -1476,12 +1551,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-208")
-sced_data = get_sced_data(thermal_sced_h5_file, "WCPP_CC1_3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "WCPP_CC1_3")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW10"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -1493,12 +1569,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-209")
-sced_data = get_sced_data(thermal_sced_h5_file, "WCPP_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "WCPP_CC1_4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1509,12 +1586,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-214")
-sced_data = get_sced_data(thermal_sced_h5_file, "PANDA_T1_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PANDA_T1_CC1_1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW8"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -1526,12 +1604,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-215")
-sced_data = get_sced_data(thermal_sced_h5_file, "PANDA_T1_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PANDA_T1_CC1_1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW8"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -1543,12 +1622,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-216")
-sced_data = get_sced_data(thermal_sced_h5_file, "PANDA_T1_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PANDA_T1_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1559,12 +1639,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-218")
-sced_data = get_sced_data(thermal_sced_h5_file, "OLINGR_OLING_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "OLINGR_OLING_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1575,12 +1656,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-219")
-sced_data = get_sced_data(thermal_sced_h5_file, "OLINGR_OLING_3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "OLINGR_OLING_3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1591,12 +1673,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-220")
-sced_data = get_sced_data(thermal_sced_h5_file, "OLINGR_OLING_3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "OLINGR_OLING_3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1607,12 +1690,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-221")
-sced_data = get_sced_data(thermal_sced_h5_file, "OLINGR_OLING_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "OLINGR_OLING_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1623,12 +1707,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-222")
-sced_data = get_sced_data(thermal_sced_h5_file, "PANDA_T2_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PANDA_T2_CC1_1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW8"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL_ = sced_data[sced_data.LSL .> 1, :][!, "Submitted_TPO_MW1"]
@@ -1641,12 +1726,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-223")
-sced_data = get_sced_data(thermal_sced_h5_file, "PANDA_T2_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PANDA_T2_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1657,12 +1743,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-224")
-sced_data = get_sced_data(thermal_sced_h5_file, "WHCCS_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "WHCCS_CC1_1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW7"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -1674,12 +1761,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-225")
-sced_data = get_sced_data(thermal_sced_h5_file, "WHCCS_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "WHCCS_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1690,12 +1778,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-226")
-sced_data = get_sced_data(thermal_sced_h5_file, "WHCCS2_CC2_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "WHCCS2_CC2_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1706,12 +1795,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-227")
-sced_data = get_sced_data(thermal_sced_h5_file, "MCSES_UNIT7")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MCSES_UNIT7")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1722,12 +1812,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-228")
-sced_data = get_sced_data(thermal_sced_h5_file, "MCSES_UNIT7")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MCSES_UNIT7")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1738,12 +1829,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-229")
-sced_data = get_sced_data(thermal_sced_h5_file, "MCSES_UNIT8")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MCSES_UNIT8")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1754,13 +1846,14 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 # Joint Assets in the same bus.
 gen = get_component(ThermalStandard, sys, "gen-232")
-sced_data = get_sced_data(thermal_sced_h5_file, "SCES_UNIT1_J01")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "SCES_UNIT1_J01")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1771,13 +1864,14 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 add_component!(sys, new_thermal)
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 
 gen = get_component(ThermalStandard, sys, "gen-232")
-sced_data = get_sced_data(thermal_sced_h5_file, "SCES_UNIT1_J02")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "SCES_UNIT1_J02")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1788,13 +1882,14 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 add_component!(sys, new_thermal)
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 
 gen = get_component(ThermalStandard, sys, "gen-232")
-sced_data = get_sced_data(thermal_sced_h5_file, "SCES_UNIT1_J03")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "SCES_UNIT1_J03")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1805,13 +1900,14 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 add_component!(sys, new_thermal)
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 
 gen = get_component(ThermalStandard, sys, "gen-232")
-sced_data = get_sced_data(thermal_sced_h5_file, "SCES_UNIT1_J04")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "SCES_UNIT1_J04")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1822,6 +1918,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 add_component!(sys, new_thermal)
 
@@ -1829,7 +1926,7 @@ remove_component!(sys, gen)
 ### End of joint assets
 
 gen = get_component(ThermalStandard, sys, "gen-234")
-sced_data = get_sced_data(thermal_sced_h5_file, "JACKCNTY_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "JACKCNTY_CC1_1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW10"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -1841,12 +1938,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-235")
-sced_data = get_sced_data(thermal_sced_h5_file, "JACKCNTY_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "JACKCNTY_CC1_2")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW10"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -1858,12 +1956,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-236")
-sced_data = get_sced_data(thermal_sced_h5_file, "JACKCNTY_CC1_3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "JACKCNTY_CC1_3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1874,12 +1973,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-237")
-sced_data = get_sced_data(thermal_sced_h5_file, "JCKCNTY2_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "JCKCNTY2_CC1_1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW10"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -1891,12 +1991,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-238")
-sced_data = get_sced_data(thermal_sced_h5_file, "JCKCNTY2_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "JCKCNTY2_CC1_2")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW10"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -1908,12 +2009,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-239")
-sced_data = get_sced_data(thermal_sced_h5_file, "JCKCNTY2_CC1_3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "JCKCNTY2_CC1_3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1924,12 +2026,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-240")
-sced_data = get_sced_data(thermal_sced_h5_file, "ETCCS_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "ETCCS_CC1_2")
 HSL = 300
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1940,12 +2043,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-241")
-sced_data = get_sced_data(thermal_sced_h5_file, "ETCCS_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "ETCCS_CC1_2")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW10"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = 300
@@ -1957,12 +2061,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-243")
-sced_data = get_sced_data(thermal_sced_h5_file, "DCSES_CT10")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "DCSES_CT10")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1973,12 +2078,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-244")
-sced_data = get_sced_data(thermal_sced_h5_file, "DCSES_CT20")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "DCSES_CT20")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -1989,12 +2095,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-245")
-sced_data = get_sced_data(thermal_sced_h5_file, "DCSES_CT30")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "DCSES_CT30")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2005,6 +2112,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2013,7 +2121,7 @@ to_json(sys, "intermediate_sys.json", force = true)
 sys = System("intermediate_sys.json")
 
 gen = get_component(ThermalStandard, sys, "gen-246")
-sced_data = get_sced_data(thermal_sced_h5_file, "DCSES_CT40")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "DCSES_CT40")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2024,12 +2132,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-247")
-sced_data = get_sced_data(thermal_sced_h5_file, "MIL_MILLERG1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MIL_MILLERG1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2040,12 +2149,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-248")
-sced_data = get_sced_data(thermal_sced_h5_file, "MIL_MILLERG2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MIL_MILLERG2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2056,12 +2166,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-249")
-sced_data = get_sced_data(thermal_sced_h5_file, "MIL_MILLERG3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MIL_MILLERG3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2072,12 +2183,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-250")
-sced_data = get_sced_data(thermal_sced_h5_file, "MIL_MILLERG4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MIL_MILLERG4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2088,12 +2200,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-251")
-sced_data = get_sced_data(thermal_sced_h5_file, "MIL_MILLERG5")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MIL_MILLERG5")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2104,12 +2217,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-254")
-sced_data = get_sced_data(thermal_sced_h5_file, "MDANP_CT1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MDANP_CT1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2120,12 +2234,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-255")
-sced_data = get_sced_data(thermal_sced_h5_file, "MDANP_CT2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MDANP_CT2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2136,12 +2251,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-256")
-sced_data = get_sced_data(thermal_sced_h5_file, "MDANP_CT3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MDANP_CT3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2152,12 +2268,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-257")
-sced_data = get_sced_data(thermal_sced_h5_file, "MDANP_CT4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MDANP_CT4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2168,12 +2285,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-258")
-sced_data = get_sced_data(thermal_sced_h5_file, "MDANP_CT5")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MDANP_CT5")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2184,12 +2302,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-259")
-sced_data = get_sced_data(thermal_sced_h5_file, "MDANP_CT6")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MDANP_CT6")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2200,12 +2319,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-260")
-sced_data = get_sced_data(thermal_sced_h5_file, "MDANP_CT1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MDANP_CT1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2216,12 +2336,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-261")
-sced_data = get_sced_data(thermal_sced_h5_file, "MDANP_CT1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MDANP_CT1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2232,12 +2353,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-262")
-sced_data = get_sced_data(thermal_sced_h5_file, "LOSTPI_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "LOSTPI_CC1_1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW2"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -2249,12 +2371,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-263")
-sced_data = get_sced_data(thermal_sced_h5_file, "LOSTPI_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "LOSTPI_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2265,12 +2388,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-264")
-sced_data = get_sced_data(thermal_sced_h5_file, "GIDEON_GIDEONG1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "GIDEON_GIDEONG1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2281,12 +2405,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-265")
-sced_data = get_sced_data(thermal_sced_h5_file, "GIDEON_GIDEONG2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "GIDEON_GIDEONG2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2297,12 +2422,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-266")
-sced_data = get_sced_data(thermal_sced_h5_file, "GIDEON_GIDEONG3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "GIDEON_GIDEONG3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2313,12 +2439,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-272")
-sced_data = get_sced_data(thermal_sced_h5_file, "LEON_CRK_LCPCT1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "LEON_CRK_LCPCT1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2329,12 +2456,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-273")
-sced_data = get_sced_data(thermal_sced_h5_file, "LEON_CRK_LCPCT2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "LEON_CRK_LCPCT2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2345,12 +2473,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-274")
-sced_data = get_sced_data(thermal_sced_h5_file, "LEON_CRK_LCPCT3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "LEON_CRK_LCPCT3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2361,12 +2490,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-275")
-sced_data = get_sced_data(thermal_sced_h5_file, "LEON_CRK_LCPCT4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "LEON_CRK_LCPCT4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2377,12 +2507,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-276")
-sced_data = get_sced_data(thermal_sced_h5_file, "GUADG_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "GUADG_CC1_4")
 HSL = 375
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2393,12 +2524,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-277")
-sced_data = get_sced_data(thermal_sced_h5_file, "GUADG_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "GUADG_CC1_4")
 HSL = 375
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2409,12 +2541,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-278")
-sced_data = get_sced_data(thermal_sced_h5_file, "GUADG_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "GUADG_CC1_4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = 400
 new_thermal = make_thermal_gen(
@@ -2425,12 +2558,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-279")
-sced_data = get_sced_data(thermal_sced_h5_file, "GUADG_CC2_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "GUADG_CC2_4")
 HSL = 375
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2441,12 +2575,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-280")
-sced_data = get_sced_data(thermal_sced_h5_file, "GUADG_CC2_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "GUADG_CC2_4")
 HSL = 375
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2457,12 +2592,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-281")
-sced_data = get_sced_data(thermal_sced_h5_file, "GUADG_CC2_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "GUADG_CC2_4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = 400
 new_thermal = make_thermal_gen(
@@ -2473,13 +2609,14 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 ## Shared ownership of the assets
 gen = get_component(ThermalStandard, sys, "gen-282")
-sced_data = get_sced_data(thermal_sced_h5_file, "FPPYD1_FPP_G1_J01")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FPPYD1_FPP_G1_J01")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2490,11 +2627,12 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-282")
-sced_data = get_sced_data(thermal_sced_h5_file, "FPPYD1_FPP_G1_J02")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FPPYD1_FPP_G1_J02")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2505,12 +2643,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 add_component!(sys, new_thermal)
 remove_component!(sys, gen)
 
 gen = get_component(ThermalStandard, sys, "gen-283")
-sced_data = get_sced_data(thermal_sced_h5_file, "FPPYD1_FPP_G2_J01")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FPPYD1_FPP_G2_J01")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2521,11 +2660,12 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-283")
-sced_data = get_sced_data(thermal_sced_h5_file, "FPPYD1_FPP_G2_J02")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FPPYD1_FPP_G2_J02")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2536,13 +2676,14 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 add_component!(sys, new_thermal)
 remove_component!(sys, gen)
 ## end of Shared ownership of the assets
 
 gen = get_component(ThermalStandard, sys, "gen-284")
-sced_data = get_sced_data(thermal_sced_h5_file, "FPPYD2_FPP_G3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FPPYD2_FPP_G3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2553,12 +2694,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-293")
-sced_data = get_sced_data(thermal_sced_h5_file, "WIPOPA_WPP_G1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "WIPOPA_WPP_G1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2569,12 +2711,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-294")
-sced_data = get_sced_data(thermal_sced_h5_file, "WIPOPA_WPP_G2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "WIPOPA_WPP_G2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2585,12 +2728,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-295")
-sced_data = get_sced_data(thermal_sced_h5_file, "WIPOPA_WPP_G3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "WIPOPA_WPP_G3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2601,12 +2745,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-296")
-sced_data = get_sced_data(thermal_sced_h5_file, "SDSES_UNIT4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "SDSES_UNIT4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2617,12 +2762,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-297")
-sced_data = get_sced_data(thermal_sced_h5_file, "SD5SES_UNIT5")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "SD5SES_UNIT5")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2633,12 +2779,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-299")
-sced_data = get_sced_data(thermal_sced_h5_file, "CALAVERS_OWS1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CALAVERS_OWS1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2649,12 +2796,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-300")
-sced_data = get_sced_data(thermal_sced_h5_file, "CALAVERS_OWS2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CALAVERS_OWS2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2665,12 +2813,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-301")
-sced_data = get_sced_data(thermal_sced_h5_file, "CALAVERS_JTD1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CALAVERS_JTD1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2681,12 +2830,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-302")
-sced_data = get_sced_data(thermal_sced_h5_file, "CALAVERS_JTD2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CALAVERS_JTD2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2697,12 +2847,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-303")
-sced_data = get_sced_data(thermal_sced_h5_file, "CALAVERS_JKS1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CALAVERS_JKS1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2713,12 +2864,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-304")
-sced_data = get_sced_data(thermal_sced_h5_file, "RIONOG_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "RIONOG_CC1_2")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW9"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -2730,12 +2882,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-305")
-sced_data = get_sced_data(thermal_sced_h5_file, "RIONOG_CC1_5")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "RIONOG_CC1_5")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW9"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -2747,12 +2900,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-306")
-sced_data = get_sced_data(thermal_sced_h5_file, "RIONOG_CC1_5")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "RIONOG_CC1_5")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW9"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -2764,12 +2918,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-307")
-sced_data = get_sced_data(thermal_sced_h5_file, "RIONOG_CC1_6")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "RIONOG_CC1_6")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW9"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -2781,12 +2936,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-312")
-sced_data = get_sced_data(thermal_sced_h5_file, "BRAUNIG_VHB6CT6")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BRAUNIG_VHB6CT6")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2797,12 +2953,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-313")
-sced_data = get_sced_data(thermal_sced_h5_file, "BRAUNIG_VHB6CT7")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BRAUNIG_VHB6CT7")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2813,12 +2970,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-314")
-sced_data = get_sced_data(thermal_sced_h5_file, "BRAUNIG_VHB6CT8")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BRAUNIG_VHB6CT8")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2829,12 +2987,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-315")
-sced_data = get_sced_data(thermal_sced_h5_file, "BRAUNIG_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BRAUNIG_CC1_1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2845,12 +3004,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-316")
-sced_data = get_sced_data(thermal_sced_h5_file, "BRAUNIG_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BRAUNIG_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2861,12 +3021,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-317")
-sced_data = get_sced_data(thermal_sced_h5_file, "BRAUNIG_VHB1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BRAUNIG_VHB1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2877,12 +3038,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-318")
-sced_data = get_sced_data(thermal_sced_h5_file, "BRAUNIG_VHB2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BRAUNIG_VHB2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2893,12 +3055,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-319")
-sced_data = get_sced_data(thermal_sced_h5_file, "BRAUNIG_VHB3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BRAUNIG_VHB3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2909,12 +3072,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-320")
-sced_data = get_sced_data(thermal_sced_h5_file, "SANDHSYD_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "SANDHSYD_CC1_1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW8"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -2926,12 +3090,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-321")
-sced_data = get_sced_data(thermal_sced_h5_file, "SANDHSYD_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "SANDHSYD_CC1_1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW8"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -2943,12 +3108,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-322")
-sced_data = get_sced_data(thermal_sced_h5_file, "SANDHSYD_SH6")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "SANDHSYD_SH6")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2959,12 +3125,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-323")
-sced_data = get_sced_data(thermal_sced_h5_file, "SANDHSYD_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "SANDHSYD_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2975,12 +3142,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-333")
-sced_data = get_sced_data(thermal_sced_h5_file, "BASTEN_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BASTEN_CC1_1")
 HSL = 400
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -2991,12 +3159,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-334")
-sced_data = get_sced_data(thermal_sced_h5_file, "BASTEN_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BASTEN_CC1_1")
 HSL = 400
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3007,6 +3176,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3015,7 +3185,7 @@ to_json(sys, "intermediate_sys.json", force = true)
 sys = System("intermediate_sys.json")
 
 gen = get_component(ThermalStandard, sys, "gen-335")
-sced_data = get_sced_data(thermal_sced_h5_file, "BASTEN_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BASTEN_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3026,12 +3196,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-337")
-sced_data = get_sced_data(thermal_sced_h5_file, "HAYSEN_HAYSENG1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "HAYSEN_HAYSENG1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3042,12 +3213,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-338")
-sced_data = get_sced_data(thermal_sced_h5_file, "HAYSEN_HAYSENG2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "HAYSEN_HAYSENG2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3058,12 +3230,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-339")
-sced_data = get_sced_data(thermal_sced_h5_file, "HAYSEN_HAYSENG3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "HAYSEN_HAYSENG3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3074,12 +3247,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-340")
-sced_data = get_sced_data(thermal_sced_h5_file, "HAYSEN_HAYSENG4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "HAYSEN_HAYSENG4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3090,12 +3264,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-341")
-sced_data = get_sced_data(thermal_sced_h5_file, "DECKER_DPGT_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "DECKER_DPGT_1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3106,12 +3281,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-342")
-sced_data = get_sced_data(thermal_sced_h5_file, "DECKER_DPGT_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "DECKER_DPGT_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3122,12 +3298,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-343")
-sced_data = get_sced_data(thermal_sced_h5_file, "DECKER_DPGT_3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "DECKER_DPGT_3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3138,12 +3315,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-349")
-sced_data = get_sced_data(thermal_sced_h5_file, "DECKER_DPG1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "DECKER_DPG1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3154,12 +3332,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-350")
-sced_data = get_sced_data(thermal_sced_h5_file, "DECKER_DPG2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "DECKER_DPG2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3170,12 +3349,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-351")
-sced_data = get_sced_data(thermal_sced_h5_file, "DECKER_DPGT_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "DECKER_DPGT_4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3186,12 +3366,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-352")
-sced_data = get_sced_data(thermal_sced_h5_file, "CHE_CC1_5")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CHE_CC1_5")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3202,12 +3383,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-353")
-sced_data = get_sced_data(thermal_sced_h5_file, "CHE_CC1_7")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CHE_CC1_7")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = 250
 new_thermal = make_thermal_gen(
@@ -3218,12 +3400,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-354")
-sced_data = get_sced_data(thermal_sced_h5_file, "CHE_CC1_6")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CHE_CC1_6")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3234,12 +3417,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-355")
-sced_data = get_sced_data(thermal_sced_h5_file, "CHE_CC1_8")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CHE_CC1_8")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = 250
 new_thermal = make_thermal_gen(
@@ -3250,12 +3434,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-356")
-sced_data = get_sced_data(thermal_sced_h5_file, "CHE_CC1_9")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CHE_CC1_9")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = 500
 new_thermal = make_thermal_gen(
@@ -3266,12 +3451,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-358")
-sced_data = get_sced_data(thermal_sced_h5_file, "RAYBURN_RAYBURG1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "RAYBURN_RAYBURG1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3282,12 +3468,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-359")
-sced_data = get_sced_data(thermal_sced_h5_file, "RAYBURN_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "RAYBURN_CC1_1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW4"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -3299,12 +3486,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-360")
-sced_data = get_sced_data(thermal_sced_h5_file, "RAYBURN_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "RAYBURN_CC1_2")
 HSL = 125
 LSL = 75
 new_thermal = make_thermal_gen(
@@ -3315,12 +3503,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-361")
-sced_data = get_sced_data(thermal_sced_h5_file, "RAYBURN_CC1_3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "RAYBURN_CC1_3")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW4"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL_ = sced_data[.&(sced_data.LSL .> 1, sced_data.Submitted_TPO_MW1 .> 1), :][
@@ -3336,12 +3525,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-367")
-sced_data = get_sced_data(thermal_sced_h5_file, "VICTORIA_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "VICTORIA_CC1_1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3352,12 +3542,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-368")
-sced_data = get_sced_data(thermal_sced_h5_file, "VICTORIA_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "VICTORIA_CC1_1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3368,6 +3559,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3457,7 +3649,7 @@ remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-375")
-sced_data = get_sced_data(thermal_sced_h5_file, "BTE_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BTE_CC1_1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3468,12 +3660,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-376")
-sced_data = get_sced_data(thermal_sced_h5_file, "BTE_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BTE_CC1_4")
 HSL = 200
 LSL = 50
 new_thermal = make_thermal_gen(
@@ -3484,12 +3677,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-377")
-sced_data = get_sced_data(thermal_sced_h5_file, "BTE_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BTE_CC1_4")
 HSL = 200
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3500,12 +3694,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-378")
-sced_data = get_sced_data(thermal_sced_h5_file, "BTE_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BTE_CC1_4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = 200
 new_thermal = make_thermal_gen(
@@ -3516,6 +3711,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3563,7 +3759,7 @@ remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-384")
-sced_data = get_sced_data(thermal_sced_h5_file, "DDPEC_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "DDPEC_CC1_2")
 HSL = 420
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3574,12 +3770,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-385")
-sced_data = get_sced_data(thermal_sced_h5_file, "DDPEC_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "DDPEC_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = 500
 new_thermal = make_thermal_gen(
@@ -3590,12 +3787,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-386")
-sced_data = get_sced_data(thermal_sced_h5_file, "DDPEC_CC1_3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "DDPEC_CC1_3")
 HSL = 500
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3606,12 +3804,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-387")
-sced_data = get_sced_data(thermal_sced_h5_file, "DDPEC_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "DDPEC_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = 620
 new_thermal = make_thermal_gen(
@@ -3622,12 +3821,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-388")
-sced_data = get_sced_data(thermal_sced_h5_file, "DDPEC_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "DDPEC_CC1_4")
 HSL = 600
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3638,13 +3838,14 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 new_thermal.internal = PSY.IS.InfrastructureSystemsInternal()
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-389")
-sced_data = get_sced_data(thermal_sced_h5_file, "DDPEC_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "DDPEC_CC1_4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = 620
 new_thermal = make_thermal_gen(
@@ -3655,6 +3856,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3730,7 +3932,7 @@ remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-398")
-sced_data = get_sced_data(thermal_sced_h5_file, "AZ_AZ_G1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "AZ_AZ_G1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3741,12 +3943,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-399")
-sced_data = get_sced_data(thermal_sced_h5_file, "AZ_AZ_G2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "AZ_AZ_G2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3757,12 +3960,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-400")
-sced_data = get_sced_data(thermal_sced_h5_file, "AZ_AZ_G3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "AZ_AZ_G3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3773,12 +3977,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-401")
-sced_data = get_sced_data(thermal_sced_h5_file, "AZ_AZ_G4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "AZ_AZ_G4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3789,12 +3994,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-403")
-sced_data = get_sced_data(thermal_sced_h5_file, "THW_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "THW_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3805,12 +4011,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-404")
-sced_data = get_sced_data(thermal_sced_h5_file, "THW_CC1_3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "THW_CC1_3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3821,12 +4028,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-405")
-sced_data = get_sced_data(thermal_sced_h5_file, "THW_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "THW_CC1_4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3837,12 +4045,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-406")
-sced_data = get_sced_data(thermal_sced_h5_file, "THW_CC1_7")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "THW_CC1_7")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3853,12 +4062,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-407")
-sced_data = get_sced_data(thermal_sced_h5_file, "THW_CC1_8")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "THW_CC1_8")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3869,12 +4079,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-408")
-sced_data = get_sced_data(thermal_sced_h5_file, "THW_CC2_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "THW_CC2_2")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW9"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -3886,12 +4097,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-409")
-sced_data = get_sced_data(thermal_sced_h5_file, "THW_CC2_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "THW_CC2_4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3902,12 +4114,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-410")
-sced_data = get_sced_data(thermal_sced_h5_file, "THW_CC2_7")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "THW_CC2_7")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3918,12 +4131,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-411")
-sced_data = get_sced_data(thermal_sced_h5_file, "THW_CC2_8")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "THW_CC2_8")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3934,12 +4148,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-417")
-sced_data = get_sced_data(thermal_sced_h5_file, "FEGC_UNIT1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FEGC_UNIT1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3950,12 +4165,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-418")
-sced_data = get_sced_data(thermal_sced_h5_file, "FEGC_UNIT1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FEGC_UNIT1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3966,12 +4182,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-419")
-sced_data = get_sced_data(thermal_sced_h5_file, "FEGC_UNIT1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FEGC_UNIT1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3982,12 +4199,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-420")
-sced_data = get_sced_data(thermal_sced_h5_file, "FEGC_UNIT1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FEGC_UNIT1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -3998,6 +4216,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4006,7 +4225,7 @@ to_json(sys, "intermediate_sys.json", force = true)
 sys = System("intermediate_sys.json")
 
 gen = get_component(ThermalStandard, sys, "gen-422")
-sced_data = get_sced_data(thermal_sced_h5_file, "CBY_CBY_G1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CBY_CBY_G1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4017,12 +4236,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-423")
-sced_data = get_sced_data(thermal_sced_h5_file, "CBY_CBY_G2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CBY_CBY_G2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4033,12 +4253,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-424")
-sced_data = get_sced_data(thermal_sced_h5_file, "CBY4_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CBY4_CC1_2")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW9"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL_ = sced_data[sced_data.LSL .> 1, :][!, "Submitted_TPO_MW1"]
@@ -4051,12 +4272,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-425")
-sced_data = get_sced_data(thermal_sced_h5_file, "CBY4_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CBY4_CC1_2")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW9"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL_ = sced_data[sced_data.LSL .> 1, :][!, "Submitted_TPO_MW1"]
@@ -4069,12 +4291,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-426")
-sced_data = get_sced_data(thermal_sced_h5_file, "CBY4_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CBY4_CC1_4")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW9"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL_ = sced_data[sced_data.LSL .> 1, :][!, "Submitted_TPO_MW1"]
@@ -4087,12 +4310,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-427")
-sced_data = get_sced_data(thermal_sced_h5_file, "TXCTY_CC1_9")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "TXCTY_CC1_9")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4103,12 +4327,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-428")
-sced_data = get_sced_data(thermal_sced_h5_file, "TXCTY_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "TXCTY_CC1_1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4119,12 +4344,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-429")
-sced_data = get_sced_data(thermal_sced_h5_file, "TXCTY_CC1_3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "TXCTY_CC1_3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4135,12 +4361,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-430")
-sced_data = get_sced_data(thermal_sced_h5_file, "TXCTY_CC1_6")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "TXCTY_CC1_6")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4151,12 +4378,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-431")
-sced_data = get_sced_data(thermal_sced_h5_file, "TXCTY_CC1_7")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "TXCTY_CC1_7")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4167,12 +4395,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-440")
-sced_data = get_sced_data(thermal_sced_h5_file, "CBEC_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CBEC_CC1_2")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW5"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -4184,12 +4413,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-441")
-sced_data = get_sced_data(thermal_sced_h5_file, "CBEC_CC2_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CBEC_CC2_1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW4"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -4201,12 +4431,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-442")
-sced_data = get_sced_data(thermal_sced_h5_file, "CBEC_CC2_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CBEC_CC2_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4217,12 +4448,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-443")
-sced_data = get_sced_data(thermal_sced_h5_file, "CBECII_CC3_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CBECII_CC3_1")
 HSL = 600
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4233,12 +4465,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-444")
-sced_data = get_sced_data(thermal_sced_h5_file, "CBECII_CC3_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CBECII_CC3_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4249,6 +4482,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4310,7 +4544,7 @@ remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-449")
-sced_data = get_sced_data(thermal_sced_h5_file, "TGF_TGFGT_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "TGF_TGFGT_1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4321,12 +4555,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-450")
-sced_data = get_sced_data(thermal_sced_h5_file, "PSG_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PSG_CC1_1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4337,12 +4572,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-451")
-sced_data = get_sced_data(thermal_sced_h5_file, "PSG_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PSG_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4353,12 +4589,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-452")
-sced_data = get_sced_data(thermal_sced_h5_file, "WAP_WAP_G1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "WAP_WAP_G1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4369,12 +4606,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-453")
-sced_data = get_sced_data(thermal_sced_h5_file, "WAP_WAP_G2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "WAP_WAP_G2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4385,12 +4623,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-454")
-sced_data = get_sced_data(thermal_sced_h5_file, "WAP_WAP_G3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "WAP_WAP_G3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4401,12 +4640,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-455")
-sced_data = get_sced_data(thermal_sced_h5_file, "WAP_WAP_G4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "WAP_WAP_G4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4417,12 +4657,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-456")
-sced_data = get_sced_data(thermal_sced_h5_file, "WAP_WAP_G5")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "WAP_WAP_G5")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4433,12 +4674,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-457")
-sced_data = get_sced_data(thermal_sced_h5_file, "WAP_WAP_G6")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "WAP_WAP_G6")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4449,12 +4691,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-458")
-sced_data = get_sced_data(thermal_sced_h5_file, "WAP_WAP_G7")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "WAP_WAP_G7")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4465,12 +4708,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-459")
-sced_data = get_sced_data(thermal_sced_h5_file, "WAP_WAP_G8")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "WAP_WAP_G8")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4481,12 +4725,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-460")
-sced_data = get_sced_data(thermal_sced_h5_file, "WAP_WAPGT_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "WAP_WAPGT_1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4497,12 +4742,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-461")
-sced_data = get_sced_data(thermal_sced_h5_file, "BVE_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BVE_CC1_1")
 HSL = 160
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4513,12 +4759,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-462")
-sced_data = get_sced_data(thermal_sced_h5_file, "BVE_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BVE_CC1_1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW6"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = 220
@@ -4530,12 +4777,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-463")
-sced_data = get_sced_data(thermal_sced_h5_file, "BVE_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BVE_CC1_2")
 HSL = 375
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4546,12 +4794,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-464")
-sced_data = get_sced_data(thermal_sced_h5_file, "BVE_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BVE_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = 425
 new_thermal = make_thermal_gen(
@@ -4562,12 +4811,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-465")
-sced_data = get_sced_data(thermal_sced_h5_file, "LHM_CVC_G4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "LHM_CVC_G4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = 50.0
 new_thermal = make_thermal_gen(
@@ -4578,12 +4828,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-466")
-sced_data = get_sced_data(thermal_sced_h5_file, "PSA_CC1_3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PSA_CC1_3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = 425
 new_thermal = make_thermal_gen(
@@ -4594,12 +4845,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-467")
-sced_data = get_sced_data(thermal_sced_h5_file, "PSA_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PSA_CC1_4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4610,12 +4862,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-468")
-sced_data = get_sced_data(thermal_sced_h5_file, "PSA_CC1_3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PSA_CC1_3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4626,12 +4879,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-469")
-sced_data = get_sced_data(thermal_sced_h5_file, "PSA_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PSA_CC1_4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4642,12 +4896,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-470")
-sced_data = get_sced_data(thermal_sced_h5_file, "PSA_CC1_3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PSA_CC1_3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4658,12 +4913,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-471")
-sced_data = get_sced_data(thermal_sced_h5_file, "PSA_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PSA_CC1_4")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4674,12 +4930,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-472")
-sced_data = get_sced_data(thermal_sced_h5_file, "CVC_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CVC_CC1_1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4690,12 +4947,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-473")
-sced_data = get_sced_data(thermal_sced_h5_file, "CVC_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CVC_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4706,12 +4964,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-474")
-sced_data = get_sced_data(thermal_sced_h5_file, "CVC_CC1_5")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CVC_CC1_5")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4722,12 +4981,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-475")
-sced_data = get_sced_data(thermal_sced_h5_file, "CVC_CC1_6")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CVC_CC1_6")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4738,12 +4998,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-477")
-sced_data = get_sced_data(thermal_sced_h5_file, "GBY_GBYGT81")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "GBY_GBYGT81")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4754,12 +5015,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-478")
-sced_data = get_sced_data(thermal_sced_h5_file, "GBY_GBYGT82")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "GBY_GBYGT82")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4770,12 +5032,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-479")
-sced_data = get_sced_data(thermal_sced_h5_file, "GBY_GBYGT83")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "GBY_GBYGT83")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4786,12 +5049,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-480")
-sced_data = get_sced_data(thermal_sced_h5_file, "GBY_GBYGT84")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "GBY_GBYGT84")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4802,12 +5066,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-481")
-sced_data = get_sced_data(thermal_sced_h5_file, "BYU_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BYU_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4818,12 +5083,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-482")
-sced_data = get_sced_data(thermal_sced_h5_file, "BYU_CC1_3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BYU_CC1_3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4834,12 +5100,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-483")
-sced_data = get_sced_data(thermal_sced_h5_file, "CALHOUN_UNIT1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CALHOUN_UNIT1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4850,12 +5117,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-484")
-sced_data = get_sced_data(thermal_sced_h5_file, "CALHOUN_UNIT2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "CALHOUN_UNIT2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4866,6 +5134,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4885,7 +5154,7 @@ remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-486")
-sced_data = get_sced_data(thermal_sced_h5_file, "SJS_SJS_G1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "SJS_SJS_G1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4896,12 +5165,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-487")
-sced_data = get_sced_data(thermal_sced_h5_file, "SJS_SJS_G2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "SJS_SJS_G2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -4912,6 +5182,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5237,7 +5508,7 @@ remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-511")
-sced_data = get_sced_data(thermal_sced_h5_file, "FTR_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FTR_CC1_1")
 HSL = 250
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -5248,12 +5519,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-512")
-sced_data = get_sced_data(thermal_sced_h5_file, "FTR_CC1_4")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FTR_CC1_4")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW8"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -5265,12 +5537,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-513")
-sced_data = get_sced_data(thermal_sced_h5_file, "FTR_CC1_9")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FTR_CC1_9")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -5281,12 +5554,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-514")
-sced_data = get_sced_data(thermal_sced_h5_file, "FTR_CC1_12")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FTR_CC1_12")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -5297,12 +5571,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-515")
-sced_data = get_sced_data(thermal_sced_h5_file, "FREC_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FREC_CC1_1")
 HSL = 175
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -5313,12 +5588,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-516")
-sced_data = get_sced_data(thermal_sced_h5_file, "FREC_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FREC_CC1_1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW2"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = 225
@@ -5330,12 +5606,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-517")
-sced_data = get_sced_data(thermal_sced_h5_file, "FREC_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FREC_CC1_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = 450
 new_thermal = make_thermal_gen(
@@ -5346,12 +5623,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-518")
-sced_data = get_sced_data(thermal_sced_h5_file, "FREC_CC2_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FREC_CC2_1")
 HSL = 180
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -5362,12 +5640,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-519")
-sced_data = get_sced_data(thermal_sced_h5_file, "FREC_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FREC_CC1_1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW2"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = 225
@@ -5379,12 +5658,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-520")
-sced_data = get_sced_data(thermal_sced_h5_file, "FREC_CC2_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "FREC_CC2_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = 450
 new_thermal = make_thermal_gen(
@@ -5395,12 +5675,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-521")
-sced_data = get_sced_data(thermal_sced_h5_file, "BBSES_UNIT1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BBSES_UNIT1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -5411,12 +5692,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-522")
-sced_data = get_sced_data(thermal_sced_h5_file, "BBSES_UNIT2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "BBSES_UNIT2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -5427,12 +5709,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-523")
-sced_data = get_sced_data(thermal_sced_h5_file, "LEG_LEG_G1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "LEG_LEG_G1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -5443,12 +5726,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-524")
-sced_data = get_sced_data(thermal_sced_h5_file, "LEG_LEG_G2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "LEG_LEG_G2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -5459,12 +5743,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-525")
-sced_data = get_sced_data(thermal_sced_h5_file, "TGCCS_CC1_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "TGCCS_CC1_1")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW4"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL_ = sced_data[sced_data.LSL .> 1, :][!, "Submitted_TPO_MW1"]
@@ -5477,12 +5762,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-526")
-sced_data = get_sced_data(thermal_sced_h5_file, "TGCCS_CC1_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "TGCCS_CC1_2")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW4"]
 HSL = maximum(HSL_[.!isnan.(HSL_)])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
@@ -5494,12 +5780,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-527")
-sced_data = get_sced_data(thermal_sced_h5_file, "TGCCS_CC1_3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "TGCCS_CC1_3")
 HSL = 700
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -5510,12 +5797,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-528")
-sced_data = get_sced_data(thermal_sced_h5_file, "TGCCS_CC1_3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "TGCCS_CC1_3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = 700
 new_thermal = make_thermal_gen(
@@ -5526,12 +5814,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-529")
-sced_data = get_sced_data(thermal_sced_h5_file, "OGSES_UNIT1A")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "OGSES_UNIT1A")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -5542,12 +5831,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-530")
-sced_data = get_sced_data(thermal_sced_h5_file, "OGSES_UNIT2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "OGSES_UNIT2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -5558,12 +5848,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-535")
-sced_data = get_sced_data(thermal_sced_h5_file, "MNSES_UNIT1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MNSES_UNIT1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -5574,12 +5865,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-536")
-sced_data = get_sced_data(thermal_sced_h5_file, "MNSES_UNIT2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MNSES_UNIT2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -5590,12 +5882,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-537")
-sced_data = get_sced_data(thermal_sced_h5_file, "MNSES_UNIT1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MNSES_UNIT1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -5606,12 +5899,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-540")
-sced_data = get_sced_data(thermal_sced_h5_file, "ATKINS_ATKINSG7")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "ATKINS_ATKINSG7")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -5622,12 +5916,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-541")
-sced_data = get_sced_data(thermal_sced_h5_file, "TNP_ONE_TNP_O_1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "TNP_ONE_TNP_O_1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -5638,12 +5933,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-542")
-sced_data = get_sced_data(thermal_sced_h5_file, "TNP_ONE_TNP_O_2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "TNP_ONE_TNP_O_2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -5654,12 +5950,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-543")
-sced_data = get_sced_data(thermal_sced_h5_file, "DANSBY_DANSBYG1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "DANSBY_DANSBYG1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -5670,12 +5967,13 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-544")
-sced_data = get_sced_data(thermal_sced_h5_file, "DANSBY_DANSBYG3")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "DANSBY_DANSBYG3")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen(
@@ -5686,6 +5984,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5750,7 +6049,7 @@ add_component!(sys, new_thermal)
 #### Manual adjustments because the quadratic cost is a bad approximation of GSREH plants
 
 gen = get_component(ThermalStandard, sys, "gen-193")
-sced_data = get_sced_data(thermal_sced_h5_file, "GRSES_UNIT1")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "GRSES_UNIT1")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen_st(
@@ -5761,12 +6060,13 @@ new_thermal = make_thermal_gen_st(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-194")
-sced_data = get_sced_data(thermal_sced_h5_file, "GRSES_UNIT2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "GRSES_UNIT2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen_st(
@@ -5777,12 +6077,13 @@ new_thermal = make_thermal_gen_st(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-476")
-sced_data = get_sced_data(thermal_sced_h5_file, "LHSES_UNIT2A")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "LHSES_UNIT2A")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen_st(
@@ -5793,12 +6094,13 @@ new_thermal = make_thermal_gen_st(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-533")
-sced_data = get_sced_data(thermal_sced_h5_file, "SCSES_UNIT1A")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "SCSES_UNIT1A")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen_st(
@@ -5809,12 +6111,13 @@ new_thermal = make_thermal_gen_st(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-534")
-sced_data = get_sced_data(thermal_sced_h5_file, "SCSES_UNIT2")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "SCSES_UNIT2")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen_st(
@@ -5825,12 +6128,13 @@ new_thermal = make_thermal_gen_st(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
 gen = get_component(ThermalStandard, sys, "gen-539")
-sced_data = get_sced_data(thermal_sced_h5_file, "TRSES_UNIT6")
+ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "TRSES_UNIT6")
 HSL = maximum(sced_data[!, "HSL"])
 LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
 new_thermal = make_thermal_gen_st(
@@ -5841,6 +6145,7 @@ new_thermal = make_thermal_gen_st(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
+    ercot_fuel = ercot_fuel,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5870,7 +6175,6 @@ end
 to_json(sys, "intermediate_sys.json", force = true)
 sys = System("intermediate_sys.json")
 set_units_base_system!(sys, "SYSTEM_BASE")
-@assert isempty(get_components(ThermalStandard, sys))
 
 # Writes a JSON with the CC constraints
 open("cc_restrictions.json", "w") do f
