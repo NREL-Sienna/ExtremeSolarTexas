@@ -630,9 +630,30 @@ function _get_coal_key(size)
     size > coal_size_lims["LARGE"] && return ("CCLIG", "SUPER")
 end
 
+function _get_key_for_missing_ercot_fuel(prime_mover, fuel, size)
+    cross_map = key_remaps[(prime_mover, fuel)]
+    if length(cross_map) > 1
+        key = size < 90 ? cross_map[1] : cross_map[2]
+    else
+        key = cross_map[1]
+    end
+    @assert isa(key, String)
+    return key
+end
+
 function _get_duration_limits(prime_mover, fuel, ercot_fuel, size)
     if ercot_fuel == "CCLIG"
         key = _get_coal_key(size)
+    elseif ercot_fuel ∈ ["CCLE90", "CCGT90"]
+        if prime_mover == "CC_CT"
+            key = size > 90 ? "SCGT90" : "SCLE90"
+        elseif prime_mover == "CC_CA"
+            key = ercot_fuel
+        else
+            @assert false prime_mover, fuel, ercot_fuel, size
+        end
+    elseif ercot_fuel === nothing
+        key = _get_key_for_missing_ercot_fuel(prime_mover, fuel, size)
     else
         key = ercot_fuel
     end
@@ -641,12 +662,27 @@ end
 
 function _get_ramp_limits(prime_mover, fuel, ercot_fuel, size)
     key = (prime_mover, fuel)
-    return ramp_limits[key]
+    lims = ramp_limits[key]
+    noise_up = round(randn()/1000;  digits = 4)
+    noise_down = round(randn()/1000;  digits = 4)
+    noise_down = abs(noise_down) > 0.1 ? 0.0 : noise_down
+    noise_up = abs(noise_up) > 0.1 ? 0.0 : noise_up
+    return (up = round(lims.up + noise_up, sigdigits = 5), down = round(lims.down + noise_down, sigdigits = 5))
 end
 
 function _get_start_time_limits(prime_mover, fuel, ercot_fuel, size)
     if ercot_fuel == "CCLIG"
         key = _get_coal_key(size)
+    elseif ercot_fuel ∈ ["CCLE90", "CCGT90"]
+        if prime_mover == "CC_CT"
+            key = size > 90 ? "SCGT90" : "SCLE90"
+        elseif prime_mover == "CC_CA"
+            key = ercot_fuel
+        else
+            @assert false prime_mover, fuel, ercot_fuel, size
+        end
+    elseif ercot_fuel === nothing
+        key = _get_key_for_missing_ercot_fuel(prime_mover, fuel, size)
     else
         key = ercot_fuel
     end
@@ -665,8 +701,8 @@ end
 function _get_power_trajectory(prime_mover, fuel, ercot_fuel, p_limits, size)
     base_values = power_trajectory[(prime_mover, fuel)]
     return (
-        startup = base_values.startup * p_limits.max,
-        shutdown = base_values.shutdown * p_limits.max,
+        startup = max(base_values.startup * p_limits.max, p_limits.min),
+        shutdown = base_values.shutdown * p_limits.max
     )
 end
 
@@ -700,7 +736,7 @@ function make_thermal_gen(
     set_fuel!(temp_gen, fuel_map[fuel])
     set_active_power_limits!(temp_gen, p_limits)
     set_reactive_power_limits!(temp_gen, q_limits)
-
+    set_time_at_status!(temp_gen, 8760)
     set_base_power!(temp_gen, base_power)
     op_cost = MultiStartCost(nothing)
 
@@ -768,6 +804,7 @@ function make_thermal_gen_nuc(
     set_time_limits!(temp_gen, (up = 8760, down = 8760))
     set_start_time_limits!(temp_gen, (hot = 100, warm = 100, cold = 100))
     set_start_types!(temp_gen, 3)
+    set_time_at_status!(temp_gen, 8760)
     set_base_power!(temp_gen, base_power)
     op_cost = MultiStartCost(nothing)
     set_start_up!(op_cost, (hot = 1e6, warm = 1e6, cold = 1e6))
@@ -808,7 +845,7 @@ function make_thermal_gen_st(
     set_fuel!(temp_gen, fuel_map[fuel])
     set_active_power_limits!(temp_gen, p_limits)
     set_reactive_power_limits!(temp_gen, q_limits)
-
+    set_time_at_status!(temp_gen, 8760)
     set_base_power!(temp_gen, base_power)
     op_cost = MultiStartCost(nothing)
 
@@ -855,8 +892,8 @@ function _rescale_power(original_gen::ThermalStandard, LSL, HSL)
     reactive_power_ratio =
         q_lims.min / gen_max_active_power, q_lims.max / gen_max_active_power
     reactive_power_limits = (
-        min = active_power_limits.min * reactive_power_ratio[1],
-        max = active_power_limits.max * reactive_power_ratio[2],
+        min = round(active_power_limits.min * reactive_power_ratio[1], sigdigits = 2),
+        max = round(active_power_limits.max * reactive_power_ratio[2], sigdigits = 2),
     )
     rating = sqrt(
         active_power_limits.max^2 +
@@ -864,7 +901,7 @@ function _rescale_power(original_gen::ThermalStandard, LSL, HSL)
     )
     @assert rating >= active_power_limits.max
     @assert new_base_power > rating
-    return active_power_limits, reactive_power_limits, rating, new_base_power
+    return active_power_limits, reactive_power_limits, round(rating, sigdigits = 2),new_base_power
 end
 
 function make_storage(original_gen::ThermalStandard; name)

@@ -307,25 +307,48 @@ SCED_keys = [
     "Min_Gen_Cost"
 ]
 
-duration_lims = Dict(
-    ("ST", "LIG") => (up = 12.0, down = 6.0),
-    ("ST", "SUB") => (up = 12.0, down = 6.0),
-    ("CC_CA", "NG") => (up = 4.0, down = 2.0),
-    ("CC_CT", "NG") => (up = 0, down = 0),
-    ("GT", "NG") => (up = 0, down = 0),
-    ("ST", "NG") => (up = 2.0, down = 2.0),
+coal_size_lims = Dict(
+    "SMALL" => 300,
+    "LARGE" => 900,
+    #SUPER" => larger than 900
 )
 
-# Taken from here https://www.irena.org/-/media/Files/IRENA/Agency/Publication/2019/Sep/IRENA_Flexibility_in_CPPs_2019.pdf?la=en&hash=AF60106EA083E492638D8FA9ADF7FD099259F5A1
-# Values in hours
+key_remaps = Dict(
+    ("ST", "LIG") => ["CCLIG"],
+    ("ST", "SUB") => ["CCLIG"],
+    ("CC_CA", "NG") => ["CCLE90", "CCGT90"],
+    ("CC_CT", "NG") => ["SCLE90", "SCGT90"],
+    # Average of the GT
+    ("GT", "NG") => ["SCLE90", "SCGT90"],
+    ("ST", "NG") => ["GSREH"],
+)
+
+# Adapted from https://www.wecc.org/Reliability/1r10726%20WECC%20Update%20of%20Reliability%20and%20Cost%20Impacts%20of%20Flexible%20Generation%20on%20Fossil.pdf Table 2
+duration_lims = Dict(
+    ("CCLIG", "SMALL") => (up = 12.0, down = 6.0), # Coal and Lignite -> WECC (1) Small coal
+    ("CCLIG", "LARGE") => (up = 12.0, down = 8.0), # WECC (2) Large coal
+    ("CCLIG", "SUPER") => (up = 24.0, down = 8.0), # WECC (3) Super-critical coal
+    "CCGT90" => (up = 2.0, down = 6.0),    # Combined cycle greater than 90 MW -> WECC (7) Typical CC
+    "CCLE90" => (up = 2.0, down = 4.0), # Combined cycle less than 90 MW -> WECC (7) Typical CC, modified
+    "GSNONR" => (up = 2.0, down = 4.0), # Gas steam non-reheat -> WECC (4) Gas-fired steam (sub- and super-critical)
+    "GSREH" => (up = 2.0, down = 4.0), # Gas steam reheat boiler -> WECC (4) Gas-fired steam (sub- and super-critical)
+    "GSSUP" => (up = 2.0, down = 4.0), # Gas-steam supercritical -> WECC (4) Gas-fired steam (sub- and super-critical)
+    "SCGT90" => (up = 1.0, down = 1.0), # Simple-cycle greater than 90 MW -> WECC (5) Large-frame Gas CT
+    "SCLE90" => (up = 1.0, down = 0.0), # Simple-cycle less than 90 MW -> WECC (6) Aero derivative CT
+)
+
+# Adapted from https://www.nrel.gov/docs/fy12osti/55433.pdf Table 1-1
 start_time_limits = Dict(
-    ("ST", "LIG") => (hot = 1.3, warm = 2.0, cold = 10.0),
-    ("ST", "SUB") => (hot = 1.25, warm = 4.0, cold = 10.0),
-    ("CC_CA", "NG") => (hot = 1.0, warm = 1.0, cold = 1.0),
-    ("CC_CT", "NG") => (hot = 1.0, warm = 2.0, cold = 4.0),
-    ("GT", "NG") => (hot = 0.0, warm = 0.0, cold = 1.0),
-    # not present in the PDF file
-    ("ST", "NG") => (hot = 0.0, warm = 1.0, cold = 2.0),
+    ("CCLIG", "SMALL") => (hot = 0.0, warm = 4.0, cold = 24.0),
+    ("CCLIG", "LARGE") => (hot = 0.0, warm = 12.0, cold = 40.0),
+    ("CCLIG", "SUPER") => (hot = 0.0, warm = 12.0, cold = 72.0),
+    "CCGT90" => (hot = 0.0, warm = 8.0, cold = 24.0),
+    "CCLE90" => (hot = 0.0, warm = 5.0, cold = 24.0),
+    "GSNONR" => (hot = 0.0, warm = 4.0, cold = 48.0),
+    "GSREH" => (hot = 0.0, warm = 4.0, cold = 48.0),
+    "GSSUP" => (hot = 0.0, warm = 4.0, cold = 48.0),
+    "SCGT90" => (hot = 0.0, warm = 0.0, cold = 1.0),
+    "SCLE90" => (hot = 0.0, warm = 0.0, cold = 1.0),
 )
 
 start_types = Dict(
@@ -335,14 +358,14 @@ start_types = Dict(
     ("CC_CT", "NG") => 1,
     ("GT", "NG") => 1,
     # not present in the PDF file
-    ("ST", "NG") => 2,
+    ("ST", "NG") => 2, # 2 is an initial value, but base it on cost
 )
 
 power_trajectory = Dict(
     ("ST", "LIG") => (startup = 0.5, shutdown = 0.5),
     ("ST", "SUB") => (startup = 0.5, shutdown = 0.5),
-    ("CC_CA", "NG") => (startup = 1.0, shutdown = 0.0),
-    ("CC_CT", "NG") => (startup = 0.5, shutdown = 0.5),
+    ("CC_CA", "NG") => (startup = 0.5, shutdown = 0.5),
+    ("CC_CT", "NG") => (startup = 1.0, shutdown = 0.0),
     ("GT", "NG") => (startup = 1.0, shutdown = 0.0),
     ("ST", "NG") => (startup = 0.8, shutdown = 0.5),
 )
