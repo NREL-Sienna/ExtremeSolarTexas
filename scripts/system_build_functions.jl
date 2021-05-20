@@ -625,24 +625,26 @@ function get_cost_data_from_gen(gen, name, LSL, HSL)
 end
 
 function _get_coal_key(size)
-    size <= coal_size_lims["SMALL"] && return ("CCLIG", "SMALL")
-    coal_size_lims["SMALL"] < size < coal_size_lims["LARGE"] && return ("CCLIG", "LARGE")
-    size > coal_size_lims["LARGE"] && return ("CCLIG", "SUPER")
+    size <= coal_size_lims["SMALL"] && return ("CLLIG", "SMALL")
+    coal_size_lims["SMALL"] < size < coal_size_lims["LARGE"] && return ("CLLIG", "LARGE")
+    size > coal_size_lims["LARGE"] && return ("CLLIG", "SUPER")
 end
 
 function _get_key_for_missing_ercot_fuel(prime_mover, fuel, size)
     cross_map = key_remaps[(prime_mover, fuel)]
     if length(cross_map) > 1
         key = size < 90 ? cross_map[1] : cross_map[2]
+    elseif cross_map[1] == "CLLIG"
+        key = _get_coal_key(size)
     else
         key = cross_map[1]
     end
-    @assert isa(key, String)
+
     return key
 end
 
 function _get_duration_limits(prime_mover, fuel, ercot_fuel, size)
-    if ercot_fuel == "CCLIG"
+    if ercot_fuel == "CLLIG"
         key = _get_coal_key(size)
     elseif ercot_fuel ∈ ["CCLE90", "CCGT90"]
         if prime_mover == "CC_CT"
@@ -671,7 +673,7 @@ function _get_ramp_limits(prime_mover, fuel, ercot_fuel, size)
 end
 
 function _get_start_time_limits(prime_mover, fuel, ercot_fuel, size)
-    if ercot_fuel == "CCLIG"
+    if ercot_fuel == "CLLIG"
         key = _get_coal_key(size)
     elseif ercot_fuel ∈ ["CCLE90", "CCGT90"]
         if prime_mover == "CC_CT"
@@ -692,7 +694,7 @@ end
 function _get_start_types(prime_mover, fuel, ercot_fuel, size, start_up)
     key = (prime_mover, fuel)
     if key == ("ST", "NG")
-        return sum([v > 0.0 for v in start_up])
+        return max(1, sum([v > 0.0 for v in start_up]))
     else
         return start_types[key]
     end
@@ -726,11 +728,11 @@ function make_thermal_gen(
     set_bus!(temp_gen, get_bus(original_gen))
     original_set_point = get_active_power(original_gen) / base_power
     set_point = original_set_point > p_limits.max ? p_limits.max : original_set_point
-    set_active_power!(temp_gen, set_point)
+    set_active_power!(temp_gen, max(set_point, p_limits.min))
     set_status!(temp_gen, get_active_power(original_gen) > 0.0)
     original_set_point = get_reactive_power(original_gen) / base_power
     set_point = original_set_point > q_limits.max ? q_limits.max : original_set_point
-    set_reactive_power!(temp_gen, set_point)
+    set_reactive_power!(temp_gen, max(set_point, q_limits.min))
     set_rating!(temp_gen, rating)
     set_prime_mover!(temp_gen, prime_mover_map[prime_mover])
     set_fuel!(temp_gen, fuel_map[fuel])
@@ -791,8 +793,7 @@ function make_thermal_gen_nuc(
     set_available!(temp_gen, true)
     set_status!(temp_gen, true)
     set_bus!(temp_gen, get_bus(original_gen))
-    set_point = original_set_point > p_limits.max ? p_limits.max : original_set_point
-    set_active_power!(temp_gen, set_point)
+    set_active_power!(temp_gen, p_limits.max)
     set_reactive_power!(temp_gen, 0.0)
     set_rating!(temp_gen, rating)
     set_prime_mover!(temp_gen, prime_mover_map[prime_mover])
