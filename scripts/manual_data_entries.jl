@@ -314,8 +314,8 @@ coal_size_lims = Dict(
 )
 
 key_remaps = Dict(
-    ("ST", "LIG") => ["CCLIG"],
-    ("ST", "SUB") => ["CCLIG"],
+    ("ST", "LIG") => ["CLLIG"],
+    ("ST", "SUB") => ["CLLIG"],
     ("CC_CA", "NG") => ["CCLE90", "CCGT90"],
     ("CC_CT", "NG") => ["SCLE90", "SCGT90"],
     # Average of the GT
@@ -325,9 +325,9 @@ key_remaps = Dict(
 
 # Adapted from https://www.wecc.org/Reliability/1r10726%20WECC%20Update%20of%20Reliability%20and%20Cost%20Impacts%20of%20Flexible%20Generation%20on%20Fossil.pdf Table 2
 duration_lims = Dict(
-    ("CCLIG", "SMALL") => (up = 12.0, down = 6.0), # Coal and Lignite -> WECC (1) Small coal
-    ("CCLIG", "LARGE") => (up = 12.0, down = 8.0), # WECC (2) Large coal
-    ("CCLIG", "SUPER") => (up = 24.0, down = 8.0), # WECC (3) Super-critical coal
+    ("CLLIG", "SMALL") => (up = 12.0, down = 6.0), # Coal and Lignite -> WECC (1) Small coal
+    ("CLLIG", "LARGE") => (up = 12.0, down = 8.0), # WECC (2) Large coal
+    ("CLLIG", "SUPER") => (up = 24.0, down = 8.0), # WECC (3) Super-critical coal
     "CCGT90" => (up = 2.0, down = 6.0),    # Combined cycle greater than 90 MW -> WECC (7) Typical CC
     "CCLE90" => (up = 2.0, down = 4.0), # Combined cycle less than 90 MW -> WECC (7) Typical CC, modified
     "GSNONR" => (up = 2.0, down = 4.0), # Gas steam non-reheat -> WECC (4) Gas-fired steam (sub- and super-critical)
@@ -339,9 +339,9 @@ duration_lims = Dict(
 
 # Adapted from https://www.nrel.gov/docs/fy12osti/55433.pdf Table 1-1
 start_time_limits = Dict(
-    ("CCLIG", "SMALL") => (hot = 0.0, warm = 4.0, cold = 24.0),
-    ("CCLIG", "LARGE") => (hot = 0.0, warm = 12.0, cold = 40.0),
-    ("CCLIG", "SUPER") => (hot = 0.0, warm = 12.0, cold = 72.0),
+    ("CLLIG", "SMALL") => (hot = 0.0, warm = 4.0, cold = 24.0),
+    ("CLLIG", "LARGE") => (hot = 0.0, warm = 12.0, cold = 40.0),
+    ("CLLIG", "SUPER") => (hot = 0.0, warm = 12.0, cold = 72.0),
     "CCGT90" => (hot = 0.0, warm = 8.0, cold = 24.0),
     "CCLE90" => (hot = 0.0, warm = 5.0, cold = 24.0),
     "GSNONR" => (hot = 0.0, warm = 4.0, cold = 48.0),
