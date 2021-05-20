@@ -30,7 +30,7 @@ spin_dict = Dict{String, Tuple}()
 nonspin_dict = Dict{String, Tuple}()
 for nemonic_name in sced_names
     try
-        sced_data = get_sced_data(thermal_sced_h5_file, nemonic_name)
+        _, sced_data = get_sced_data(thermal_sced_h5_file, nemonic_name)
         sced_data_reg =
             sced_data[occursin.("ONREG", sced_data."Telemetered_Resource_Status"), :]
         total_points =
