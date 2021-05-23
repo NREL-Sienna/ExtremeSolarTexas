@@ -197,7 +197,7 @@ new_buses = [
 day_count = 365
 initial_time = DateTime("2018-01-01")
 
-resolution = Hour(1)
+da_resolution = Hour(1)
 real_time_resolution = Minute(5)
 hour_ahead_resolution = Minute(5)
 
