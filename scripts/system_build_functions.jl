@@ -532,7 +532,7 @@ function make_wind_units(system, device::PSY.RenewableDispatch)
 
     # Temporary while https://github.com/NREL-SIIP/PowerSystems.jl/pull/765 gets merged
     set_base_power!(device, round(device.base_power))
-    set_rating!(device, 1.3*sqrt(device.reactive_power_limits.max^2 + device.rating^2))
+    set_rating!(device, sqrt(device.reactive_power_limits.max^2 + device.rating^2))
 end
 
 function make_start_up_costs(sced_data)
@@ -719,7 +719,7 @@ function _get_power_trajectory(prime_mover, fuel, ercot_fuel, p_limits, size)
     base_values = power_trajectory[(prime_mover, fuel)]
     return (
         startup = max(base_values.startup * p_limits.max, p_limits.min),
-        shutdown = base_values.shutdown * p_limits.max
+        shutdown = max(base_values.shutdown * p_limits.max, p_limits.min)
     )
 end
 
@@ -923,6 +923,13 @@ end
 function make_storage(original_gen::ThermalStandard; name)
     temp = GenericBattery(nothing)
     base_power = get_base_power(original_gen)
+    if base_power < 10
+        base_power = base_power * 50
+    elseif base_power < 100
+        base_power = base_power * 10
+    else
+        @info name base power
+    end
     set_base_power!(temp, base_power)
     set_name!(temp, replace(name, " " => "_"))
     set_available!(temp, true)
@@ -933,7 +940,7 @@ function make_storage(original_gen::ThermalStandard; name)
     set_initial_energy!(temp, 0.0)
     set_state_of_charge_limits!(temp, (min = 0.0, max = gen_max_active_power * c_rating))
     set_active_power!(temp, get_active_power(original_gen) / base_power)
-    set_reactive_power!(temp, get_reactive_power(original_gen) / base_power)
+    set_reactive_power!(temp, 0.0)
     set_input_active_power_limits!(temp, (min = 0.0, max = gen_max_active_power))
     set_output_active_power_limits!(temp, (min = 0.0, max = gen_max_active_power))
     eff_data = (in = 0.83 + 0.05 * rand(), out = 0.91 - 0.05 * rand())

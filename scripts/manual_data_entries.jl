@@ -365,8 +365,8 @@ power_trajectory = Dict(
     ("ST", "LIG") => (startup = 0.5, shutdown = 0.5),
     ("ST", "SUB") => (startup = 0.5, shutdown = 0.5),
     ("CC_CA", "NG") => (startup = 0.5, shutdown = 0.5),
-    ("CC_CT", "NG") => (startup = 1.0, shutdown = 0.0),
-    ("GT", "NG") => (startup = 1.0, shutdown = 0.0),
+    ("CC_CT", "NG") => (startup = 1.0, shutdown = 1.0),
+    ("GT", "NG") => (startup = 1.0, shutdown = 1.0),
     ("ST", "NG") => (startup = 0.8, shutdown = 0.5),
 )
 
