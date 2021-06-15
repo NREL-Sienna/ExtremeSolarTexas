@@ -154,6 +154,14 @@ regdn_reserve_ts = Vector{Float64}(undef, day_count * 25)
 spin_ts = Vector{Float64}(undef, day_count * 25)
 nonspin_ts = Vector{Float64}(undef, day_count * 25)
 
+solar_gens = get_components(
+            RenewableGen,
+            sys_base,
+            x -> get_prime_mover(x) == PrimeMovers.PVe,
+        )
+
+total_solar = sum(get_max_active_power.(solar_gens))*0.1 # total in GW.
+
 for (ix, datetime) in enumerate(date_range)
     regup_reserve_ts[ix] = regup_reserve[hour(datetime) + 1, month(datetime) + 1] + regup_reserve_adj_solar[hour(datetime) + 1, month(datetime) + 1].*total_solar
     regdn_reserve_ts[ix] = regdn_reserve[hour(datetime) + 1, month(datetime) + 1] + regdn_reserve_adj_solar[hour(datetime) + 1, month(datetime) + 1].*total_solar
@@ -192,7 +200,7 @@ for ((name, T), ts) in reserve_map
     add_time_series!(sys_base, res, forecast_data)
 end
 
-to_json(sys, "/Users/jdlara/Dropbox/texas_data/HA_sys.json", force = true)
+to_json(sys_base, "/Users/jdlara/Dropbox/texas_data/HA_sys.json", force = true)
 
 ####################### Probabilistic Forecast for the Solar Area ##########################
 area_forecast = h5open("input_data/Solar/ERCOT132.h5", "r") do file
@@ -212,6 +220,6 @@ forecast_data = Probabilistic(
     data = hour_ahead_forecast,
     percentiles = collect(1:99),
 )
-add_time_series!(sys, get_component(Area, sys, "1"), forecast_data)
+add_time_series!(sys_base, get_component(Area, sys, "1"), forecast_data)
 
-to_json(sys, "/Users/jdlara/Dropbox/Code/MultiStageCVAR/data/HA_sys.json", force = true)
+to_json(sys_base, "/Users/jdlara/Dropbox/Code/MultiStageCVAR/data/HA_sys.json", force = true)
