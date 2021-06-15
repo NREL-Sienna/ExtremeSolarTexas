@@ -530,9 +530,6 @@ function make_wind_units(system, device::PSY.RenewableDispatch)
         end
     end
 
-    # Temporary while https://github.com/NREL-SIIP/PowerSystems.jl/pull/765 gets merged
-    set_base_power!(device, round(device.base_power))
-    set_rating!(device, sqrt(device.reactive_power_limits.max^2 + device.rating^2))
 end
 
 function make_start_up_costs(sced_data)
