@@ -88,17 +88,18 @@ reg_up_names = [k for (k, v) in reg_dict if v.up > 0.2]
 spin_names = [k for (k, v) in spin_dict if v[3] > 0 && k ∉ reg_up_names]
 
 reserve_map = Dict(
-    ("REG_UP", VariableReserve{ReserveUp}, reg_up_names) => 0.0,
-    ("SPIN", VariableReserve{ReserveUp}, spin_names) => 0.0,
-    ("REG_DN", VariableReserve{ReserveDown}, reg_down_names) => 0.0,
-    ("NONSPIN", VariableReserveNonSpinning, non_spin_names) => 0.0,
+    ("REG_UP", VariableReserve{ReserveUp}, reg_up_names, 1) => 0.0,
+    ("SPIN", VariableReserve{ReserveUp}, spin_names, 10) => 0.0,
+    ("REG_DN", VariableReserve{ReserveDown}, reg_down_names, 1) => 0.0,
+    ("NONSPIN", VariableReserveNonSpinning, non_spin_names, 30) => 0.0,
 )
 
-for ((name, T, gens), ts) in reserve_map
+for ((name, T, gens, time_frame), ts) in reserve_map
     peak = maximum(ts)
     res = T(nothing)
     set_name!(res, name)
     set_requirement!(res, peak / 100.0)
+    set_time_frame!(res, time_frame)
     set_available!(res, true)
     gen_names = [v for (k, v) in names_map if k ∈ gens]
     components = get_components(ThermalMultiStart, system, x -> get_name(x) ∈ gen_names)
