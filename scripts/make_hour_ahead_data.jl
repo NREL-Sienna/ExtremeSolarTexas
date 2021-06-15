@@ -5,36 +5,36 @@ include("file_pointers.jl")
 include("system_build_functions.jl")
 include("manual_data_entries.jl")
 
-sys = System("/Users/jdlara/Dropbox/Code/MultiStageCVAR/data/HA_sys.json")
-clear_time_series!(sys)
-PSY.IS.assign_new_uuid!(sys)
-set_units_base_system!(sys, "SYSTEM_BASE")
+sys_base = System("base_sys.json")
+clear_time_series!(sys_base)
+PSY.IS.assign_new_uuid!(sys_base)
+set_units_base_system!(sys_base, "SYSTEM_BASE")
 
 ####################################### Load Time Series ###################################
 h5open(perfect_load_time_series_realtime, "r") do file
-    for area in get_components(Area, sys)
+    for area in get_components(Area, sys_base)
         hour_ahead_forecast = Dict{Dates.DateTime, Vector{Float64}}()
-        area_name = get_name(area)
-        @show group_name = area_name_number_map[area_name]
+        @show group_name = get_name(area)
+        loads = get_components(PowerLoad, sys_base, x -> get_area(get_bus(x)) == area)
+        peak_area_load = sum(get_max_active_power.(loads))
+        @assert get_peak_active_power(area) == peak_area_load
         full_table = read(file, group_name)
         for i in 22:-1:0
             full_table[105120 - i, :] = full_table[105120 - 23, :]
         end
         @assert !all(isnan.(full_table))
-        area_peak_load = maximum(full_table[:, 1])
-        set_peak_active_power!(area, area_peak_load)
         for ix in 1:8760
             ix_ = 1 + (ix - 1) * 12
             hour_ahead_forecast[initial_time + (ix - 1) * hour_ahead_interval] =
-                full_table[ix_, :] ./ area_peak_load
+                full_table[ix_, :] ./ (peak_area_load*get_base_power(sys_base))
         end
         forecast_data = Deterministic(
             name = "max_active_power",
             resolution = hour_ahead_resolution,
             data = hour_ahead_forecast,
+            scaling_factor_multiplier = get_max_active_power
         )
-        loads = collect(get_components(PowerLoad, sys, x -> get_area(get_bus(x)) == area))
-        add_time_series!(sys, vcat(loads, area), forecast_data)
+        add_time_series!(sys_base, vcat(collect(loads), area), forecast_data)
     end
 end
 
@@ -55,6 +55,7 @@ h5open(hydro_time_series_ha, "r") do file
             name = "max_active_power",
             resolution = Minute(5),
             data = day_ahead_forecast,
+            scaling_factor_multiplier = get_max_active_power
         )
         add_time_series!(sys, gen, forecast_data)
         ap = get_active_power(gen)
@@ -73,7 +74,6 @@ h5open(wind_time_series_ha, "r") do file
         day_ahead_wind_forecast = Dict{Dates.DateTime, Vector{Float64}}()
         full_table = max.(0.0, read(file, v))
         area_peak_wind = maximum(full_table)
-        set_peak_active_power!(area, area_peak_wind)
         for ix in 1:size(full_table)[2]
             day_ahead_wind_forecast[initial_time + (ix - 1) * hour_ahead_interval] =
                 full_table[:, ix] ./ area_peak_wind
@@ -82,6 +82,7 @@ h5open(wind_time_series_ha, "r") do file
             name = "max_active_power",
             resolution = Minute(5),
             data = day_ahead_wind_forecast,
+            scaling_factor_multiplier = get_max_active_power
         )
         wind_gens = get_components(
             RenewableGen,
@@ -118,7 +119,7 @@ for gen in get_components(RenewableGen, sys, x -> get_prime_mover(x) == PrimeMov
     set_rating!(gen, peak_power / get_base_power(gen))
     normalized_power = power_output ./ maximum(power_output)
     hour_ahead_forecast = Dict{Dates.DateTime, Vector{Float64}}()
-    for ix in 1:(365 * 24)
+    for ix in 1:(day_count * 24)
         ix_ = 1 + (ix - 1) * 12
         hour_ahead_forecast[initial_time + (ix - 1) * hour_ahead_interval] =
             normalized_power[ix_, :]
@@ -127,6 +128,7 @@ for gen in get_components(RenewableGen, sys, x -> get_prime_mover(x) == PrimeMov
         name = "max_active_power",
         resolution = hour_ahead_resolution,
         data = hour_ahead_forecast,
+        scaling_factor_multiplier = get_max_active_power
     )
     add_time_series!(sys, gen, forecast_data)
 end
@@ -136,23 +138,30 @@ for g in get_components(RenewableGen, sys)
 end
 
 ################# Reserve Requirements Time Series ################################
-regup_reserve = CSV.read(reg_up_reserve, DataFrame)
-regdn_reserve = CSV.read(reg_dn_reserve, DataFrame)
+regup_reserve = CSV.read(reg_up_reserve_2016, DataFrame)
+regdn_reserve = CSV.read(reg_dn_reserve_2016, DataFrame)
 spin = CSV.read(spin_reserve, DataFrame)
-nonspin = CSV.read(nonspin_reserve, DataFrame)
+nonspin = CSV.read(nonspin_reserve_2016, DataFrame)
 
-date_range = range(DateTime("2018-01-01T00:00:00"), step = Hour(1), length = 365 * 25)
+regup_reserve = CSV.read(reg_up_reserve_2016, DataFrame)
+regdn_reserve = CSV.read(reg_dn_reserve_2016, DataFrame)
+spin = CSV.read(spin_reserve, DataFrame)
+nonspin_adj_solar = CSV.read(nonspin_adjustment_solar, DataFrame)
+regup_reserve_adj_solar = CSV.read(reg_up_adjustment_solar, DataFrame)
+regdn_reserve_adj_solar = CSV.read(reg_dn_adjustment_solar, DataFrame)
 
-regup_reserve_ts = Vector{Float64}(undef, 365 * 25)
-regdn_reserve_ts = Vector{Float64}(undef, 365 * 25)
-spin_ts = Vector{Float64}(undef, 365 * 25)
-nonspin_ts = Vector{Float64}(undef, 365 * 25)
+date_range = range(DateTime("2018-01-01T00:00:00"), step = Hour(1), length = day_count * 25)
+
+regup_reserve_ts = Vector{Float64}(undef, day_count * 25)
+regdn_reserve_ts = Vector{Float64}(undef, day_count * 25)
+spin_ts = Vector{Float64}(undef, day_count * 25)
+nonspin_ts = Vector{Float64}(undef, day_count * 25)
 
 for (ix, datetime) in enumerate(date_range)
-    regup_reserve_ts[ix] = regup_reserve[hour(datetime) + 1, month(datetime) + 1]
-    regdn_reserve_ts[ix] = regdn_reserve[hour(datetime) + 1, month(datetime) + 1]
+    regup_reserve_ts[ix] = regup_reserve[hour(datetime) + 1, month(datetime) + 1] + regup_reserve_adj_solar[hour(datetime) + 1, month(datetime) + 1].*total_solar
+    regdn_reserve_ts[ix] = regdn_reserve[hour(datetime) + 1, month(datetime) + 1] + regdn_reserve_adj_solar[hour(datetime) + 1, month(datetime) + 1].*total_solar
     spin_ts[ix] = spin[hour(datetime) + 1, month(datetime) + 1]
-    nonspin_ts[ix] = nonspin[hour(datetime) + 1, month(datetime) + 1]
+    nonspin_ts[ix] = nonspin[hour(datetime) + 1, month(datetime) + 1] + nonspin_adj_solar[hour(datetime) + 1, month(datetime) + 1].*total_solar
 end
 
 reserve_map = Dict(
@@ -167,8 +176,8 @@ for ((name, T), ts) in reserve_map
     hour_ahead_forecast = Dict{Dates.DateTime, Vector{Float64}}()
     for current_ix in 1:(day_count * 24)
         forecast = vcat(
-            regup_reserve_ts[current_ix] * ones(12),
-            regup_reserve_ts[current_ix + 1] * ones(12),
+            ts[current_ix] * ones(12),
+            ts[current_ix + 1] * ones(12),
         )
         @assert !all(isnan.(forecast))
         @assert length(forecast) == hour_ahead_horizon
@@ -179,9 +188,10 @@ for ((name, T), ts) in reserve_map
         name = "requirement",
         resolution = hour_ahead_resolution,
         data = hour_ahead_forecast,
+        scaling_factor_multiplier = get_requirement
     )
     res = get_component(T, sys, name)
-    set_requirement!(res, peak/100)
+    set_requirement!(res, peak / 100)
     add_time_series!(sys, res, forecast_data)
 end
 
@@ -191,7 +201,7 @@ area_forecast = h5open("input_data/Solar/ERCOT132.h5", "r") do file
 end
 area_forecast = vcat(area_forecast, area_forecast[(end - 59):end, :, :])
 hour_ahead_forecast = Dict{Dates.DateTime, Matrix{Float64}}()
-for ix in 1:(365 * 24)
+for ix in 1:(day_count * 24)
     ix_ = 1 + (ix - 1) * 12
     hour_ahead_forecast[initial_time + (ix - 1) * hour_ahead_interval] =
         area_forecast[ix_, :, :]

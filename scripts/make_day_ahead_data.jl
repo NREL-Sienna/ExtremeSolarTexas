@@ -17,16 +17,11 @@ for area in get_components(Area, sys_base)
         @show group_name = get_name(area)
         loads = get_components(PowerLoad, sys_base, x -> get_area(get_bus(x)) == area)
         peak_area_load = sum(get_max_active_power.(loads))
+        @assert get_peak_active_power(area) == peak_area_load
         full_table = read(file, group_name)
-        ts_area_peak_load = maximum(full_table[:, 1])
-        load_multiplier = 1.01*max(ts_area_peak_load/(get_base_power(sys_base)*peak_area_load), 1.0)
         for ix in 1:size(full_table)[1]
             day_ahead_load_forecast[initial_time + (ix - 1) * da_interval] =
-                full_table[ix, :] ./ ts_area_peak_load
-        end
-        for l in loads
-            set_max_active_power!(l, l.max_active_power*load_multiplier)
-            set_max_reactive_power!(l, l.max_reactive_power*load_multiplier)
+                full_table[ix, :] ./ (peak_area_load*get_base_power(sys_base))
         end
         forecast_data = Deterministic(
             name = "max_active_power",
@@ -34,8 +29,6 @@ for area in get_components(Area, sys_base)
             data = day_ahead_load_forecast,
             scaling_factor_multiplier = get_max_active_power
         )
-        @assert sum(get_max_active_power.(loads)) >= ts_area_peak_load/get_base_power(sys_base) group_name
-        set_peak_active_power!(area, sum(get_max_active_power.(loads)))
         add_time_series!(sys_base, vcat(collect(loads), area), forecast_data)
     end
 end
@@ -76,7 +69,6 @@ h5open(wind_time_series_da, "r") do file
         day_ahead_wind_forecast = Dict{Dates.DateTime, Vector{Float64}}()
         full_table = max.(0.0, read(file, v))
         area_peak_wind = maximum(full_table)
-        set_peak_active_power!(area, area_peak_wind)
         for ix in 1:size(full_table)[2]
             day_ahead_wind_forecast[initial_time + (ix - 1) * da_interval] =
                 full_table[:, ix] ./ area_peak_wind

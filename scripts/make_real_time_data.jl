@@ -5,22 +5,23 @@ include("file_pointers.jl")
 include("system_build_functions.jl")
 include("manual_data_entries.jl")
 
-sys = System("/Users/jdlara/Dropbox/Code/MultiStageCVAR/data/RT_sys.json")
-clear_time_series!(sys)
-PSY.IS.assign_new_uuid!(sys)
-set_units_base_system!(sys, "SYSTEM_BASE")
+sys_base = System("base_sys.json")
+clear_time_series!(sys_base)
+PSY.IS.assign_new_uuid!(sys_base)
+set_units_base_system!(sys_base, "SYSTEM_BASE")
 
 ####################################### Load Time Series ###################################
 h5open(perfect_load_time_series_realtime, "r") do file
-    for area in get_components(Area, sys)
+    for area in get_components(Area, sys_base)
         real_time_load_forecast = Dict{Dates.DateTime, Vector{Float64}}()
-        @show area_name = get_name(area)
-        group_name = area_name_number_map[area_name]
+        @show group_name = get_name(area)
+        loads = get_components(PowerLoad, sys_base, x -> get_area(get_bus(x)) == area)
+        peak_area_load = sum(get_max_active_power.(loads))
+        @assert get_peak_active_power(area) == peak_area_load
         full_table = read(file, group_name)
-        area_peak_load = maximum(full_table[:, 1])
         for ix in 1:size(full_table)[1]
             real_time_load_forecast[initial_time + (ix - 1) * real_time_interval] =
-                full_table[ix, :] ./ area_peak_load
+                full_table[ix, :] ./(peak_area_load*get_base_power(sys_base))
         end
         forecast_data = Deterministic(
             name = "max_active_power",
@@ -28,8 +29,7 @@ h5open(perfect_load_time_series_realtime, "r") do file
             data = real_time_load_forecast,
             scaling_factor_multiplier = get_max_active_power
         )
-        loads = collect(get_components(PowerLoad, sys, x -> get_area(get_bus(x)) == area))
-        add_time_series!(sys, vcat(loads, area), forecast_data)
+        add_time_series!(sys_base, vcat(collect(loads), area), forecast_data)
     end
 end
 
