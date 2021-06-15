@@ -526,6 +526,7 @@ function make_wind_units(system, device::PSY.RenewableDispatch)
         @show name = "$(plant_name)_$i"
         if get_component(RenewableDispatch, system, name) === nothing
             set_name!(system, device, name)
+            set_available!(device, true)
             break
         end
     end
