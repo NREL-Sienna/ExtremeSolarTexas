@@ -597,6 +597,8 @@ include("wind_processing.jl")
 include("thermal_processing.jl")
 include("add_services.jl")
 
+to_json(sys, "intermediate_sys.json", force = true)
+
 write_lines_geo_data(sys, "line_coords_modified")
 write_gen_buses_geo_data(sys, "bus_gens_coords_modified")
 

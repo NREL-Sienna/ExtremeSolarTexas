@@ -28,6 +28,8 @@ perfect_load_time_series_realtime =
 
 solar_time_series = joinpath(SOURCE_DATA_DIR, "Solar", "DA_time_series_files")
 
+hydro_time_series = joinpath(SOURCE_DATA_DIR, "Hydropower","HYDRO")
+
 hydro_time_series_da = joinpath(SOURCE_DATA_DIR, "Hydropower", "hydro_power_da.h5")
 hydro_time_series_ha = joinpath(SOURCE_DATA_DIR, "Hydropower", "hydro_power_ha.h5")
 hydro_time_series_rt = joinpath(SOURCE_DATA_DIR, "Hydropower", "hydro_power_rt.h5")

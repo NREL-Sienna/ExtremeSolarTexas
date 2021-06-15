@@ -40,11 +40,9 @@ h5open(hydro_time_series_da, "r") do file
         day_ahead_forecast = Dict{Dates.DateTime, Vector{Float64}}()
         bus_name = get_name(get_bus(gen))
         full_table = read(file, bus_name)
-        gen_peak = maximum(full_table)
-        @assert gen_peak > 0
         for ix in 1:size(full_table)[2]
             day_ahead_forecast[initial_time + (ix - 1) * da_interval] =
-                full_table[:, ix] ./ gen_peak
+                full_table[:, ix]
         end
         forecast_data = Deterministic(
             name = "max_active_power",
@@ -68,10 +66,8 @@ h5open(wind_time_series_da, "r") do file
         area = get_component(Area, sys_base, k)
         day_ahead_wind_forecast = Dict{Dates.DateTime, Vector{Float64}}()
         full_table = max.(0.0, read(file, v))
-        area_peak_wind = maximum(full_table)
         for ix in 1:size(full_table)[2]
-            day_ahead_wind_forecast[initial_time + (ix - 1) * da_interval] =
-                full_table[:, ix] ./ area_peak_wind
+            day_ahead_wind_forecast[initial_time + (ix - 1) * da_interval] = full_table[:, ix]
         end
         forecast_data = Deterministic(
             name = "max_active_power",

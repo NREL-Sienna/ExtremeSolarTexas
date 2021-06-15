@@ -4,7 +4,7 @@ include("manual_data_entries.jl")
 
 configure_logging(file_level = Logging.Info, console_level = Logging.Info)
 
-sys_base = System("base_sys.json")
+sys_base = System("intermediate_sys.json")
 clear_time_series!(sys_base)
 PSY.IS.assign_new_uuid!(sys_base)
 set_units_base_system!(sys_base, "SYSTEM_BASE")
@@ -29,4 +29,4 @@ h5open(perfect_load_time_series_realtime, "r") do file
     end
 end
 
-to_json(sys_base, "base_sys.json"; force = true)
+to_json(sys_base, "intermediate_sys.json"; force = true)
