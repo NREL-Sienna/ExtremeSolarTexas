@@ -83,8 +83,8 @@ for nemonic_name in sced_names
 end
 
 non_spin_names = [k for (k, v) in nonspin_dict if v[1] > 0.0]
-reg_down_names = [k for (k, v) in reg_dict if v.down > 0.2]
-reg_up_names = [k for (k, v) in reg_dict if v.up > 0.2]
+reg_down_names = [k for (k, v) in reg_dict if v.down > 0]
+reg_up_names = [k for (k, v) in reg_dict if v.up > 0]
 spin_names = [k for (k, v) in spin_dict if v[3] > 0 && k ∉ reg_up_names]
 
 reserve_map = Dict(

@@ -594,6 +594,9 @@ sys = System("intermediate_sys.json")
 
 include("load_processing.jl")
 include("wind_processing.jl")
+
+to_json(sys, "pre_thermal_sys.json", force = true)
+
 include("thermal_processing.jl")
 include("add_services.jl")
 

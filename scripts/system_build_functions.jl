@@ -678,11 +678,20 @@ end
 function _get_ramp_limits(prime_mover, fuel, ercot_fuel, size)
     key = (prime_mover, fuel)
     lims = ramp_limits[key]
-    noise_up = round(randn()/1000;  digits = 4)
-    noise_down = round(randn()/1000;  digits = 4)
-    noise_down = abs(noise_down) > 0.1 ? 0.0 : noise_down
-    noise_up = abs(noise_up) > 0.1 ? 0.0 : noise_up
-    return (up = round(lims.up + noise_up, sigdigits = 5), down = round(lims.down + noise_down, sigdigits = 5))
+    up_lim = lims.up
+    dn_lim = lims.down
+    for i in 1:100
+        noise_up = round(randn()/1000;  digits = 4)
+        noise_down = round(randn()/1000;  digits = 4)
+        noise_down = abs(noise_down) > 0.1 ? 0.0 : noise_down
+        noise_up = abs(noise_up) > 0.1 ? 0.0 : noise_up
+        up = round(up_lim + noise_up, sigdigits = 5)
+        dn = round(dn_lim + noise_down, sigdigits = 5)
+        if up > 0 && dn >0
+            return (up = up, down = dn)
+        end
+    end
+    return (up = up_lim, down = dn_lim)
 end
 
 function _get_start_time_limits(prime_mover, fuel, ercot_fuel, size)
