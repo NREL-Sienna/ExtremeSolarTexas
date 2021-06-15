@@ -18,7 +18,6 @@ h5open(perfect_load_time_series_realtime, "r") do file
         group_name = area_name_number_map[area_name]
         full_table = read(file, group_name)
         area_peak_load = maximum(full_table[:, 1])
-        set_peak_active_power!(area, area_peak_load)
         for ix in 1:size(full_table)[1]
             real_time_load_forecast[initial_time + (ix - 1) * real_time_interval] =
                 full_table[ix, :] ./ area_peak_load
@@ -27,6 +26,7 @@ h5open(perfect_load_time_series_realtime, "r") do file
             name = "max_active_power",
             resolution = real_time_resolution,
             data = real_time_load_forecast,
+            scaling_factor_multiplier = get_max_active_power
         )
         loads = collect(get_components(PowerLoad, sys, x -> get_area(get_bus(x)) == area))
         add_time_series!(sys, vcat(loads, area), forecast_data)
@@ -50,6 +50,7 @@ h5open(hydro_time_series_rt, "r") do file
             name = "max_active_power",
             resolution = Minute(5),
             data = day_ahead_forecast,
+            scaling_factor_multiplier = get_max_active_power
         )
         add_time_series!(sys, gen, forecast_data)
         ap = get_active_power(gen)
@@ -77,6 +78,7 @@ h5open(wind_time_series_rt, "r") do file
             name = "max_active_power",
             resolution = Minute(5),
             data = day_ahead_wind_forecast,
+            scaling_factor_multiplier = get_max_active_power
         )
         wind_gens = get_components(
             RenewableGen,
@@ -121,6 +123,7 @@ for gen in get_components(RenewableGen, sys, x -> get_prime_mover(x) == PrimeMov
         name = "max_active_power",
         resolution = real_time_resolution,
         data = real_time_forecast,
+        scaling_factor_multiplier = get_max_active_power
     )
     add_time_series!(sys, gen, forecast_data)
 end
@@ -136,12 +139,12 @@ spin = CSV.read(spin_reserve, DataFrame)
 nonspin = CSV.read(nonspin_reserve, DataFrame)
 
 date_range =
-    range(DateTime("2018-01-01T00:00:00"), step = Minute(5), length = 365 * 25 * 12)
+    range(DateTime("2018-01-01T00:00:00"), step = Minute(5), length = day_count * 25 * 12)
 
-regup_reserve_ts = Vector{Float64}(undef, 365 * 25 * 12)
-regdn_reserve_ts = Vector{Float64}(undef, 365 * 25 * 12)
-spin_ts = Vector{Float64}(undef, 365 * 25 * 12)
-nonspin_ts = Vector{Float64}(undef, 365 * 25 * 12)
+regup_reserve_ts = Vector{Float64}(undef, day_count * 25 * 12)
+regdn_reserve_ts = Vector{Float64}(undef, day_count * 25 * 12)
+spin_ts = Vector{Float64}(undef, day_count * 25 * 12)
+nonspin_ts = Vector{Float64}(undef, day_count * 25 * 12)
 
 for (ix, datetime) in enumerate(date_range)
     regup_reserve_ts[ix] = regup_reserve[hour(datetime) + 1, month(datetime) + 1]
@@ -171,9 +174,10 @@ for ((name, T), ts) in reserve_map
         name = "requirement",
         resolution = real_time_resolution,
         data = real_time_forecast,
+        scaling_factor_multiplier = get_requirement
     )
     res = get_component(T, sys, name)
-    set_requirement!(res, peak/100)
+    set_requirement!(res, peak / 100)
     add_time_series!(sys, res, forecast_data)
 end
 
