@@ -223,14 +223,14 @@ area_name_number_map = Dict(
 
 ####################################### Wind Time Series ##################################
 area_number_wind_map = Dict(
-    "1" => "LZ_West",
-    "2" => "LZ_North",
-    "3" => "West_North",
-    "4" => "Houston",
-    "5" => "LZ_North",
-    "6" => "Houston",
-    "7" => "Houston",
-    "8" => "Houston",
+    "FarWest" => "LZ_West",
+    "North" => "LZ_North",
+    "West" => "West_North",
+    "Southern" => "Houston",
+    "NorthCentral" => "LZ_North",
+    "SouthCentral" => "Houston",
+    "Coast" => "Houston",
+    "East" => "Houston",
 )
 
 #################################### Thermal Fleet Update ##################################
