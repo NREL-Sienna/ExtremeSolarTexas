@@ -520,6 +520,21 @@ function make_variable_cost(f::Function, pmin, pmax, tranches::Int = 4)
     return new_var_cost
 end
 
+function make_wind_units(system, device::PSY.RenewableDispatch)
+    plant_name = strip(replace(get_name(get_bus(device)), r"[0-9]" => ""))
+    for i in 1:100
+        @show name = "$(plant_name)_$i"
+        if get_component(RenewableDispatch, system, name) === nothing
+            set_name!(system, device, name)
+            break
+        end
+    end
+
+    # Temporary while https://github.com/NREL-SIIP/PowerSystems.jl/pull/765 gets merged
+    set_base_power!(device, round(device.base_power))
+    set_rating!(device, 1.3*sqrt(device.reactive_power_limits.max^2 + device.rating^2))
+end
+
 function make_start_up_costs(sced_data)
     cold_ = [0.0]
     warm_ = [0.0]
