@@ -6030,8 +6030,12 @@ end
 for th in get_components(ThermalGen, sys)
     ap = get_active_power(th)
     p_lims_min = get_active_power_limits(th).min
+    p_lims_max = get_active_power_limits(th).min
     if ap <= p_lims_min
         set_active_power!(th, th.active_power_limits.min)
+        continue
+    elseif ap >= p_lims_max
+       set_active_power!(th, th.active_power_limits.max)
     end
     set_reactive_power!(th, 0.0)
 end
