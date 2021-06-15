@@ -5,22 +5,28 @@ include("file_pointers.jl")
 include("system_build_functions.jl")
 include("manual_data_entries.jl")
 
-sys_base = System("intermediate_sys.json")
+sys_base = System("base_sys.json")
 clear_time_series!(sys_base)
 PSY.IS.assign_new_uuid!(sys_base)
 set_units_base_system!(sys_base, "SYSTEM_BASE")
 
 ####################################### Load Time Series ###################################
-h5open(perfect_load_time_series_da, "r") do file
-    for area in get_components(Area, sys_base)
+for area in get_components(Area, sys_base)
         day_ahead_load_forecast = Dict{Dates.DateTime, Vector{Float64}}()
-        area_name = get_name(area)
-        group_name = area_name_number_map[area_name]
+        h5open(perfect_load_time_series_da, "r") do file
+        @show group_name = get_name(area)
+        loads = get_components(PowerLoad, sys_base, x -> get_area(get_bus(x)) == area)
+        peak_area_load = sum(get_max_active_power.(loads))
         full_table = read(file, group_name)
-        area_peak_load = maximum(full_table)
+        ts_area_peak_load = maximum(full_table[:, 1])
+        load_multiplier = 1.01*max(ts_area_peak_load/(get_base_power(sys_base)*peak_area_load), 1.0)
         for ix in 1:size(full_table)[1]
             day_ahead_load_forecast[initial_time + (ix - 1) * da_interval] =
-                full_table[ix, :] ./ area_peak_load
+                full_table[ix, :] ./ ts_area_peak_load
+        end
+        for l in loads
+            set_max_active_power!(l, l.max_active_power*load_multiplier)
+            set_max_reactive_power!(l, l.max_reactive_power*load_multiplier)
         end
         forecast_data = Deterministic(
             name = "max_active_power",
@@ -28,17 +34,11 @@ h5open(perfect_load_time_series_da, "r") do file
             data = day_ahead_load_forecast,
             scaling_factor_multiplier = get_max_active_power
         )
-        loads = collect(get_components(PowerLoad, sys_base, x -> get_area(get_bus(x)) == area))
+        @assert sum(get_max_active_power.(loads)) >= ts_area_peak_load/get_base_power(sys_base) group_name
         set_peak_active_power!(area, sum(get_max_active_power.(loads)))
-        add_time_series!(sys_base, vcat(loads, area), forecast_data)
+        add_time_series!(sys_base, vcat(collect(loads), area), forecast_data)
     end
 end
-
-# Scale the load by the ratio of the area peak from the real data to the ACTIVSg2000
-# Check Yinong mismatch of the forecast.
-# Add a @assert peak_load in area == sum.(max_power(loads))
-
-
 
 ####################################### Hydro Time Series ##################################
 h5open(hydro_time_series_da, "r") do file
@@ -97,10 +97,18 @@ h5open(wind_time_series_da, "r") do file
 end
 
 ####################################### Reserve Time Series ################################
-regup_reserve = CSV.read(reg_up_reserve, DataFrame)
-regdn_reserve = CSV.read(reg_dn_reserve, DataFrame)
+regup_reserve = CSV.read(reg_up_reserve_2016, DataFrame)
+regdn_reserve = CSV.read(reg_dn_reserve_2016, DataFrame)
 spin = CSV.read(spin_reserve, DataFrame)
-nonspin = CSV.read(nonspin_reserve, DataFrame)
+nonspin = CSV.read(nonspin_reserve_2016, DataFrame)
+
+regup_reserve = CSV.read(reg_up_reserve_2016, DataFrame)
+regdn_reserve = CSV.read(reg_dn_reserve_2016, DataFrame)
+spin = CSV.read(spin_reserve, DataFrame)
+nonspin_adj_solar = CSV.read(nonspin_adjustment_solar, DataFrame)
+regup_reserve_adj_solar = CSV.read(reg_up_adjustment_solar, DataFrame)
+regdn_reserve_adj_solar = CSV.read(reg_dn_adjustment_solar, DataFrame)
+
 
 date_range = range(DateTime("2018-01-01T00:00:00"), step = da_resolution, length = 8796)
 
@@ -109,11 +117,19 @@ regdn_reserve_ts = Vector{Float64}(undef, 8796)
 spin_ts = Vector{Float64}(undef, 8796)
 nonspin_ts = Vector{Float64}(undef, 8796)
 
+solar_gens = get_components(
+            RenewableGen,
+            sys_base,
+            x -> get_prime_mover(x) == PrimeMovers.PVe,
+        )
+
+total_solar = sum(get_max_active_power.(solar_gens))*0.1 # total in GW.
+
 for (ix, datetime) in enumerate(date_range)
-    regup_reserve_ts[ix] = regup_reserve[hour(datetime) + 1, month(datetime) + 1]
-    regdn_reserve_ts[ix] = regdn_reserve[hour(datetime) + 1, month(datetime) + 1]
+    regup_reserve_ts[ix] = regup_reserve[hour(datetime) + 1, month(datetime) + 1] + regup_reserve_adj_solar[hour(datetime) + 1, month(datetime) + 1].*total_solar
+    regdn_reserve_ts[ix] = regdn_reserve[hour(datetime) + 1, month(datetime) + 1] + regdn_reserve_adj_solar[hour(datetime) + 1, month(datetime) + 1].*total_solar
     spin_ts[ix] = spin[hour(datetime) + 1, month(datetime) + 1]
-    nonspin_ts[ix] = nonspin[hour(datetime) + 1, month(datetime) + 1]
+    nonspin_ts[ix] = nonspin[hour(datetime) + 1, month(datetime) + 1] + nonspin_adj_solar[hour(datetime) + 1, month(datetime) + 1].*total_solar
 end
 
 reserve_map = Dict(
@@ -128,7 +144,7 @@ for ((name, T), ts) in reserve_map
     day_ahead_forecast = Dict{Dates.DateTime, Vector{Float64}}()
     for ix in 1:day_count
         current_ix = ix + (da_interval.value - 1) * (ix - 1)
-        forecast = regup_reserve_ts[current_ix:(current_ix + da_horizon - 1)]
+        forecast = ts[current_ix:(current_ix + da_horizon - 1)]
         @assert !all(isnan.(forecast))
         @assert length(forecast) == da_horizon
         day_ahead_forecast[initial_time + (ix - 1) * da_interval] = forecast ./ peak
@@ -247,7 +263,7 @@ scenario_forecast_data_31 = Scenarios(
     data = hour_ahead_forecast,
     scenario_count = 31
 )
-add_time_series!(sys_solar_scenarios_31, get_component(Area, sys_solar_scenarios_31, "1"), scenario_forecast_data_31)
+add_time_series!(sys_solar_scenarios_31, get_component(Area, sys_solar_scenarios_31, "FarWest"), scenario_forecast_data_31)
 
 to_json(sys_solar_scenarios_31, "/Users/jdlara/Dropbox/texas_data/DA_sys_31_scenarios.json", force = true)
 
@@ -316,6 +332,6 @@ scenario_forecast_data_84 = Scenarios(
     data = hour_ahead_forecast,
     scenario_count = 84
 )
-add_time_series!(sys_solar_scenarios_84, get_component(Area, sys_solar_scenarios_84, "1"), scenario_forecast_data_84)
+add_time_series!(sys_solar_scenarios_84, get_component(Area, sys_solar_scenarios_84, "FarWest"), scenario_forecast_data_84)
 
 to_json(sys_solar_scenarios_84, "/Users/jdlara/Dropbox/texas_data/DA_sys_84_scenarios.json", force = true)
