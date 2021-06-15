@@ -7,108 +7,6 @@ sys = System("intermediate_sys.json")
 
 set_units_base_system!(sys, "NATURAL_UNITS")
 
-gen = get_component(ThermalStandard, sys, "gen-13")
-ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PB2SES_CT1")
-HSL = maximum(sced_data[!, "HSL"])
-LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
-new_thermal = make_thermal_gen(
-    gen;
-    name = "PERMIAN BASIN CTG 1",
-    prime_mover = "GT",
-    fuel = "NG",
-    HSL = HSL,
-    LSL = LSL,
-    sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
-)
-remove_component!(sys, gen)
-add_component!(sys, new_thermal)
-
-gen = get_component(ThermalStandard, sys, "gen-14")
-ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PB2SES_CT2")
-HSL = maximum(sced_data[!, "HSL"])
-LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
-new_thermal = make_thermal_gen(
-    gen;
-    name = "PERMIAN BASIN CTG 2",
-    prime_mover = "GT",
-    fuel = "NG",
-    HSL = HSL,
-    LSL = LSL,
-    sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
-)
-remove_component!(sys, gen)
-add_component!(sys, new_thermal)
-
-gen = get_component(ThermalStandard, sys, "gen-15")
-ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PB2SES_CT3")
-HSL = maximum(sced_data[!, "HSL"])
-LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
-new_thermal = make_thermal_gen(
-    gen;
-    name = "PERMIAN BASIN CTG 3",
-    prime_mover = "GT",
-    fuel = "NG",
-    HSL = HSL,
-    LSL = LSL,
-    sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
-)
-remove_component!(sys, gen)
-add_component!(sys, new_thermal)
-
-gen = get_component(ThermalStandard, sys, "gen-16")
-ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PB2SES_CT4")
-HSL = maximum(sced_data[!, "HSL"])
-LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
-new_thermal = make_thermal_gen(
-    gen;
-    name = "PERMIAN BASIN CTG 4",
-    prime_mover = "GT",
-    fuel = "NG",
-    HSL = HSL,
-    LSL = LSL,
-    sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
-)
-remove_component!(sys, gen)
-add_component!(sys, new_thermal)
-
-gen = get_component(ThermalStandard, sys, "gen-17")
-ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PB2SES_CT5")
-HSL = maximum(sced_data[!, "HSL"])
-LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
-new_thermal = make_thermal_gen(
-    gen;
-    name = "PERMIAN BASIN CTG 5",
-    prime_mover = "GT",
-    fuel = "NG",
-    HSL = HSL,
-    LSL = LSL,
-    sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
-)
-remove_component!(sys, gen)
-add_component!(sys, new_thermal)
-
-gen = get_component(ThermalStandard, sys, "gen-18")
-ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "PB2SES_CT5")
-HSL = maximum(sced_data[!, "HSL"])
-LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
-new_thermal = make_thermal_gen(
-    gen;
-    name = "PERMIAN BASIN CTG 6",
-    prime_mover = "GT",
-    fuel = "NG",
-    HSL = HSL,
-    LSL = LSL,
-    sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
-)
-remove_component!(sys, gen)
-add_component!(sys, new_thermal)
-
 gen = get_component(ThermalStandard, sys, "gen-26")
 ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "OECCS_CC1_2")
 HSL_ = sced_data[sced_data.HSL .> 1, :][!, "Submitted_TPO_MW10"]
@@ -588,47 +486,13 @@ new_thermal = make_thermal_gen(
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
 
-gen = get_component(ThermalStandard, sys, "gen-81")
-ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MGSES_CT4")
-HSL = maximum(sced_data[!, "HSL"])
-LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
-new_thermal = make_thermal_gen(
-    gen;
-    name = "MORGAN CREEK CTG 4",
-    prime_mover = "GT",
-    fuel = "NG",
-    HSL = HSL,
-    LSL = LSL,
-    sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
-)
-remove_component!(sys, gen)
-add_component!(sys, new_thermal)
-
-gen = get_component(ThermalStandard, sys, "gen-82")
-ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "MGSES_CT5")
-HSL = maximum(sced_data[!, "HSL"])
-LSL = median(sced_data[sced_data.LSL .> 1, :][!, "LSL"])
-new_thermal = make_thermal_gen(
-    gen;
-    name = "MORGAN CREEK CTG 5",
-    prime_mover = "GT",
-    fuel = "NG",
-    HSL = HSL,
-    LSL = LSL,
-    sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
-)
-remove_component!(sys, gen)
-add_component!(sys, new_thermal)
-
 # Cost function way off
 gen = get_component(ThermalStandard, sys, "gen-83")
 HSL = get_active_power_limits(gen).max
 LSL = get_active_power_limits(gen).min
 new_thermal = make_thermal_gen(
     gen;
-    name = "MORGAN CREEK CTG 6 Expanded",
+    name = "MORGAN CREEK CTG 1",
     prime_mover = "GT",
     fuel = "NG",
     HSL = HSL,

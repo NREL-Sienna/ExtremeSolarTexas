@@ -385,9 +385,17 @@ fuels = ["CLLIG", "GSSUP", "GSREH", "GSNONR", "SCLE90", "SCGT90"]
 valid = ["ON", "ONREG"]
 
 gen_storage_mapping = Dict(
+    "gen-13" => "PERMIAN BASIN STORAGE 1",
+    "gen-14" => "PERMIAN BASIN STORAGE 2",
+    "gen-15" => "PERMIAN BASIN STORAGE 3",
+    "gen-16" => "PERMIAN BASIN STORAGE 4",
+    "gen-17" => "PERMIAN BASIN STORAGE 5",
+    "gen-18" => "PERMIAN BASIN STORAGE 6",
     "gen-20" => "RANDOM STORAGE",
     "gen-21" => "FREEZE STORAGE",
     "gen-49" => "CHEQUE STORAGE",
+    "gen-81" => "MORGAN CREEK STORAGE 1",
+    "gen-82" => "MORGAN CREEK STORAGE 2",
     "gen-134" => "MACHETE STORAGE",
     "gen-142" => "VALLEY ACRES STORAGE 1",
     "gen-143" => "VALLEY ACRES STORAGE 2",
