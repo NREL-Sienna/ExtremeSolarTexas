@@ -580,12 +580,24 @@ for t in get_components(TapTransformer, sys)
     end
 end
 
-write_lines_geo_data(sys, "line_coords_modified")
-write_gen_buses_geo_data(sys, "bus_gens_coords_modified")
+# Renaming of areas
+for area_no in 1:8
+    area_number_as_text = string(area_no)
+    area = get_component(Area, sys, area_number_as_text)
+    group_name = area_name_number_map[area_number_as_text]
+    set_name!(sys, area, group_name)
+    area.internal.ext = Dict("area_number_as_text"=> area_number_as_text)
+end
 
 to_json(sys, "intermediate_sys.json", force = true)
 sys = System("intermediate_sys.json")
 
+include("load_processing.jl")
+include("wind_processing.jl")
 include("thermal_processing.jl")
 include("add_services.jl")
+
+write_lines_geo_data(sys, "line_coords_modified")
+write_gen_buses_geo_data(sys, "bus_gens_coords_modified")
+
 finalize_system(system)
