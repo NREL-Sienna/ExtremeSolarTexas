@@ -558,16 +558,17 @@ function make_start_up_costs(sced_data)
 end
 
 function get_cost_data_from_sced(sced_data, name, LSL, HSL)
-    quad_terms, linear_terms, intercepts, points_cache =
-        get_quadratic_terms(sced_data, LSL, HSL)
+    points_cache = get_points(sced_data, LSL, HSL)
+    median_quad, median_linear, median_intercept = get_median_quadratic_model(points_cache.gen, points_cache.price)
+    mean_quad, mean_linear, mean_intercept = get_mean_quadratic_model(points_cache.gen, points_cache.price)
     start_up = make_start_up_costs(sced_data)
-    if isempty(quad_terms)
-        return start_up, -99.0, VariableCost(nothing)
-    end
+    #if isempty(quad_terms)
+    #    return start_up, -99.0, VariableCost(nothing)
+    #end
     quad_f_median =
-        x -> median(intercepts) + median(linear_terms) * x + median(quad_terms) * x^2
-    quad_f_mean = x -> mean(intercepts) + mean(linear_terms) * x + mean(quad_terms) * x^2
-    _write_cost_function_data(name, [median(quad_terms), median(linear_terms)], median(intercepts))
+        x -> median_intercept + median_linear * x + median_quad * x^2
+    quad_f_mean = x -> mean_intercept + mean_linear * x + mean_quad * x^2
+    _write_cost_function_data(name, [median_quad, median_linear], median_intercept)
     variable_cost = make_variable_cost(quad_f_median, LSL, HSL)
     var_points = variable_cost.cost
     no_load = quad_f_median(LSL)
@@ -586,20 +587,18 @@ function get_cost_data_from_sced(sced_data, name, LSL, HSL)
 end
 
 function get_cost_data_from_sced_linear(sced_data, name, LSL, HSL)
-    _, linear_terms, intercepts, points_cache =
-        get_quadratic_terms(sced_data, LSL, HSL, false)
-
-    quad_f_median = x -> median(intercepts) + median(linear_terms) * x
-    quad_f_mean = x -> mean(intercepts) + mean(linear_terms) * x
-    _write_cost_function_data(name, [0.0, median(linear_terms)], median(intercepts))
+    linear_terms, intercepts, points_cache = get_linear_model(sced_data, LSL, HSL)
+    quad_f_median = x -> intercepts + linear_terms * x
+    _write_cost_function_data(name, [0.0, linear_terms], intercepts)
     start_up = make_start_up_costs(sced_data)
-    variable_cost = make_variable_cost(quad_f_mean, LSL, HSL, 1)
+    variable_cost = make_variable_cost(quad_f_median, LSL, HSL, 1)
     no_load = quad_f_median(LSL)
     xlim = [minimum(vcat(points_cache.gen, LSL - 1)), maximum(vcat(points_cache.gen, HSL))]
     p = plot(legend = :outertopright, xlim = xlim)
     scatter!(p, points_cache.gen, points_cache.price, label = false)
-    plot!(p, quad_f_median, xlim = xlim, label = "median cost")
-    plot!(p, quad_f_mean, xlim = xlim, label = "mean cost")
+    plot!(p, quad_f_median, xlim = xlim, label = "linear cost")
+    pwl = [(power + LSL, price + no_load) for (price, power) in variable_cost.cost]
+    plot!(p, pwl, label = "PWL")
     plot!(p, [(LSL, 0), (LSL, quad_f_median(HSL))], label = "LSL")
     plot!(p, [(HSL, 0), (HSL, quad_f_median(HSL))], label = "HSL")
     plot!(p, xlabel = "Power [MW]", ylabel = "Price [\$]")
@@ -993,7 +992,7 @@ function get_sced_data(file_name, name)
     end
 end
 
-function get_quadratic_model(gen, price, quad_term::Bool = true)
+function get_mean_quadratic_model(gen, price, quad_term::Bool = true)
     m = Model(CPLEX.Optimizer)
     JuMP.set_silent(m)
     n_bp = length(price)
@@ -1012,13 +1011,51 @@ function get_quadratic_model(gen, price, quad_term::Bool = true)
     return value(quad_mult), value(linear_mult), value(intercept)
 end
 
+function get_median_quadratic_model(gen, price, quad_term::Bool = true)
+    m = Model(CPLEX.Optimizer)
+    JuMP.set_silent(m)
+    n_bp = length(price)
+    @variable(m, var_price[1:n_bp] >= 0)
+    @variable(m, z[1:n_bp] >= 0)
+    @variable(m, quad_mult >= 0)
+    !quad_term && fix(quad_mult, 0.0; force = true)
+    @variable(m, linear_mult >= 0)
+    @variable(m, intercept >= 0)
+    @constraint(
+        m,
+        [i in 1:n_bp],
+        var_price[i] == intercept + linear_mult * gen[i] + quad_mult * gen[i]^2
+    )
+    @constraint(m, [i in 1:n_bp], (price[i] - var_price[i]) >= -z[i])
+    @constraint(m, [i in 1:n_bp], (price[i] - var_price[i]) <= z[i])
+    @objective(m, Min, sum(z[i] for i in 1:n_bp))
+    optimize!(m)
+    return value(quad_mult), value(linear_mult), value(intercept)
+end
+
 function skip_row(row)
     skip = false
     skip = !occursin("ON", row."Telemetered_Resource_Status")
     return skip
 end
 
-function get_quadratic_terms(df::DataFrames.DataFrame, LSL, HSL, quad_t = true)
+function get_points(df::DataFrames.DataFrame, LSL, HSL)
+    points_cache = (gen = Vector{Float64}(), price = Vector{Float64}())
+    isempty(df) && return quad_terms, linear_terms, intercepts, points_cache
+    tranche_count_ = get_tranche_count(df)
+    for (ix, row) in enumerate(eachrow(df))
+        skip_row(row) && continue
+        gen_, price = get_gen_price_pairs(row, tranche_count_)
+        select = .&(gen_ .>= LSL, gen_ .<= HSL)
+        gen = gen_[select]
+        price = price[select]
+        push!(points_cache.gen, gen...)
+        push!(points_cache.price, price...)
+    end
+    return points_cache
+end
+
+function get_linear_model(df::DataFrames.DataFrame, LSL, HSL)
     points_cache = (gen = Vector{Float64}(), price = Vector{Float64}())
     linear_terms = Vector{Float64}()
     quad_terms = Vector{Float64}()
@@ -1031,18 +1068,11 @@ function get_quadratic_terms(df::DataFrames.DataFrame, LSL, HSL, quad_t = true)
         select = .&(gen_ .>= LSL, gen_ .<= HSL)
         gen = gen_[select]
         price = price[select]
-        isempty(gen) && continue
-        all(iszero(gen)) && all(iszero(price)) && continue
-        @assert gen[1] > 0 ix
-        quad, lin, inter = get_quadratic_model(gen, price, true)
-        @assert all([!isnan(quad), !isnan(lin), !isnan(inter)])
-        push!(quad_terms, quad)
-        push!(linear_terms, lin)
-        push!(intercepts, inter)
         push!(points_cache.gen, gen...)
         push!(points_cache.price, price...)
     end
-    return quad_terms, linear_terms, intercepts, points_cache
+    _, linear_terms, intercepts = get_mean_quadratic_model(points_cache.gen, points_cache.price, false)
+    return linear_terms, intercepts, points_cache
 end
 
 function finalize_system(sys)
