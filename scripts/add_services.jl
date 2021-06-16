@@ -82,10 +82,10 @@ for nemonic_name in sced_names
     end
 end
 
-non_spin_names = [k for (k, v) in nonspin_dict if v[1] > 0.0]
-reg_down_names = [k for (k, v) in reg_dict if v.down > 0]
-reg_up_names = [k for (k, v) in reg_dict if v.up > 0]
-spin_names = [k for (k, v) in spin_dict if v[3] > 0 && k ∉ reg_up_names]
+non_spin_names = [k for (k, v) in nonspin_dict if v[1] > 1e-3]
+reg_down_names = [k for (k, v) in reg_dict if v.down > 0.01 && spin_dict[k][2] < 0.5]
+reg_up_names = [k for (k, v) in reg_dict if v.up > 0.01 && spin_dict[k][2] < 0.5]
+spin_names = [k for (k, v) in spin_dict if v[3] > 3*v[2]]
 
 reserve_map = Dict(
     ("REG_UP", VariableReserve{ReserveUp}, reg_up_names, 1) => 0.0,
@@ -95,16 +95,16 @@ reserve_map = Dict(
 )
 
 for ((name, T, gens, time_frame), ts) in reserve_map
-    peak = maximum(ts)
     res = T(nothing)
     set_name!(res, name)
-    set_requirement!(res, peak / 100.0)
     set_time_frame!(res, time_frame)
     set_available!(res, true)
     gen_names = [v for (k, v) in names_map if k ∈ gens]
     components = get_components(ThermalMultiStart, system, x -> get_name(x) ∈ gen_names)
     add_service!(system, res, components)
-    @assert length(get_contributing_devices(system, res)) == length(gens)
+    if length(get_contributing_devices(system, res)) == length(gens)
+        @error "There is something wrong with $name"
+    end
 end
 
 to_json(system, "intermediate_sys.json"; force = true)
