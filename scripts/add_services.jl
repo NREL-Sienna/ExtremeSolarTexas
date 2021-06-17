@@ -20,6 +20,7 @@ for name in sced_names
     gen_name = uppercase(replace(name_, " " => "_"))
     if get_component(ThermalMultiStart, system, gen_name) === nothing
         println(name, " ", gen_name)
+        pop!(names_map, name)
     else
         names_map[name] = gen_name
     end
@@ -102,7 +103,7 @@ for ((name, T, gens, time_frame), ts) in reserve_map
     gen_names = [v for (k, v) in names_map if k ∈ gens]
     components = get_components(ThermalMultiStart, system, x -> get_name(x) ∈ gen_names)
     add_service!(system, res, components)
-    if length(get_contributing_devices(system, res)) == length(gens)
+    if length(get_contributing_devices(system, res)) != length(gens)
         @error "There is something wrong with $name"
     end
 end

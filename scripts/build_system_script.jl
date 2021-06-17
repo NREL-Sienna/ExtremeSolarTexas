@@ -594,13 +594,18 @@ sys = System("intermediate_sys.json")
 
 include("load_processing.jl")
 include("wind_processing.jl")
+include("hydro_processing.jl")
 
 to_json(sys, "pre_thermal_sys.json", force = true)
 
 include("thermal_processing.jl")
-include("add_services.jl")
 
 to_json(sys, "intermediate_sys.json", force = true)
+to_json(sys, "post_thermal_sys.json", force = true)
+
+include("add_services.jl")
+
+
 
 write_lines_geo_data(sys, "line_coords_modified")
 write_gen_buses_geo_data(sys, "bus_gens_coords_modified")
