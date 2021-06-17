@@ -23,6 +23,15 @@ h5open(perfect_load_time_series_realtime, "r") do file
         for l in loads
             set_max_active_power!(l, l.max_active_power*load_multiplier)
             set_max_reactive_power!(l, l.max_reactive_power*load_multiplier)
+            load_name = strip(replace(get_name(get_bus(l)), r"[0-9]" => ""))
+            for i in 1:100
+                name = "$(load_name)_LOAD_$i"
+                if get_component(PowerLoad, sys_base, name) === nothing
+                    set_name!(sys_base, l, name)
+                    set_available!(l, true)
+                    break
+                end
+            end
         end
         @assert sum(get_max_active_power.(loads)) >= ts_area_peak_load/get_base_power(sys_base)
         set_peak_active_power!(area, sum(get_max_active_power.(loads)))
