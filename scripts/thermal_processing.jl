@@ -3,9 +3,20 @@ include("system_build_functions.jl")
 include("manual_data_entries.jl")
 
 plant_metadata = CSV.read(thermal_mapping, DataFrame)
-sys = System("intermediate_sys.json")
+sys = System("pre_thermal_sys.json")
 
 set_units_base_system!(sys, "NATURAL_UNITS")
+const MAKE_PLOTS = false
+#### add storage units
+for (gen_name, storage_name) in gen_storage_mapping
+    @info gen_name
+    gen = get_component(ThermalStandard, sys, gen_name)
+    storage = make_storage(gen; name = storage_name)
+    remove_component!(sys, gen)
+    add_component!(sys, storage)
+end
+
+## Make new thermals
 
 gen = get_component(ThermalStandard, sys, "gen-26")
 ercot_fuel, sced_data = get_sced_data(thermal_sced_h5_file, "OECCS_CC1_2")
@@ -20,7 +31,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -37,7 +48,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -55,7 +66,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -73,7 +84,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -90,7 +101,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -107,7 +118,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -125,7 +136,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -143,7 +154,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -165,7 +176,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -182,7 +193,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -197,6 +208,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -211,6 +223,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -225,6 +238,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -242,7 +256,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -259,7 +273,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -274,6 +288,7 @@ new_thermal = make_thermal_gen(
     fuel = "LIG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -290,7 +305,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -307,7 +322,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -324,7 +339,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -343,7 +358,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -362,7 +377,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -379,7 +394,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -396,7 +411,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -413,7 +428,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -430,7 +445,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -447,7 +462,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -464,7 +479,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -481,7 +496,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -497,6 +512,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -514,7 +530,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -532,7 +548,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -549,7 +565,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -566,7 +582,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -583,7 +599,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -598,6 +614,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -615,7 +632,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -632,7 +649,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -649,7 +666,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -666,7 +683,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -683,7 +700,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -700,7 +717,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -717,7 +734,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -734,7 +751,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -751,7 +768,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -768,7 +785,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -787,7 +804,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -806,7 +823,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -823,7 +840,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -841,7 +858,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -858,7 +875,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -875,7 +892,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -892,7 +909,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -909,7 +926,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -927,6 +944,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -941,6 +959,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -955,6 +974,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -969,6 +989,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -983,6 +1004,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -997,6 +1019,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1013,7 +1036,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1030,7 +1053,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1048,7 +1071,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1066,7 +1089,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1083,7 +1106,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1098,6 +1121,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1114,7 +1138,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1131,7 +1155,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1148,7 +1172,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1163,6 +1187,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1177,6 +1202,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1191,6 +1217,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1207,7 +1234,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1224,7 +1251,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1241,7 +1268,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1258,7 +1285,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1275,7 +1302,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1292,7 +1319,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1309,7 +1336,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1326,7 +1353,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1343,7 +1370,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1360,7 +1387,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1377,7 +1404,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1394,7 +1421,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1415,7 +1442,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1433,7 +1460,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1450,7 +1477,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1468,7 +1495,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1486,7 +1513,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1503,7 +1530,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1520,7 +1547,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1537,7 +1564,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1554,7 +1581,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1571,7 +1598,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1590,7 +1617,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1607,7 +1634,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1625,7 +1652,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1642,7 +1669,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1659,7 +1686,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1676,7 +1703,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1693,7 +1720,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1710,7 +1737,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1728,7 +1755,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 add_component!(sys, new_thermal)
 HSL = maximum(sced_data[!, "HSL"])
@@ -1746,7 +1773,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 add_component!(sys, new_thermal)
 HSL = maximum(sced_data[!, "HSL"])
@@ -1764,7 +1791,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 add_component!(sys, new_thermal)
 HSL = maximum(sced_data[!, "HSL"])
@@ -1782,7 +1809,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 add_component!(sys, new_thermal)
 
@@ -1802,7 +1829,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1820,7 +1847,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1837,7 +1864,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1855,7 +1882,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1873,7 +1900,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1890,7 +1917,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1907,7 +1934,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1925,7 +1952,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1942,7 +1969,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1959,7 +1986,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1976,7 +2003,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -1993,7 +2020,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2010,7 +2037,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2027,7 +2054,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2044,7 +2071,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2061,7 +2088,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2078,7 +2105,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2095,7 +2122,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2112,7 +2139,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2129,7 +2156,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2146,7 +2173,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2164,7 +2191,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2181,7 +2208,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2198,7 +2225,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2215,7 +2242,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2232,7 +2259,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2249,7 +2276,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2266,7 +2293,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2283,7 +2310,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2300,7 +2327,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2317,7 +2344,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2334,7 +2361,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2351,7 +2378,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2368,7 +2395,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2385,7 +2412,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2402,7 +2429,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2420,7 +2447,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 add_component!(sys, new_thermal)
 
@@ -2436,7 +2463,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 add_component!(sys, new_thermal)
 remove_component!(sys, gen)
@@ -2453,7 +2480,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 add_component!(sys, new_thermal)
 
@@ -2469,7 +2496,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 add_component!(sys, new_thermal)
 remove_component!(sys, gen)
@@ -2487,7 +2514,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2504,7 +2531,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2521,7 +2548,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2538,7 +2565,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2555,7 +2582,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2572,7 +2599,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2589,7 +2616,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2606,7 +2633,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2623,7 +2650,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2640,7 +2667,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2657,7 +2684,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2675,7 +2702,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2693,7 +2720,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2711,7 +2738,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2729,7 +2756,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2746,7 +2773,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2763,7 +2790,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2780,7 +2807,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2797,7 +2824,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2814,7 +2841,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2831,7 +2858,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2848,7 +2875,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2865,7 +2892,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2883,7 +2910,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2901,7 +2928,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2918,7 +2945,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2935,7 +2962,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2952,7 +2979,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2969,7 +2996,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -2989,7 +3016,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3006,7 +3033,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3023,7 +3050,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3040,7 +3067,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3057,7 +3084,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3074,7 +3101,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3091,7 +3118,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3108,7 +3135,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3125,7 +3152,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3142,7 +3169,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3159,7 +3186,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3176,7 +3203,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3193,7 +3220,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3210,7 +3237,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3227,7 +3254,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3244,7 +3271,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3261,7 +3288,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3279,7 +3306,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3296,7 +3323,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3318,7 +3345,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3335,7 +3362,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3352,7 +3379,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3367,6 +3394,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3381,6 +3409,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3395,6 +3424,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3409,6 +3439,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3423,6 +3454,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3437,6 +3469,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3453,7 +3486,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3470,7 +3503,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3487,7 +3520,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3504,7 +3537,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3519,6 +3552,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3533,6 +3567,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3547,6 +3582,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3563,7 +3599,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3580,7 +3616,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3597,7 +3633,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3614,7 +3650,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3631,7 +3667,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 new_thermal.internal = PSY.IS.InfrastructureSystemsInternal()
 remove_component!(sys, gen)
@@ -3649,7 +3685,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3664,6 +3700,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3678,6 +3715,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3692,6 +3730,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3706,6 +3745,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3720,6 +3760,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3736,7 +3777,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3753,7 +3794,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3770,7 +3811,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3787,7 +3828,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3804,7 +3845,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3821,7 +3862,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3838,7 +3879,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3855,7 +3896,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3872,7 +3913,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3890,7 +3931,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3907,7 +3948,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3924,7 +3965,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3941,7 +3982,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3958,7 +3999,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3975,7 +4016,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -3992,7 +4033,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4009,7 +4050,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4029,7 +4070,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4046,7 +4087,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4065,7 +4106,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4084,7 +4125,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4103,7 +4144,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4120,7 +4161,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4137,7 +4178,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4154,7 +4195,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4171,7 +4212,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4188,7 +4229,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4206,7 +4247,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4224,7 +4265,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4241,7 +4282,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4258,7 +4299,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4275,7 +4316,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4290,6 +4331,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4304,6 +4346,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4318,6 +4361,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4332,6 +4376,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4348,7 +4393,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4365,7 +4410,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4382,7 +4427,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4399,7 +4444,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4416,7 +4461,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4433,7 +4478,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4450,7 +4495,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4467,7 +4512,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4484,7 +4529,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4501,7 +4546,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4518,7 +4563,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4535,7 +4580,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4552,7 +4597,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4570,7 +4615,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4587,7 +4632,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4604,7 +4649,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4621,7 +4666,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4638,7 +4683,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4655,7 +4700,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4672,7 +4717,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4689,7 +4734,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4706,7 +4751,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4723,7 +4768,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4740,7 +4785,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4757,7 +4802,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4774,7 +4819,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4791,7 +4836,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4808,7 +4853,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4825,7 +4870,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4842,7 +4887,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4859,7 +4904,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4876,7 +4921,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4893,7 +4938,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4910,7 +4955,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4927,7 +4972,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4942,6 +4987,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4958,7 +5004,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4975,7 +5021,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -4991,6 +5037,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 set_must_run!(new_thermal, true)
 remove_component!(sys, gen)
@@ -5006,6 +5053,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 set_must_run!(new_thermal, true)
 remove_component!(sys, gen)
@@ -5021,6 +5069,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 set_must_run!(new_thermal, true)
 remove_component!(sys, gen)
@@ -5036,6 +5085,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 set_must_run!(new_thermal, true)
 remove_component!(sys, gen)
@@ -5051,6 +5101,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 set_must_run!(new_thermal, true)
 remove_component!(sys, gen)
@@ -5066,6 +5117,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 set_must_run!(new_thermal, true)
 remove_component!(sys, gen)
@@ -5081,6 +5133,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 set_must_run!(new_thermal, true)
 remove_component!(sys, gen)
@@ -5096,6 +5149,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 set_must_run!(new_thermal, true)
 remove_component!(sys, gen)
@@ -5114,6 +5168,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 set_must_run!(new_thermal, true)
 remove_component!(sys, gen)
@@ -5129,6 +5184,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 set_must_run!(new_thermal, true)
 remove_component!(sys, gen)
@@ -5145,6 +5201,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 set_must_run!(new_thermal, true)
 remove_component!(sys, gen)
@@ -5160,6 +5217,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 set_must_run!(new_thermal, true)
 remove_component!(sys, gen)
@@ -5175,6 +5233,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 set_must_run!(new_thermal, true)
 remove_component!(sys, gen)
@@ -5190,6 +5249,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 set_must_run!(new_thermal, true)
 remove_component!(sys, gen)
@@ -5205,6 +5265,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 set_must_run!(new_thermal, true)
 remove_component!(sys, gen)
@@ -5220,6 +5281,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 set_must_run!(new_thermal, true)
 remove_component!(sys, gen)
@@ -5235,6 +5297,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 set_must_run!(new_thermal, true)
 remove_component!(sys, gen)
@@ -5250,6 +5313,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 set_must_run!(new_thermal, true)
 remove_component!(sys, gen)
@@ -5265,6 +5329,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 set_must_run!(new_thermal, true)
 remove_component!(sys, gen)
@@ -5280,6 +5345,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 set_must_run!(new_thermal, true)
 remove_component!(sys, gen)
@@ -5295,6 +5361,7 @@ new_thermal = make_thermal_gen(
     fuel = "NG",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 set_must_run!(new_thermal, true)
 remove_component!(sys, gen)
@@ -5312,7 +5379,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5330,7 +5397,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5347,7 +5414,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5364,7 +5431,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5381,7 +5448,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5399,7 +5466,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5416,7 +5483,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5433,7 +5500,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5451,7 +5518,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5468,7 +5535,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5485,7 +5552,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5502,7 +5569,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5519,7 +5586,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5536,7 +5603,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5555,7 +5622,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5573,7 +5640,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5590,7 +5657,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5607,7 +5674,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5624,7 +5691,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5641,7 +5708,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5658,7 +5725,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5675,7 +5742,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5692,7 +5759,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5709,7 +5776,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5726,7 +5793,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5743,7 +5810,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5760,7 +5827,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5777,7 +5844,7 @@ new_thermal = make_thermal_gen(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5793,6 +5860,7 @@ new_thermal = make_thermal_gen_nuc(
     fuel = "NUC",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5807,6 +5875,7 @@ new_thermal = make_thermal_gen_nuc(
     fuel = "NUC",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5821,6 +5890,7 @@ new_thermal = make_thermal_gen_nuc(
     fuel = "NUC",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5835,6 +5905,7 @@ new_thermal = make_thermal_gen_nuc(
     fuel = "NUC",
     HSL = HSL,
     LSL = LSL,
+    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5853,7 +5924,7 @@ new_thermal = make_thermal_gen_st(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5870,7 +5941,7 @@ new_thermal = make_thermal_gen_st(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5887,7 +5958,7 @@ new_thermal = make_thermal_gen_st(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5904,7 +5975,7 @@ new_thermal = make_thermal_gen_st(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5921,7 +5992,7 @@ new_thermal = make_thermal_gen_st(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5938,19 +6009,10 @@ new_thermal = make_thermal_gen_st(
     HSL = HSL,
     LSL = LSL,
     sced_data = sced_data,
-    ercot_fuel = ercot_fuel,
+    ercot_fuel = ercot_fuel, plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
-
-#### add storage units
-for (gen_name, storage_name) in gen_storage_mapping
-    @info gen_name
-    gen = get_component(ThermalStandard, sys, gen_name)
-    storage = make_storage(gen; name = storage_name)
-    remove_component!(sys, gen)
-    add_component!(sys, storage)
-end
 
 @assert isempty([
     (get_name(x), get_max_active_power(x)) for x in get_components(ThermalStandard, sys)

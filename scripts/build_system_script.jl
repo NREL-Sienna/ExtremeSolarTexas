@@ -567,7 +567,7 @@ for t in get_components(TapTransformer, sys)
     from_bus = get_from(arc)
     to_bus = get_to(arc)
     if !haskey(get_ext(from_bus), "x") && !haskey(get_ext(to_bus), "y")
-        @show @show get_name(t)
+        @show get_name(t)
         continue
     end
     if !haskey(get_ext(from_bus), "x")

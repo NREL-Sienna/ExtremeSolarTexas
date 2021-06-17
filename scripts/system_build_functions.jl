@@ -514,6 +514,7 @@ function make_variable_cost(f::Function, pmin, pmax, tranches::Int = 4)
     slopes = get_slopes(new_var_cost)
     for ix in 1:(length(slopes) - 1)
         if slopes[ix] > slopes[ix + 1]
+            @error slopes
             error("pwl_slopes not convex")
         end
     end
@@ -557,58 +558,76 @@ function make_start_up_costs(sced_data)
     return (hot = hot, warm = warm, cold = cold)
 end
 
-function get_cost_data_from_sced(sced_data, name, LSL, HSL)
+function get_cost_data_from_sced(sced_data, name, LSL, HSL, make_plots)
     points_cache = get_points(sced_data, LSL, HSL)
     median_quad, median_linear, median_intercept = get_median_quadratic_model(points_cache.gen, points_cache.price)
     mean_quad, mean_linear, mean_intercept = get_mean_quadratic_model(points_cache.gen, points_cache.price)
     start_up = make_start_up_costs(sced_data)
-    #if isempty(quad_terms)
-    #    return start_up, -99.0, VariableCost(nothing)
-    #end
     quad_f_median =
         x -> median_intercept + median_linear * x + median_quad * x^2
     quad_f_mean = x -> mean_intercept + mean_linear * x + mean_quad * x^2
-    _write_cost_function_data(name, [median_quad, median_linear], median_intercept)
-    variable_cost = make_variable_cost(quad_f_median, LSL, HSL)
-    var_points = variable_cost.cost
+    if isapprox(median_linear, 0.0; atol = 1e-4) && isapprox(median_quad, 0.0; atol = 1e-4)
+        if isapprox(mean_linear, 0.0; atol = 1e-4) && isapprox(mean_quad, 0.0; atol = 1e-4)
+            @error "bad cost function data $name"
+            _write_cost_function_data(name, [0.0, 0.0], median_intercept)
+            return start_up, -99.0, VariableCost(nothing)
+        end
+        quad, linear, intercept = (mean_quad, mean_linear, mean_intercept)
+        quad_f = quad_f_mean
+    else
+        quad, linear, intercept = (median_quad, median_linear, median_intercept)
+        quad_f = quad_f_median
+    end
+    _write_cost_function_data(name, [quad, linear], intercept)
+    tranches = isapprox(median_quad, 0.0; atol = 1e-4) ? 1 : 4
+    variable_cost = make_variable_cost(quad_f, LSL, HSL, tranches)
     no_load = quad_f_median(LSL)
-    xlim = [minimum(vcat(points_cache.gen, LSL - 1)), maximum(vcat(points_cache.gen, HSL))]
-    p = plot(legend = :outertopright, xlim = xlim)
-    scatter!(p, points_cache.gen, points_cache.price, label = false)
-    plot!(p, quad_f_median, xlim = xlim, label = "median cost")
-    plot!(p, quad_f_mean, xlim = xlim, label = "mean cost")
-    pwl = [(power + LSL, price + no_load) for (price, power) in var_points]
-    plot!(p, pwl, label = "PWL")
-    plot!(p, [(LSL, 0), (LSL, quad_f_median(HSL))], label = "LSL")
-    plot!(p, [(HSL, 0), (HSL, quad_f_median(HSL))], label = "HSL")
-    plot!(p, xlabel = "Power [MW]", ylabel = "Price [\$]")
-    savefig(p, joinpath(COST_FUNCTION_PATHS, "$(name).pdf"))
+    if make_plots
+        var_points = variable_cost.cost
+        xlim = [minimum(vcat(points_cache.gen, LSL - 1)), maximum(vcat(points_cache.gen, HSL))]
+        p = plot(legend = :outertopright, xlim = xlim)
+        scatter!(p, points_cache.gen, points_cache.price, label = false)
+        plot!(p, quad_f_median, xlim = xlim, label = "median cost")
+        plot!(p, quad_f_mean, xlim = xlim, label = "mean cost")
+        pwl = [(power + LSL, price + no_load) for (price, power) in var_points]
+        plot!(p, pwl, label = "PWL")
+        plot!(p, [(LSL, 0), (LSL, quad_f_median(HSL))], label = "LSL")
+        plot!(p, [(HSL, 0), (HSL, quad_f_median(HSL))], label = "HSL")
+        plot!(p, xlabel = "Power [MW]", ylabel = "Price [\$]")
+        savefig(p, joinpath(COST_FUNCTION_PATHS, "$(name).pdf"))
+    end
     return start_up, no_load, variable_cost
 end
 
-function get_cost_data_from_sced_linear(sced_data, name, LSL, HSL)
+function get_cost_data_from_sced_linear(sced_data, name, LSL, HSL, make_plots)
     linear_terms, intercepts, points_cache = get_linear_model(sced_data, LSL, HSL)
     quad_f_median = x -> intercepts + linear_terms * x
     _write_cost_function_data(name, [0.0, linear_terms], intercepts)
     start_up = make_start_up_costs(sced_data)
     variable_cost = make_variable_cost(quad_f_median, LSL, HSL, 1)
     no_load = quad_f_median(LSL)
-    xlim = [minimum(vcat(points_cache.gen, LSL - 1)), maximum(vcat(points_cache.gen, HSL))]
-    p = plot(legend = :outertopright, xlim = xlim)
-    scatter!(p, points_cache.gen, points_cache.price, label = false)
-    plot!(p, quad_f_median, xlim = xlim, label = "linear cost")
-    pwl = [(power + LSL, price + no_load) for (price, power) in variable_cost.cost]
-    plot!(p, pwl, label = "PWL")
-    plot!(p, [(LSL, 0), (LSL, quad_f_median(HSL))], label = "LSL")
-    plot!(p, [(HSL, 0), (HSL, quad_f_median(HSL))], label = "HSL")
-    plot!(p, xlabel = "Power [MW]", ylabel = "Price [\$]")
-    plot!(p, title = "Linear Model for GSREH plants that are non-convex")
-    savefig(p, joinpath(COST_FUNCTION_PATHS, "$(name).pdf"))
+    if make_plots
+        xlim = [minimum(vcat(points_cache.gen, LSL - 1)), maximum(vcat(points_cache.gen, HSL))]
+        p = plot(legend = :outertopright, xlim = xlim)
+        scatter!(p, points_cache.gen, points_cache.price, label = false)
+        plot!(p, quad_f_median, xlim = xlim, label = "linear cost")
+        pwl = [(power + LSL, price + no_load) for (price, power) in variable_cost.cost]
+        plot!(p, pwl, label = "PWL")
+        plot!(p, [(LSL, 0), (LSL, quad_f_median(HSL))], label = "LSL")
+        plot!(p, [(HSL, 0), (HSL, quad_f_median(HSL))], label = "HSL")
+        plot!(p, xlabel = "Power [MW]", ylabel = "Price [\$]")
+        plot!(p, title = "Linear Model for GSREH plants that are non-convex")
+        savefig(p, joinpath(COST_FUNCTION_PATHS, "$(name).pdf"))
+    end
     return start_up, no_load, variable_cost
 end
 
 function _write_cost_function_data(name, polynomial_points, fixed_cost)
-    vals = Dict("a" => polynomial_points[1], "b" => polynomial_points[2], "c" => fixed_cost)
+    if polynomial_points == [0.0, 0.0]
+        vals = Dict("a" => "BAD_DATA", "b" => "BAD_DATA", "c" => fixed_cost)
+    else
+        vals = Dict("a" => polynomial_points[1], "b" => polynomial_points[2], "c" => fixed_cost)
+    end
     open(cost_function_file, "a") do file
         results = Dict(name => vals)
         write(file, JSON.json(results))
@@ -616,7 +635,7 @@ function _write_cost_function_data(name, polynomial_points, fixed_cost)
     end
 end
 
-function get_cost_data_from_gen(gen, name, LSL, HSL)
+function get_cost_data_from_gen(gen, name, LSL, HSL, make_plots)
     gen_cost = get_operation_cost(gen)
     polynomial_points = get_variable(gen_cost) |> get_cost
     quad_f =
@@ -626,12 +645,14 @@ function get_cost_data_from_gen(gen, name, LSL, HSL)
             get_fixed(gen_cost)
     _write_cost_function_data(name, polynomial_points, get_fixed(gen_cost))
     new_var_cost = make_variable_cost(quad_f, LSL, HSL)
-    p = plot(legend = :outertopright)
-    plot!(p, quad_f, xlim = [LSL, HSL], label = "quadratic_model")
-    plot!(p, [(LSL, 0), (LSL, quad_f(HSL))], label = "LSL")
-    plot!(p, [(HSL, 0), (HSL, quad_f(HSL))], label = "HSL")
-    plot!(p, xlabel = "Power [MW]", ylabel = "Price [\$]")
-    savefig(p, joinpath(COST_FUNCTION_PATHS, "$name.pdf"))
+    if make_plots
+        p = plot(legend = :outertopright)
+        plot!(p, quad_f, xlim = [LSL, HSL], label = "quadratic_model")
+        plot!(p, [(LSL, 0), (LSL, quad_f(HSL))], label = "LSL")
+        plot!(p, [(HSL, 0), (HSL, quad_f(HSL))], label = "HSL")
+        plot!(p, xlabel = "Power [MW]", ylabel = "Price [\$]")
+        savefig(p, joinpath(COST_FUNCTION_PATHS, "$name.pdf"))
+    end
     start_up = (hot = 0.0, warm = 0.0, cold = 0.0)
     return start_up, quad_f(LSL), new_var_cost
 end
@@ -738,6 +759,7 @@ function make_thermal_gen(
     HSL,
     sced_data = nothing,
     ercot_fuel = nothing,
+    plot = true,
 )
     if LSL > HSL
         error("LSL > HSL")
@@ -765,12 +787,12 @@ function make_thermal_gen(
 
     if sced_data !== nothing
         start_up, no_load, variable_cost =
-            get_cost_data_from_sced(sced_data, name, LSL, HSL)
+            get_cost_data_from_sced(sced_data, name, LSL, HSL, plot)
         if no_load == -99
-            _, no_load, variable_cost = get_cost_data_from_gen(gen, name, LSL, HSL)
+            _, no_load, variable_cost = get_cost_data_from_gen(gen, name, LSL, HSL, plot)
         end
     else
-        start_up, no_load, variable_cost = get_cost_data_from_gen(gen, name, LSL, HSL)
+        start_up, no_load, variable_cost = get_cost_data_from_gen(gen, name, LSL, HSL, plot)
     end
     set_start_up!(op_cost, start_up)
     set_shut_down!(op_cost, 0.2 * start_up.hot)
@@ -829,7 +851,7 @@ function make_thermal_gen_nuc(
     set_time_at_status!(temp_gen, 8760)
     set_base_power!(temp_gen, base_power)
     op_cost = MultiStartCost(nothing)
-    set_start_up!(op_cost, (hot = 1e6, warm = 1e6, cold = 1e6))
+    set_start_up!(op_cost, (hot = 1e4, warm = 1e4, cold = 1e4))
     set_shut_down!(op_cost, 1e6)
     new_var_cost = make_variable_cost(x -> 0.01 * x + 0.01 * LSL, LSL, HSL, 1)
     set_variable!(op_cost, new_var_cost)
@@ -850,6 +872,7 @@ function make_thermal_gen_st(
     HSL,
     sced_data = nothing,
     ercot_fuel = nothing,
+    plot = true,
 )
     if LSL > HSL
         error("LSL > HSL")
@@ -873,9 +896,9 @@ function make_thermal_gen_st(
 
     if sced_data !== nothing
         start_up, no_load, variable_cost =
-            get_cost_data_from_sced_linear(sced_data, name, LSL, HSL)
+            get_cost_data_from_sced_linear(sced_data, name, LSL, HSL, plot)
     else
-        start_up, no_load, variable_cost = get_cost_data_from_gen(gen, name, LSL, HSL)
+        start_up, no_load, variable_cost = get_cost_data_from_gen(gen, name, LSL, HSL, plot)
     end
 
     duration_limits = _get_duration_limits(prime_mover, fuel, ercot_fuel, base_power)
@@ -930,18 +953,18 @@ function make_storage(original_gen::ThermalStandard; name)
     temp = GenericBattery(nothing)
     base_power = get_base_power(original_gen)
     if base_power < 10
-        base_power = base_power * 50
+        base_power = base_power * 15
     elseif base_power < 100
-        base_power = base_power * 10
+        base_power = base_power * 5
     else
-        @info name base power
+        @info name base_power
     end
     set_base_power!(temp, base_power)
     set_name!(temp, replace(name, " " => "_"))
     set_available!(temp, true)
     set_bus!(temp, get_bus(original_gen))
     set_prime_mover!(temp, PrimeMovers.BA)
-    gen_max_active_power = get_max_active_power(original_gen) / base_power
+    gen_max_active_power = original_gen.active_power_limits.max
     c_rating = randperm!([2, 3, 4])[1]
     set_initial_energy!(temp, 0.0)
     set_state_of_charge_limits!(temp, (min = 0.0, max = gen_max_active_power * c_rating))
@@ -951,12 +974,14 @@ function make_storage(original_gen::ThermalStandard; name)
     set_output_active_power_limits!(temp, (min = 0.0, max = gen_max_active_power))
     eff_data = (in = 0.83 + 0.05 * rand(), out = 0.91 - 0.05 * rand())
     set_efficiency!(temp, eff_data)
-    qlims = get_reactive_power_limits(original_gen)
+    qlims = original_gen.reactive_power_limits
     set_reactive_power_limits!(
         temp,
-        (min = -qlims.max / base_power, max = qlims.max / base_power),
+        (min = -1.2*qlims.max, max = 1.2*qlims.max),
     )
-    set_rating!(temp, sqrt((gen_max_active_power)^2 + (qlims.max / base_power)^2))
+    rating = sqrt((gen_max_active_power)^2 + (1.2*qlims.max)^2)
+    @assert rating < base_power
+    set_rating!(temp, rating)
     return temp
 end
 
@@ -1045,10 +1070,10 @@ function get_points(df::DataFrames.DataFrame, LSL, HSL)
     tranche_count_ = get_tranche_count(df)
     for (ix, row) in enumerate(eachrow(df))
         skip_row(row) && continue
-        gen_, price = get_gen_price_pairs(row, tranche_count_)
+        gen_, price_ = get_gen_price_pairs(row, tranche_count_)
         select = .&(gen_ .>= LSL, gen_ .<= HSL)
         gen = gen_[select]
-        price = price[select]
+        price = price_[select]
         push!(points_cache.gen, gen...)
         push!(points_cache.price, price...)
     end
