@@ -605,9 +605,7 @@ to_json(sys, "post_thermal_sys.json", force = true)
 
 include("add_services.jl")
 
-
-
 write_lines_geo_data(sys, "line_coords_modified")
 write_gen_buses_geo_data(sys, "bus_gens_coords_modified")
 
-finalize_system(system)
+finalize_system(sys)
