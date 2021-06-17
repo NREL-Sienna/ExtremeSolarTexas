@@ -5860,7 +5860,6 @@ new_thermal = make_thermal_gen_nuc(
     fuel = "NUC",
     HSL = HSL,
     LSL = LSL,
-    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5875,7 +5874,6 @@ new_thermal = make_thermal_gen_nuc(
     fuel = "NUC",
     HSL = HSL,
     LSL = LSL,
-    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5890,7 +5888,6 @@ new_thermal = make_thermal_gen_nuc(
     fuel = "NUC",
     HSL = HSL,
     LSL = LSL,
-    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)
@@ -5905,7 +5902,6 @@ new_thermal = make_thermal_gen_nuc(
     fuel = "NUC",
     HSL = HSL,
     LSL = LSL,
-    plot = MAKE_PLOTS,
 )
 remove_component!(sys, gen)
 add_component!(sys, new_thermal)

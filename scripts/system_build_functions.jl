@@ -531,7 +531,22 @@ function make_wind_units(system, device::PSY.RenewableDispatch)
             break
         end
     end
+end
 
+function make_hydro_units(system, device::PSY.HydroDispatch)
+    set_available!(device, true)
+    set_reactive_power!(device, 0.0)
+    if occursin(r"gen", get_name(device))
+        plant_name = strip(replace(get_name(get_bus(device)), r"[0-9]" => ""))
+        for i in 1:100
+            @show name = "$(plant_name)_$i"
+            if get_component(HydroDispatch, system, name) === nothing
+                set_name!(system, device, name)
+                break
+            end
+        end
+    end
+    return
 end
 
 function make_start_up_costs(sced_data)
