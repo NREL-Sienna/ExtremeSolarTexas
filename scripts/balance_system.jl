@@ -4,7 +4,7 @@ const PSY = PowerSystems
 const PSI = PowerSimulations
 using Logging
 using Dates
-using CPLEX
+using Xpress
 using DataFrames
 
 system = system_new = System("RT_sys.json")
@@ -32,7 +32,7 @@ op_problem = OperationsProblem(
     #balance_slack_variables = true,
     system_to_file = false,
     optimizer_log_print = true,
-    optimizer = optimizer_with_attributes(CPLEX.Optimizer),
+    optimizer = optimizer_with_attributes(Xpress.Optimizer),
 )
 
 build!(op_problem; console_level = Logging.Info, output_dir = "./res")
